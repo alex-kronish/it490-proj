@@ -1,7 +1,31 @@
 import pika
 import json
 import pymysql
-import time
+import datetime
+
+
+def logtofile(severity, msg):
+    t = str(datetime.datetime.now())
+    event = t + " | " + severity + " | " + msg + "  \n"
+    f = open("database_log.txt", "a+")
+    f.write(event)
+    f.close()
+
+
+def logtodb(severity, msg, ipaddr):
+    cred3 = pika.PlainCredentials('alex', 'alex')
+    connection3 = pika.BlockingConnection(
+        pika.ConnectionParameters(host=rmqip, credentials=cred3, virtual_host='central_logs'))
+    channel3 = connection3.channel()
+    channel3.queue_declare(queue='hello')
+    logmsg = {"operation": "eventlog",
+              "server": ipaddr,
+              "severity": severity,
+              "event_text": msg}
+    logmsg_json = json.dumps(logmsg)
+    channel3.basic_publish(exchange='', routing_key='hello', body=logmsg_json)
+    connection3.close()
+
 
 def registeracct(u, p, e):
     print('REGISTER')
@@ -22,6 +46,8 @@ def registeracct(u, p, e):
     except:
         dbconn.rollback()
     print(r)
+    c.close()
+    dbconn.close()
     return r
 
 
@@ -31,8 +57,11 @@ def attemptlogin(u, p):
     c = dbconn.cursor()
     c.execute(loginsql, (u,))
     tmp = c.fetchone()
-    tmp_pass = tmp["USER_PASS"]
+    tmp_pass = tmp[1]
     v = (p == tmp_pass)
+    c.close()
+    dbconn.close()
+    print(v)
     return v
 
 
@@ -41,7 +70,7 @@ def callback(ch, method, properties, body):
     result = json.loads(body.decode('utf8'))
     cred2 = pika.PlainCredentials('alex', 'alex')
     connection2 = pika.BlockingConnection(
-        pika.ConnectionParameters(host='192.168.0.105', credentials=cred2, virtual_host='authentication_results'))
+        pika.ConnectionParameters(host=rmqip, credentials=cred2, virtual_host='authentication_results'))
     channel2 = connection2.channel()
     channel2.queue_declare(queue='hello')
     if result["operation"] == "login":
@@ -53,10 +82,9 @@ def callback(ch, method, properties, body):
         }
         login_message_json = json.dumps(login_message_tmp)
         channel2.basic_publish(exchange='', routing_key='hello', body=login_message_json)
-        t = time.ctime(time.time())
-        event = t + "  " + login_message_json
-        f = open("database_log.txt", "a+")
-        f.write(event)
+        logtofile("Info", login_message_json)
+        logtodb("Info", "Login attempt for user " + result["username"] + " | result is " + login_result,
+                '192.168.0.107')
 
     elif result["operation"] == "registration":
         reg_result = registeracct(result["username"], result["password"], result["email"])
@@ -67,12 +95,15 @@ def callback(ch, method, properties, body):
         }
         reg_message_json = json.dumps(reg_message_tmp)
         channel2.basic_publish(exchange='', routing_key='hello', body=reg_message_json)
+        logtofile("Info", reg_message_json)
+    connection2.close()
 
 
-
+rmqip = '192.168.0.105'
+# rmqip = "192.168.2.124"
 cred = pika.PlainCredentials('alex', 'alex')
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host='192.168.0.105', credentials=cred, virtual_host='authentication'))
+    pika.ConnectionParameters(host=rmqip, credentials=cred, virtual_host='authentication'))
 
 channel = connection.channel()
 channel.queue_declare(queue='hello')
@@ -81,5 +112,3 @@ channel.basic_consume(
 
 print(' [*] Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()
-
-

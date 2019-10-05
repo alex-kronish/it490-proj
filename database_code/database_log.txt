@@ -1,0 +1,3 @@
+2019-10-05 00:54:50.387371 | Info | {"operation": "login", "username": "kas58", "result": true}  
+2019-10-05 00:55:24.257403 | Info | {"operation": "login", "username": "kas58", "result": true}  
+2019-10-05 00:57:02.330025 | Info | {"operation": "login", "username": "kas58", "result": false}  
