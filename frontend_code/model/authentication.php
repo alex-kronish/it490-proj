@@ -81,7 +81,23 @@ class Authentication
 	{
 		/* Send the username and password to rabbit mq queue stack, and listen for a response from the server */
 
+		$data = $USER_NAME.' '.$PASSWORD;
+		$tmp = exec("python ../send.py $data");
+
+		$rec = exec("python ../receive.py");
+		echo "$rec";
+
+
 		return $response;
+	}
+
+	public function register($USER_NAME, $PASSWORD, $EMAIL)
+	{
+		$data = $USER_NAME.' '.$PASSWORD.' '.$EMAIL;
+		$tmp = exec("python ../send.py $data");
+
+		$rec = exec("python ../receive.py");
+		return $rec;
 	}
 
 	public function validateEmpty($DATA)

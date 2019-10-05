@@ -15,6 +15,14 @@ if(isset($_POST['user-name']) && isset($_POST['password']) && isset($_POST['emai
 
 	$passH = password_hash($PASSWORD, PASSWORD_BCRYPT);
 
+	if($result == 'true')
+	{
+		echo "Hello world";
+	}
+
+	else 
+		echo "Validate failed";
+
 	/* Testing with RabbitMQ, verify login info here */
 	/* $response = $auth->verify($USER_NAME, $PASSWORD); 
 	   
@@ -26,8 +34,6 @@ if(isset($_POST['user-name']) && isset($_POST['password']) && isset($_POST['emai
 	   		header('Location: ../view/sign-in.php');
 
 	*/
-
-	echo $result;
 }
 
 ?>

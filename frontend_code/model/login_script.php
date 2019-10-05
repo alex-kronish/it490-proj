@@ -26,15 +26,17 @@ if(isset($_POST['user-name']) && isset($_POST['password']))
 	*/
 
 	#password_verify($PASSWORD, <HASHED_PASSWORD_FROM_DB>);
-	echo $result;
+	
 	/*
 	$python = `python ../test.py`;
 	echo $python;
 	*/
 
-	$item = "hello world";
-    $tmp = exec("python ../test.py $item");
-    echo $tmp;
+	if($result == 'true')
+	{
+		$response = $auth->verify($USER_NAME, $PASSWORD);
+		echo "$response";
+	}
 }
 
 else
