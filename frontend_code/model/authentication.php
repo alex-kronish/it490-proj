@@ -3,6 +3,9 @@
 ~ Validate funx: true if validation is correct, false if illegal condition is met 
 
 */
+require ('../rabbitmq/send.php');
+require ('../rabbitmq/receive.php');
+
 class Authentication
 {
 	private $USER_NAME;
@@ -93,11 +96,16 @@ class Authentication
 
 	public function register($USER_NAME, $PASSWORD, $EMAIL)
 	{
-		$data = $USER_NAME.' '.$PASSWORD.' '.$EMAIL;
-		$tmp = exec("python ../send.py $data");
-
-		$rec = exec("python ../receive.py");
-		return $rec;
+		$data = array(
+			'operation' => 'register',
+			'username' => $USER_NAME,
+			'password' => $PASSWORD,
+			'email' => $EMAIL
+		);
+		$payload = json_encode($data);
+		publishMessage($payload);
+		$result = consumeMessage('register');
+		return $result['email'].' is your email address';
 	}
 
 	public function validateEmpty($DATA)
