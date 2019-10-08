@@ -84,14 +84,20 @@ class Authentication
 	{
 		/* Send the username and password to rabbit mq queue stack, and listen for a response from the server */
 
-		$data = $USER_NAME.' '.$PASSWORD;
-		$tmp = exec("python ../send.py $data");
-
-		$rec = exec("python ../receive.py");
-		echo "$rec";
-
-
-		return $response;
+		$data = array (
+			'operation' => 'sign-in',
+			'username' => $USER_NAME,
+			'password' => $PASSWORD
+		);
+		$payload = json_encode($data);
+		publishMessage($payload);
+		consumeMessage('sign-in', function($response, $channel, $connection){
+			if($response['operation'] == 'sign-in'){
+				$channel->close();
+				$connection->close();
+				header('Location: ../view/home.php?success=registration%20is%20verified');
+			}
+		});
 	}
 
 	public function register($USER_NAME, $PASSWORD, $EMAIL)
@@ -104,8 +110,15 @@ class Authentication
 		);
 		$payload = json_encode($data);
 		publishMessage($payload);
-		$result = consumeMessage('register');
-		return $result['email'].' is your email address';
+		consumeMessage('register', function($response, $channel, $connection){
+			if($response['operation'] == 'register'){
+				$channel->close();
+				$connection->close();
+				header('Location: ../view/home.php?success=registration%20is%20verified');
+			}
+		});
+		//$result = consumeMessage('register');
+		//return $result['email'].' is your email address';
 	}
 
 	public function validateEmpty($DATA)

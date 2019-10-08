@@ -16,9 +16,7 @@ if(isset($_POST['user-name']) && isset($_POST['password']) && isset($_POST['emai
 	if($result == 'true')
 	{
 		$passH = password_hash($PASSWORD, PASSWORD_BCRYPT);
-		$response = $auth->register($USER_NAME, $passH, $EMAIL);
-		echo "$response";
-		echo "End of RabbitMQ Testing!";
+		$auth->register($USER_NAME, $passH, $EMAIL);
 	}
 
 	else 

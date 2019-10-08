@@ -16,16 +16,4 @@ function publishMessage($JSON)
 	$channel->close();
 	$connection->close();
 }
-
-
-$a = array
-(
-	'operation' => 'register',
-	'username' => 'kas58',
-	'password' => 'password',
-	'email' => 'kas58@njit.edu'
-);
-
-$arr = json_encode($a);
-publishMessage($arr);
 ?>

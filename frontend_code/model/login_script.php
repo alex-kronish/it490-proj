@@ -34,8 +34,7 @@ if(isset($_POST['user-name']) && isset($_POST['password']))
 
 	if($result == 'true')
 	{
-		$response = $auth->verify($USER_NAME, $PASSWORD);
-		echo "$response";
+		$auth->verify($USER_NAME, $PASSWORD);
 	}
 }
 
