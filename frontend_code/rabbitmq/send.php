@@ -6,7 +6,8 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 function publishMessage($JSON)
 {
-	$connection = new AMQPStreamConnection('localhost', 5672, 'kas58', 'password');
+	#cred: ip-address, port, username, password, vhost
+	$connection = new AMQPStreamConnection('192.168.0.105', 5672, 'kevin', 'kevin', 'authentication');
 	$channel = $connection->channel();
 	$channel->queue_declare('hello', false, false, false, false);
 	$msg = new AMQPMessage($JSON);

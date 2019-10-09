@@ -5,7 +5,8 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 function consumeMessage($OPERATION, $CALLBACK)
 {
-	$connection = new AMQPStreamConnection('localhost', 5672, 'kas58', 'password');
+	#cred: ip-address, port, username, password, vhost
+	$connection = new AMQPStreamConnection('192.168.0.105', 5672, 'kevin', 'kevin', 'authentication_results');
 	$channel = $connection->channel();
 	$channel->queue_declare('hello', false, false, false, false);
 
@@ -29,12 +30,4 @@ function consumeMessage($OPERATION, $CALLBACK)
 	$channel->close();
 	$connection->close();
 }
-
-/*
-consumeMessage('register', function($payload){
-	print_r($payload);
-	//header('Location ../model/register_script.php?success=registration%20is%20verified');
-});
-*/
-
 ?>	

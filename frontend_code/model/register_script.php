@@ -15,7 +15,7 @@ if(isset($_POST['user-name']) && isset($_POST['password']) && isset($_POST['emai
 
 	if($result == 'true')
 	{
-		$passH = password_hash($PASSWORD, PASSWORD_BCRYPT);
+		$passH = md5($PASSWORD);
 		$auth->register($USER_NAME, $passH, $EMAIL);
 	}
 
