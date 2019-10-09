@@ -2,6 +2,7 @@ import pika
 import json
 import pymysql
 import datetime
+import bcrypt
 
 
 def logtofile(severity, msg):
@@ -38,7 +39,7 @@ def registeracct(u, p, e):
     r = False
     try:
         c.execute(alreadyreg, (u,))
-        if c.rowcount <= 1:
+        if c.rowcount < 1:
             c.execute(insertsql, (u, p, e))
             if c.rowcount == 1:
                 dbconn.commit()
@@ -57,6 +58,9 @@ def attemptlogin(u, p):
     c = dbconn.cursor()
     c.execute(loginsql, (u,))
     tmp = c.fetchone()
+    if tmp is None:
+        return False
+
     tmp_pass = tmp[1]
     v = (p == tmp_pass)
     c.close()
@@ -78,24 +82,34 @@ def callback(ch, method, properties, body):
         login_message_tmp = {
             "operation": "login",
             "username": result["username"],
-            "result": login_result
+            "result": str(login_result)
         }
         login_message_json = json.dumps(login_message_tmp)
+        event_txt = "Login attempt for user " + result["username"] + " ; result is " + str(login_result)
         channel2.basic_publish(exchange='', routing_key='hello', body=login_message_json)
-        logtofile("Info", login_message_json)
-        logtodb("Info", "Login attempt for user " + result["username"] + " | result is " + login_result,
-                '192.168.0.107')
+        if login_result:
+            event_cd = "Info"
+        else:
+            event_cd = "Error"
+        logtofile(event_cd, event_txt)
+        logtodb(event_cd, event_txt, '192.168.0.107')
 
-    elif result["operation"] == "registration":
+    elif result["operation"] == "register":
         reg_result = registeracct(result["username"], result["password"], result["email"])
         reg_message_tmp = {
             "operation": "register",
             "username": result["username"],
-            "result": reg_result
+            "result": str(reg_result)
         }
         reg_message_json = json.dumps(reg_message_tmp)
         channel2.basic_publish(exchange='', routing_key='hello', body=reg_message_json)
-        logtofile("Info", reg_message_json)
+        if reg_result:
+            event_cd = "Info"
+        else:
+            event_cd = "Error"
+        reg_message_txt = 'Registration attempt for user ' + result["username"] + " ; result is " + str(reg_result)
+        logtofile(event_cd, reg_message_txt)
+        logtodb(event_cd, reg_message_txt, '192.168.0.107')
     connection2.close()
 
 
@@ -109,6 +123,8 @@ channel = connection.channel()
 channel.queue_declare(queue='hello')
 channel.basic_consume(
     queue='hello', on_message_callback=callback, auto_ack=True)
+logtofile("Info", "Database script started: RegisterAcct.py")
+logtodb("Info", "Database script started: RegisterAcct.py", '192.168.0.107')
 
 print(' [*] Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()

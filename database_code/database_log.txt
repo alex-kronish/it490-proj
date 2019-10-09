@@ -1,3 +1,34 @@
 2019-10-05 00:54:50.387371 | Info | {"operation": "login", "username": "kas58", "result": true}  
 2019-10-05 00:55:24.257403 | Info | {"operation": "login", "username": "kas58", "result": true}  
 2019-10-05 00:57:02.330025 | Info | {"operation": "login", "username": "kas58", "result": false}  
+2019-10-08 18:12:57.251449 | Info | Database script started: EventLog.py  
+2019-10-08 18:20:03.698612 | Info | Database script started: EventLog.py  
+2019-10-08 18:21:12.788299 | Info | Database script started: RegisterAcct.py  
+2019-10-08 18:49:47.874827 | Info | Database script started: RegisterAcct.py  
+2019-10-08 18:51:57.487090 | Info | Database script started: RegisterAcct.py  
+2019-10-08 18:53:51.526087 | Info | Database script started: RegisterAcct.py  
+2019-10-08 18:53:54.530651 | Info | Database script started: EventLog.py  
+2019-10-08 18:55:43.937086 | Info | Database script started: RegisterAcct.py  
+2019-10-08 18:55:51.046093 | Info | Registration attempt for user kas58 ; result is True  
+2019-10-08 18:56:40.587032 | Info | Database script started: RegisterAcct.py  
+2019-10-08 18:56:47.067680 | Error | Registration attempt for user kas58 ; result is False  
+2019-10-08 18:58:56.202585 | Info | Database script started: RegisterAcct.py  
+2019-10-08 18:59:03.402746 | Info | Registration attempt for user kas58 ; result is True  
+2019-10-08 19:00:12.248107 | Info | Registration attempt for user kas58 ; result is True  
+2019-10-08 19:02:17.263313 | Info | Database script started: RegisterAcct.py  
+2019-10-08 19:03:10.971748 | Info | Registration attempt for user kas58 ; result is True  
+2019-10-08 19:04:55.086029 | Info | Registration attempt for user kas58 ; result is True  
+2019-10-08 19:07:56.827054 | Error | Login attempt for user kas58 ; result is False  
+2019-10-08 19:11:28.429205 | Error | Login attempt for user kas58 ; result is False  
+2019-10-08 19:33:22.511357 | Info | Database script started: EventLog.py  
+2019-10-08 19:33:33.353418 | Info | Database script started: RegisterAcct.py  
+2019-10-08 19:33:40.943641 | Info | Registration attempt for user kevin ; result is True  
+2019-10-08 19:35:54.979494 | Info | Registration attempt for user kevin ; result is True  
+2019-10-08 19:37:41.927777 | Info | Registration attempt for user kevin ; result is True  
+2019-10-08 19:40:40.267008 | Info | Registration attempt for user kevin ; result is True  
+2019-10-08 19:44:58.258476 | Info | Registration attempt for user kevin ; result is True  
+2019-10-08 19:53:39.937920 | Info | Database script started: RegisterAcct.py  
+2019-10-08 19:54:57.185804 | Info | Database script started: RegisterAcct.py  
+2019-10-08 19:55:03.219336 | Error | Login attempt for user abcde ; result is False  
+2019-10-08 20:16:53.558049 | Info | Database script started: RegisterAcct.py  
+2019-10-08 20:29:22.258428 | Info | Login attempt for user kevin ; result is True  
