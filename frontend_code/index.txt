@@ -26,5 +26,20 @@ operation, ip_address, port_number, username, password, vhost_name, queue_name
 		operation: 'register'
 		result: 'true or false'
 
-2. 
+2. Youtube API query:
+	
+	A) Search (Producer):
+		operation: 'youtube-search'
+		search: <search_terms>
+		api-key: <api_key>
+
+	B) Search (Consumer):
+		operation: 'youtuber-search'
+		result: <json_payload>
+
+	C) API request parts:
+		root-url: 'https://www.googleapis.com/youtube/v3/search?'
+		part: part=snippet
+		q: q=<search_terms>
+		key: key=<API_KEY>
 
