@@ -11,4 +11,14 @@ if(!isset($action))
 	}
 }
 
+if($action == 'view-youtube-search')
+{
+	include '../view/youtube-search.php';
+}
+
+if($action == 'view-home')
+{
+	include '../view/home.php';
+}
+
 ?>
