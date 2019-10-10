@@ -1,0 +1,30 @@
+Parameters for various operations for the front end design integration of rabbit mq listed here:
+
+Parameters for sending and receiving messages to the queue(s): 
+
+operation, ip_address, port_number, username, password, vhost_name, queue_name
+
+
+1. Authentication: 
+	
+	A) Sign-In (Producer):
+		operation: 'login'
+		username: <username>
+		password: <password>
+
+	B) Sign-In (Consumer):
+		operation: 'login'
+		result: 'true or false'
+
+	C) Register (Producer):
+		operation: 'register'
+		username: <username>
+		password: <password>
+		email: <email>
+
+	D) Register (Consumer):
+		operation: 'register'
+		result: 'true or false'
+
+2. 
+
