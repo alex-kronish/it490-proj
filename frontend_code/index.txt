@@ -35,11 +35,19 @@ operation, ip_address, port_number, username, password, vhost_name, queue_name
 
 	B) Search (Consumer):
 		operation: 'youtuber-search'
-		result: <json_payload>
+		payload: <json_payload>
 
 	C) API request parts:
 		root-url: 'https://www.googleapis.com/youtube/v3/search?'
 		part: part=snippet
 		q: q=<search_terms>
 		key: key=<API_KEY>
+
+	D)  Required API Request Info to Return for Search Results:
+		video-id: <video_id>
+		title: <title>
+		thumbnail: <thumbnail_url>
+		
+		*Only send first 25 results! 
+
 
