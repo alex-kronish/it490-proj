@@ -30,3 +30,9 @@ html {
 .nav-item:hover {
 	color: #f7ec72;
 }
+
+.jumbotron .container {
+  max-width: 40rem;
+}
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
