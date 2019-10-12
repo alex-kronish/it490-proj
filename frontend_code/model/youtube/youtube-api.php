@@ -16,15 +16,16 @@ class YouTube_API
 		{
 			$video = array 
 			(
-				'video-id' => $ITEM['video-id'];
-				'title' => $ITEM['title'];
-				'thumbnail' => $ITEM['thumbnail'];
+				'video-id' => $ITEM['video-id'],
+				'title' => $ITEM['title'],
+				'thumbnail' => $ITEM['thumbnail']
 			);
 			array_push($results, $video);
 		}
 		return $results;
 	}
 
+	/* Echo HTML row of YouTube search results */
 	public function echo_html_results($PAYLOAD)
 	{
 		foreach($PAYLOAD as $ITEM)
