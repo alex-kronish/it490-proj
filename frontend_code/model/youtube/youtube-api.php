@@ -24,5 +24,33 @@ class YouTube_API
 		}
 		return $results;
 	}
+
+	public function echo_html_results($PAYLOAD)
+	{
+		foreach($PAYLOAD as $ITEM)
+		{
+			$video_id = $ITEM['video-id'];
+			$thumbnail = $ITEM['thumbnail'];
+			$title = $ITEM['title'];
+			$youtube_link = $this->URL.$this->WATCH.$video_id;
+
+			$html_string = 
+			"<div class=\"col-md-3\">
+				<a href=\"".$youtube_link."\">
+					<div class=\"card mb-4 box-shadow\">
+						<img class=\"card-img-top\" alt=\"Card image cap\" src=\" ".$thumbnail."\" 
+						>
+						<div class=\"card-body\">
+							<p class=\"card-text\">".$title."</p>
+							<div class=\"d-flex justify-content-between align-items-center\">
+								<small class=\"text-muted\">9 mins</small>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>";
+			echo $html_string;
+		}
+	}
 }
 ?>

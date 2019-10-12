@@ -22,6 +22,7 @@
 		<div style="margin-left: 5%; margin-right: 5%; ">
 			<div class="row">
 				<div class="col-md-3">
+					<a href="https://youtube.com/watch?v=meB5aGBONcE">
 					<div class="card mb-4 box-shadow">
 						<img class="card-img-top" alt="Card image cap" src="https://i.ytimg.com/vi/meB5aGBONcE/default_live.jpg" 
 						>
@@ -32,6 +33,7 @@
 							</div>
 						</div>
 					</div>
+				</a>
 				</div>
 				<div class="col-md-3">
 					<div class="card mb-4 box-shadow">
