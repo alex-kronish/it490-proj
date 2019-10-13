@@ -1,4 +1,7 @@
 <?php 
+require_once '../rabbitmq/send.php';
+require_once '../rabbitmq/receive.php';
+
 class YouTube_API
 {
 	private $API_KEY = 'AIzaSyDo6w5bzKeCI8N2U3F72ErJLwWcQySk1Z4';
@@ -52,6 +55,30 @@ class YouTube_API
 			</div>";
 			echo $html_string;
 		}
+	}
+
+	public function produce_api_request($TERMS)
+	{
+		$key_terms = implode(',', $TERMS);
+		$data = array (
+			'operation' => 'search',
+			'part' => 'snippet',
+			'q' => $key_terms,
+			'api-key' => $this->API_KEY
+		);
+
+		produceMessage($data, 'youtube-search', 'youtube-search');
+	}
+
+	public function consume_api_request()
+	{
+		$result;
+		consume('search', 'youtube-search', 'youtube-search', new function($response, $channel, $connection) use($result){
+				$result = $this->getSearchResults($response);
+				$channel->close();
+				$connection->close();
+		});
+		return $result;
 	}
 }
 ?>
