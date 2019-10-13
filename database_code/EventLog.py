@@ -54,7 +54,7 @@ channel4 = connection4.channel()
 channel4.queue_declare(queue='hello')
 channel4.basic_consume(
     queue='hello', on_message_callback=callback, auto_ack=True)
-print("Listening for logging events")
+print(" [*] Listening for logging events. Press CTRL+C to exit.")
 logtofile("Info", "Database script started: EventLog.py")
 logtodb("Info", "Database script started: EventLog.py", '192.168.0.107')
 channel4.start_consuming()

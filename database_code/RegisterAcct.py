@@ -2,7 +2,7 @@ import pika
 import json
 import pymysql
 import datetime
-import bcrypt
+# import bcrypt
 
 
 def logtofile(severity, msg):
@@ -126,5 +126,5 @@ channel.basic_consume(
 logtofile("Info", "Database script started: RegisterAcct.py")
 logtodb("Info", "Database script started: RegisterAcct.py", '192.168.0.107')
 
-print(' [*] Waiting for messages. To exit press CTRL+C')
+print(' [*] Listening for Authentication Messages. To exit press CTRL+C')
 channel.start_consuming()
