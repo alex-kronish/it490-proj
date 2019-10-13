@@ -1,0 +1,6 @@
+Sent message {"operation": "eventlog", "server": "192.168.0.XXX", "severity": "Info", "event_text": "This is a dummy event created by a test script"} at 2019-10-05 12:12:27.569812
+Sent message {"operation": "eventlog", "server": "192.168.0.XXX", "severity": "Info", "event_text": "This is a dummy event created by a test script"} at 2019-10-05 12:18:22.972045
+Sent message {"operation": "eventlog", "server": "192.168.0.XXX", "severity": "Info", "event_text": "This is a dummy event created by a test script"} at 2019-10-05 12:19:30.900415
+Sent message {"operation": "eventlog", "server": "192.168.0.XXX", "severity": "Info", "event_text": "This is a dummy event created by a test script"} at 2019-10-05 12:27:11.389375
+Sent message {"operation": "eventlog", "server": "192.168.0.XXX", "severity": "Info", "event_text": "This is a dummy event created by a test script"} at 2019-10-05 12:27:24.518138
+Sent message {"operation": "eventlog", "server": "192.168.0.XXX", "severity": "Info", "event_text": "This is a dummy event created by a test script"} at 2019-10-05 12:28:15.792386
