@@ -9,11 +9,19 @@
 					<span class="input-group-text cyan lighten-3" id="basic-text1"><i class="fas fa-search text-white"
 						aria-hidden="true"></i></span>
 				</div>
-				<input class="form-control my-0 py-1" type="text" placeholder="Search" aria-label="Search">
+				<form id="search-form" action="../controller/index.php?action=search" method="POST">
+				</form>
+				<input class="form-control my-0 py-1" form="search-form" type="text" placeholder="Search" aria-label="Search" onkeydown="search(this)" name="search-terms">
 			</div>
 			<script type="text/javascript">
 				$('#youtube-search').addClass('active');
 				$('#home').removeClass('active');
+
+				function search() {
+					if(event.key === 'Enter') {
+				    	document.getElementById('search-form').submit();
+				    }
+				}
 			</script>
 		</div>
 	</section>
@@ -22,7 +30,11 @@
 		<div style="margin-left: 5%; margin-right: 5%; ">
 			<div class="row">
 				<!-- Echo html row from search results here -->
-				<?php $yt_api->echo_html_results($data); ?>
+				<?php
+					if(isset($yt_api)){					
+						$yt_api->echo_html_results($data);
+					}
+				?>
 			</div>
 		</div>
 	</div>
