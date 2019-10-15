@@ -24,12 +24,22 @@ if($action == 'view-home')
 	include '../view/home.php';
 }
 
+if($action == 'view-steam-id')
+{
+	include '../view/steam-id.php';
+}
+
 if($action == 'search')
 {
 	$search_terms = filter_input(INPUT_POST, 'search-terms');
 	$terms = explode(' ', $search_terms);
 	$yt_api = new YouTube_API();
-	#produce API request
+	#$yt_api->produce_api_request($terms);
+	/*
+	$yt_api->consume_api_request(function($results){
+		
+	});
+	*/
 	#consume API request
 	$data = array
 	(
