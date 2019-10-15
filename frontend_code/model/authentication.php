@@ -3,8 +3,10 @@
 ~ Validate funx: true if validation is correct, false if illegal condition is met 
 
 */
+session_start();
 require ('../rabbitmq/send.php');
 require ('../rabbitmq/receive.php');
+require ('user.php');
 
 class Authentication
 {
@@ -91,11 +93,13 @@ class Authentication
 		);
 		$payload = json_encode($data);
 		publishMessage($payload);
-		consumeMessage('login', function($response, $channel, $connection){
+		consumeMessage('login', function($response, $channel, $connection) use ($data){
 			if($response['result'] == 'True'){
 				$channel->close();
 				$connection->close();
-				header('Location: ../view/home.php?success=registration%20is%20verified');
+				$user = new User($data);
+				$_SESSION['user'] = $user;
+				header('Location: ../controller/index.php?action=view-home');
 			}
 		});
 	}
@@ -110,12 +114,14 @@ class Authentication
 		);
 		$payload = json_encode($data);
 		publishMessage($payload);
-		consumeMessage('register', function($response, $channel, $connection){	
+		consumeMessage('register', function($response, $channel, $connection) use ($data){	
 
 			if($response['result'] == 'True'){
 				$channel->close();
 				$connection->close();
-				header('Location: ../view/home.php?success=registration%20is%20verified');
+				$user = new User($data);
+				$_SESSION['user'] = $user;
+				header('Location: ../controller/index.php?action=view-home');
 			}
 		});
 		//$result = consumeMessage('register');

@@ -9,12 +9,5 @@
 
 </main><!-- /.container -->
 
-<?php 
-if(isset($_GET['success'])){
-	echo $_GET['success'];
-	echo "'\nRabbitMQ Message published!";
-	echo "'\nEnd of RabbitMQ Testing!";
-}
-?>
 <!-- Footer -->
 <?php include 'footer.php'; ?>
