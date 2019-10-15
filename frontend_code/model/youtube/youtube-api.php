@@ -14,7 +14,8 @@ class YouTube_API
 	/* Return each stored video payload info in an array*/
 	public function getSearchResults($PAYLOAD)
 	{
-		$results;
+		unset($PAYLOAD['operation']);
+		$results=array();
 		foreach($PAYLOAD as $ITEM)
 		{
 			$video = array 
@@ -57,6 +58,7 @@ class YouTube_API
 		}
 	}
 
+	/* Produce a message to the Youtube Messaging Queue */
 	public function produce_api_request($TERMS)
 	{
 		$key_terms = implode(',', $TERMS);
@@ -67,18 +69,20 @@ class YouTube_API
 			'api-key' => $this->API_KEY
 		);
 
-		produceMessage($data, 'youtube-search', 'youtube-search');
+		$data = json_encode($data);
+		produceMessage($data, 'youtube', 'hello');
 	}
 
-	public function consume_api_request()
+	/* Consume a message from the Youtube Messaging Queue */
+	public function consume_api_request($CALLBACK)
 	{
-		$result;
-		consume('search', 'youtube-search', 'youtube-search', new function($response, $channel, $connection) use($result){
+		consume('search-results', 'youtube', 'hello', function($response, $channel, $connection) use($CALLBACK){
 				$result = $this->getSearchResults($response);
 				$channel->close();
 				$connection->close();
+				if(is_callable($CALLBACK))
+					call_user_func($CALLBACK, $result);
 		});
-		return $result;
 	}
 }
 ?>
