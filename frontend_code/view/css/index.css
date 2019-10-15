@@ -1,6 +1,8 @@
 body {
   padding-top: 5rem;
   margin-bottom: 60px; /* Margin bottom by footer height */
+  font-family: 'Open Sans', sans-serif;
+
 }
 .starter-template {
   padding: 3rem 1.5rem;
