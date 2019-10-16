@@ -7,9 +7,11 @@ class User
 	private $STEAM_ID;	#STEAM-API
 	private $EMAIL;
 
-	public function __construct($DATA)
+	public function __construct($USERNAME=0, $EMAIL=0, $STEAM_ID=0)
 	{
-		$this->USERNAME = $DATA['username'];
+		$this->USERNAME = $USERNAME;
+		$this->STEAM_ID = $STEAM_ID;
+		$this->EMAIL = $EMAIL;
 	}
 
 	public function getUsername()

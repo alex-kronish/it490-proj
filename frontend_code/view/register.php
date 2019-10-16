@@ -23,6 +23,10 @@
 		<input type="email" class="form-control" name="email" placeholder="Email Address" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$" required>
 		<input type="hidden" name="action" value="register">
 		<br>
+		<label class="sr-only">Steam ID</label>
+		<input type="text" class="form-control" name="steam-id" placeholder="Steam-ID" required>
+		<input type="hidden" name="action" value="register">
+		<br>
 		<input type="submit" name="submit" value="Submit" class="btn btn-lg btn-primary btn-block">
 		<br>
 		<a href="sign-in.php"><p class="h5 mb-5 font-weight-normal">Already Have An Account? Please Sign-In</p></a>
