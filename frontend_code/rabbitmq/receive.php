@@ -35,7 +35,7 @@ function consumeMessage($OPERATION, $CALLBACK)
 function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 {
 	#cred: ip-address, port, username, password, vhost
-	$connection = new AMQPStreamConnection('localhost', 5672, 'kevin', 'kevin', $VHOST);
+	$connection = new AMQPStreamConnection('192.168.0.105', 5672, 'kevin', 'kevin', $VHOST);
 	$channel = $connection->channel();
 	$channel->queue_declare($QUEUE, false, false, false, false);
 
@@ -60,7 +60,6 @@ function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 	$channel->close();
 	$connection->close();
 }
-
 /*
 $api = new YouTube_API();
 $a = $api->consume_api_request(function($results){

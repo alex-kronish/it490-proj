@@ -22,7 +22,7 @@ function publishMessage($JSON)
 function produceMessage($JSON, $VHOST, $QUEUE)
 {
 	#cred: ip-address, port, username, password, vhost
-	$connection = new AMQPStreamConnection('localhost', 5672, 'kevin', 'kevin', $VHOST);
+	$connection = new AMQPStreamConnection('192.168.0.105', 5672, 'kevin', 'kevin', $VHOST);
 	$channel = $connection->channel();
 	$channel->queue_declare($QUEUE, false, false, false, false);
 	$msg = new AMQPMessage($JSON);
