@@ -1,8 +1,9 @@
 <?php 
 error_reporting (E_ALL); 
 ini_set ('display_errors', 'on');
-session_start();
 require_once '../model/youtube/youtube-api.php';
+require_once '../model/user.php';
+session_start();
 
 $action = filter_input(INPUT_POST, 'action');
 if(!isset($action))
