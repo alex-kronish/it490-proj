@@ -2,6 +2,8 @@ import pika
 import json
 import pymysql
 import datetime
+
+
 # import bcrypt
 
 
@@ -28,13 +30,15 @@ def logtodb(severity, msg, ipaddr):
     connection3.close()
 
 
-def registeracct(u, p, e):
+def registeracct(u, p, e, s):
     print('REGISTER')
     dbconn = pymysql.connect("localhost", "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
     insertsql = "INSERT INTO IT490_USERS (USER_NAME, USER_PASS, USER_EMAIL_ADDR, USER_REGISTRATION_DTTM, " \
                 "USER_LAST_LOGIN_DTTM, ADMIN_FLAG) VALUES (%s, %s, %s, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), " \
                 "'N' ) ; "
-    alreadyreg = "SELECT USER_NAME FROM IT490_USERS WHERE USER_NAME=%s  ;"
+    alreadyreg = "SELECT USER_ID FROM IT490_USERS WHERE USER_NAME=%s  ;"
+    insert_steamid = "INSERT INTO IT490_STEAM_USER (USER_ID, STEAM64_ID, INSERT_DTTM) VALUES (%s, %s, " \
+                     "CURRENT_TIMESTAMP()); "
     c = dbconn.cursor()
     r = False
     try:
@@ -43,9 +47,20 @@ def registeracct(u, p, e):
             c.execute(insertsql, (u, p, e))
             if c.rowcount == 1:
                 dbconn.commit()
+                c.execute(alreadyreg, (u,))
+                tmp = c.fetchone()
+                userid = tmp[0]
+                print(userid)
+                dbconn.commit()
+                r = True
+            c.execute(insert_steamid, (userid, s))
+            if c.rowcount == 1:
+                dbconn.commit()
                 r = True
     except:
+        print(c.Error())
         dbconn.rollback()
+
     print(r)
     c.close()
     dbconn.close()
@@ -53,20 +68,23 @@ def registeracct(u, p, e):
 
 
 def attemptlogin(u, p):
-    loginsql = "SELECT USER_NAME, USER_PASS FROM IT490_USERS WHERE USER_NAME = %s ;"
+    loginsql = "SELECT USER_NAME, USER_PASS, STEAM64_ID FROM IT490_USERS U JOIN IT490_STEAM_USER S on S.USER_ID = " \
+               "U.USER_ID WHERE USER_NAME = %s ; "
     dbconn = pymysql.connect("localhost", "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
     c = dbconn.cursor()
     c.execute(loginsql, (u,))
     tmp = c.fetchone()
     if tmp is None:
-        return False
+        return -1
 
     tmp_pass = tmp[1]
     v = (p == tmp_pass)
+    steamid = tmp[2]
     c.close()
     dbconn.close()
     print(v)
-    return v
+    print(steamid)
+    return steamid
 
 
 def callback(ch, method, properties, body):
@@ -78,11 +96,16 @@ def callback(ch, method, properties, body):
     channel2 = connection2.channel()
     channel2.queue_declare(queue='hello')
     if result["operation"] == "login":
-        login_result = attemptlogin(result["username"], result["password"])
+        steamid = attemptlogin(result["username"], result["password"])
+        if steamid == -1 or steamid is None:
+            login_result = False
+        else:
+            login_result = True
         login_message_tmp = {
             "operation": "login",
             "username": result["username"],
-            "result": str(login_result)
+            "result": str(login_result),
+            "steam-id": steamid
         }
         login_message_json = json.dumps(login_message_tmp)
         event_txt = "Login attempt for user " + result["username"] + " ; result is " + str(login_result)
@@ -92,10 +115,10 @@ def callback(ch, method, properties, body):
         else:
             event_cd = "Error"
         logtofile(event_cd, event_txt)
-        logtodb(event_cd, event_txt, '192.168.0.107')
+        logtodb(event_cd, event_txt, '192.168.0.103')
 
     elif result["operation"] == "register":
-        reg_result = registeracct(result["username"], result["password"], result["email"])
+        reg_result = registeracct(result["username"], result["password"], result["email"], result["steam-id"])
         reg_message_tmp = {
             "operation": "register",
             "username": result["username"],
@@ -109,7 +132,7 @@ def callback(ch, method, properties, body):
             event_cd = "Error"
         reg_message_txt = 'Registration attempt for user ' + result["username"] + " ; result is " + str(reg_result)
         logtofile(event_cd, reg_message_txt)
-        logtodb(event_cd, reg_message_txt, '192.168.0.107')
+        logtodb(event_cd, reg_message_txt, '192.168.0.103')
     connection2.close()
 
 
@@ -124,7 +147,7 @@ channel.queue_declare(queue='hello')
 channel.basic_consume(
     queue='hello', on_message_callback=callback, auto_ack=True)
 logtofile("Info", "Database script started: RegisterAcct.py")
-logtodb("Info", "Database script started: RegisterAcct.py", '192.168.0.107')
+logtodb("Info", "Database script started: RegisterAcct.py", '192.168.0.103')
 
 print(' [*] Listening for Authentication Messages. To exit press CTRL+C')
 channel.start_consuming()

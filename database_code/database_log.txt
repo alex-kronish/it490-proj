@@ -50,3 +50,26 @@
 2019-10-13 15:34:23.502270 | Info | Database script started: LinkSteamAcct.py  
 2019-10-13 15:35:01.385801 | Info | Database script started: LinkSteamAcct.py  
 2019-10-13 15:35:11.738469 | Info | Attempted to get the steam ID for user kevin and got 12345  
+2019-10-15 19:04:48.304867 | Info | Database script started: RegisterAcct.py  
+2019-10-15 19:10:49.273331 | Info | Database script started: RegisterAcct.py  
+2019-10-15 19:23:33.263907 | Error | Registration attempt for user kas58 ; result is False  
+2019-10-15 19:29:14.564687 | Info | Database script started: RegisterAcct.py  
+2019-10-15 19:29:27.996723 | Error | Registration attempt for user kas58 ; result is False  
+2019-10-15 19:32:19.424920 | Info | Database script started: RegisterAcct.py  
+2019-10-15 19:32:24.361750 | Info | Registration attempt for user kas58 ; result is True  
+2019-10-15 19:34:59.656338 | Info | Login attempt for user kas58 ; result is True  
+2019-10-15 19:43:27.428779 | Info | Database script started: RegisterAcct.py  
+2019-10-15 19:49:52.121236 | Info | Registration attempt for user kevin1995 ; result is True  
+2019-10-15 19:57:08.766258 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-15 19:59:56.762235 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-15 20:03:05.501646 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-15 20:15:50.977634 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-15 20:21:32.662504 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-15 20:26:16.987526 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-15 20:29:04.638999 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-15 20:30:38.946482 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-15 20:33:15.533729 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-15 20:34:00.145702 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-15 20:34:23.256069 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-15 20:37:39.612915 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-15 20:37:55.049646 | Info | Login attempt for user kevin1995 ; result is True  
