@@ -5,8 +5,9 @@ import pika
 
 def callyoutubesearch(search_string):
     apikey = "AIzaSyAhGC7AmQFhunKRWisNPHOn3A0AqG7R8EU"
-    u = "https://www.googleapis.com/youtube/v3/search?key=" + apikey + "&part=snippet&q=" + search_string
+    u = "https://www.googleapis.com/youtube/v3/search?key=" + apikey + "&part=snippet&q=" + search_string + " Gameplay"
     resp = requests.get(u)
+    print(resp.json())
     return resp
 
 
@@ -39,5 +40,5 @@ def calltwitchsearch(search_string):
                 # TO DO: parse the response and pass back a list of usernames, stream url's and titles
 
 
-
 calltwitchsearch("Yakuza Kiwami")
+callyoutubesearch("Yakuza Kiwami")
