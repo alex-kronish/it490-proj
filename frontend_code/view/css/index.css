@@ -38,3 +38,22 @@ html {
 }
 
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+.games-list{
+  height: auto;
+  overflow-y: scroll;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.friend-list{
+  height: auto;
+  overflow-y: scroll;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+h6 {
+  margin: 0;
+  padding: 2%;
+}
