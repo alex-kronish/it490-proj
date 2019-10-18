@@ -1,7 +1,10 @@
 <?php 
 error_reporting (E_ALL); 
 ini_set ('display_errors', 'on');
+require_once '../rabbitmq/send.php';
+require_once '../rabbitmq/receive.php';
 require_once '../model/youtube/youtube-api.php';
+require_once '../model/steam/steam-api.php';
 require_once '../model/user.php';
 session_start();
 
@@ -27,6 +30,9 @@ if($action == 'view-home')
 
 if($action == 'view-steam-id')
 {
+	//$api = new Steam_API($_SESSION['user']->getSteamID());
+	$api = new Steam_API('123456');
+	$api->get_games_list(function($response){});
 	include '../view/steam-id.php';
 }
 

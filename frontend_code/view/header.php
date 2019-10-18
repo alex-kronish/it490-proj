@@ -18,7 +18,9 @@
 <body>
 
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-		<a class="navbar-brand" href="#">Steam Theater</a>
+		<a class="navbar-brand" href="../controller/index.php?action=view-home">
+    		<img src="../view/images/game-controller.png" width="30" height="30" class="d-inline-block align-top"> Mystery Theater
+  		</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -37,8 +39,8 @@
 				<li class="nav-item dropdown" id="steam">
 					<a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Steam</a>
 					<div class="dropdown-menu" aria-labelledby="dropdown01">
-						<a class="dropdown-item" href="../controller/index.php?action=view-steam-id">Retrieve Steam ID</a>
-						<a class="dropdown-item" href="#">Another action</a>
+						<a class="dropdown-item" href="../controller/index.php?action=view-steam-id">View Steam Profile</a>
+						<a class="dropdown-item" href="#">Friends List</a>
 						<a class="dropdown-item" href="#">Something else here</a>
 					</div>
 				</li>
