@@ -12,8 +12,6 @@ function consumeMessage($OPERATION, $CALLBACK)
 
 	$parameters = [$OPERATION, $CALLBACK, $channel, $connection];
 
-	echo " [*] Waiting for messages. To exit press CTRL+C\n";
-
 	$callback = function ($msg) use ($parameters) {
 		$payload = json_decode($msg->body, true);
 		if($payload['operation'] == $parameters[0])
@@ -31,7 +29,7 @@ function consumeMessage($OPERATION, $CALLBACK)
 	$connection->close();
 }
 
-/* Do not git commit code below until you've tested it properly. */
+/* Do not git commit code below until you've tested it properly. 
 function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -42,6 +40,36 @@ function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 	$parameters = [$OPERATION, $CALLBACK, $channel, $connection];
 
 	echo " [*] Waiting for messages. To exit press CTRL+C\n";
+
+	$callback = function ($msg) use ($parameters) {
+		$payload = json_decode($msg->body, true);
+		if($payload['operation'] == $parameters[0])
+			if(is_callable($parameters[1])){
+				call_user_func($parameters[1], $payload, $parameters[2], $parameters[3]);
+			}
+	};
+
+	$channel->basic_consume($QUEUE, '', false, true, false, false, $callback);
+	
+	while ($channel->is_consuming()) {
+			$channel->wait();
+	}
+
+	$channel->close();
+	$connection->close();
+}
+
+*/
+
+/* For local testing only */
+function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
+{
+	#cred: ip-address, port, username, password, vhost
+	$connection = new AMQPStreamConnection('localhost', 5672, 'kevin', 'kevin', $VHOST);
+	$channel = $connection->channel();
+	$channel->queue_declare($QUEUE, false, false, false, false);
+
+	$parameters = [$OPERATION, $CALLBACK, $channel, $connection];
 
 	$callback = function ($msg) use ($parameters) {
 		$payload = json_decode($msg->body, true);

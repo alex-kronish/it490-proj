@@ -1,6 +1,4 @@
 <?php 
-require_once '../rabbitmq/send.php';
-require_once '../rabbitmq/receive.php';
 
 class YouTube_API
 {
