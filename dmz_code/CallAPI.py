@@ -12,7 +12,7 @@ def getgameslist(steamid, apikey):
     glist = gresp2["games"]
     glist_f = "["
     for i in glist:
-        if i["playtime_forever"] <= 600:
+        if i["playtime_forever"] <= 600: #filter ten hours or less
             glist_f = glist_f + json.dumps(i)
     glist_f = glist_f + ']'
     # print(glist_f)
