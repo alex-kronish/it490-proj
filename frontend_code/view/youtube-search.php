@@ -9,7 +9,7 @@
 					<span class="input-group-text cyan lighten-3" id="basic-text1"><i class="fas fa-search text-white"
 						aria-hidden="true"></i></span>
 				</div>
-				<form id="search-form" action="../controller/index.php?action=search" method="POST">
+				<form id="search-form" action="../controller/index.php?action=search" method="GET">
 				</form>
 				<input class="form-control my-0 py-1" form="search-form" type="text" placeholder="Search" aria-label="Search" onkeydown="search(this)" name="search-terms">
 			</div>

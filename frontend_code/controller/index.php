@@ -33,12 +33,64 @@ if($action == 'view-steam-id')
 	//$api = new Steam_API($_SESSION['user']->getSteamID());
 	$api = new Steam_API('123456');
 	$api->get_games_list(function($response){});
+	$api->get_friends_list(function($response){});
+	$_SESSION['steam-user'] = $api;
 	include '../view/steam-id.php';
+}
+
+if($action == 'view-friend-page')
+{
+	//$user = filter_var($_SESSION['steam-user']);
+	$friend_steam_id = filter_input(INPUT_GET, 'steamid');
+	$api = new Steam_API($friend_steam_id);
+	$api->get_games_list(function($response){});
+	$data = array (
+	array
+	(
+		'appid' => '10',
+		'name' => 'Counter-Strike',
+		'playtime-forever' => '0'
+	),
+	array
+	(
+		'appid' => '101',
+		'name' => 'Left 4 Dead 2',
+		'playtime-forever' => '0'
+	),
+	array
+	(
+		'appid' => '102',
+		'name' => 'Half-Life 2',
+		'playtime-forever' => '0'
+	),
+
+	array
+	(
+		'appid' => '102',
+		'name' => 'Bioshock',
+		'playtime-forever' => '0'
+	),
+
+	array
+	(
+		'appid' => '102',
+		'name' => 'Mass Effect 3',
+		'playtime-forever' => '0'
+	),
+
+	array
+	(
+		'appid' => '102',
+		'name' => 'Hollow Knight',
+		'playtime-forever' => '0'
+	)
+);
+	include '../view/friend-page.php';
 }
 
 if($action == 'search')
 {
-	$search_terms = filter_input(INPUT_POST, 'search-terms');
+	$search_terms = filter_input(INPUT_GET, 'search-terms');
 	$terms = explode(' ', $search_terms);
 	$yt_api = new YouTube_API();
 	#$yt_api->produce_api_request($terms);
