@@ -34,8 +34,6 @@ function produceMessage($JSON, $VHOST, $QUEUE)
 
 */
 
-
-
 function produceMessage($JSON, $VHOST, $QUEUE)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -52,43 +50,5 @@ function produceMessage($JSON, $VHOST, $QUEUE)
 
 $api = new YouTube_API();
 $api->produce_api_request(array('marvel', 'avengers')); 
-
-
-
-$data = array
-	(
-		'operation' => 'search-results',
-		'video-1' => array
-		(
-			'video-id' => 'LUaj6MrfBsU',
-			'title' => 'The END OF FORTNITE!',
-			'thumbnail' => 'https://i.ytimg.com/vi/LUaj6MrfBsU/default.jpg'
-		),
-
-		'video-2' => array
-		(
-			'video-id' => 'LUaj6MrfBsU',
-			'title' => 'The END OF FORTNITE!',
-			'thumbnail' => 'https://i.ytimg.com/vi/LUaj6MrfBsU/default.jpg'
-		),
-
-		'video-3' => array
-		(
-			'video-id' => 'LUaj6MrfBsU',
-			'title' => 'The END OF FORTNITE!',
-			'thumbnail' => 'https://i.ytimg.com/vi/LUaj6MrfBsU/default.jpg'
-		),
-
-		'video-4' => array
-		(
-			'video-id' => 'LUaj6MrfBsU',
-			'title' => 'The END OF FORTNITE!',
-			'thumbnail' => 'https://i.ytimg.com/vi/LUaj6MrfBsU/default.jpg'
-		)
-	);
-	$data = json_encode($data);
-produceMessage($data, 'youtube', 'hello');
-
 */
-
 ?>

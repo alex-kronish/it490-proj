@@ -40,9 +40,9 @@
 					<div class="friend-list shadow rounded bg-white">
 						<?php 
 							if(isset($api))
-								$api->echo_html_owned_games();
+								$api->echo_html_friend_list();
 							else
-								echo "No games available.";
+								echo "No friends available.";
 						?>
 					</div>
 				</div>
@@ -54,11 +54,15 @@
 		$(document).ready(function(){
 			$('#steam').addClass('active');
 			$('#home').removeClass('active');
-			$('a').click(function(event){
+			$('a.game').click(function(event){
 				var id = "#".concat($(this).attr("id"));
 				var title = $(id).text();
 				var ques = "What type of videos do you wish to view for ".concat(title).concat("?");
 				$('.modal-body').text(ques);
+			});
+			$('#youtube').click(function(event){
+				var title = $('.modal-body').text().substring(44).split('?');
+				$(this).attr('href', "../controller/index.php?action=search&search-terms=".concat(title[0]));
 			});
 		});
 	</script>
@@ -78,8 +82,8 @@
         What type of videos do you wish to view for this game?
       </div>
       <div class="modal-footer">
-        <a href="../controller/index.php?action=view-youtube-search"><button type="button" class="btn btn-primary" style="background-color: red; color: white;">YouTube</button></a>
-        <a href="../controller/index.php?action=view-twitch"><button type="button" class="btn btn-primary" style="background-color: #6441A5; color: white;">Twitch</button></a>
+        <a href="../controller/index.php?action=view-youtube-search" id="youtube"><button type="button" class="btn btn-primary" style="background-color: red; color: white;">YouTube</button></a>
+        <a href="../controller/index.php?action=view-twitch" id="twitch"><button type="button" class="btn btn-primary" style="background-color: #6441A5; color: white;">Twitch</button></a>
       </div>
     </div>
   </div>

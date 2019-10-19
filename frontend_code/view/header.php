@@ -17,7 +17,7 @@
 </head>
 <body>
 
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #6441A5;">
 		<a class="navbar-brand" href="../controller/index.php?action=view-home">
     		<img src="../view/images/game-controller.png" width="30" height="30" class="d-inline-block align-top"> Mystery Theater
   		</a>
