@@ -73,3 +73,9 @@
 2019-10-15 20:34:23.256069 | Info | Login attempt for user kevin1995 ; result is True  
 2019-10-15 20:37:39.612915 | Info | Login attempt for user kevin1995 ; result is True  
 2019-10-15 20:37:55.049646 | Info | Login attempt for user kevin1995 ; result is True  
+2019-10-19 14:39:44.536953 | Info | Database script started: EventLog.py  
+2019-10-19 14:40:20.276195 | Info | Database script started: RegisterAcct.py  
+2019-10-19 14:46:05.967351 | Info | Login attempt for user kevin ; result is True  
+2019-10-19 14:46:17.474405 | Info | Login attempt for user kas58 ; result is True  
+2019-10-19 14:48:55.868186 | Info | Registration attempt for user kas58 ; result is True  
+2019-10-19 14:50:58.949061 | Info | Login attempt for user kas58 ; result is True  
