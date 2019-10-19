@@ -118,4 +118,49 @@ This query guide is strictly for front-end use. DMZ/API end uses each producer/c
 
 		...etc
 
+	C) Get Friends List (Producer):
+		'operation' => 'get-friends-list',
+		'steam-id' => $this->STEAM_ID,
+		'api-key' => $this->API_KEY,
+		'format' => 'json',
+		'relationship' => 'friend'
+
+	D) Get Friends List (Consumer):
+		$data = array (
+			'operation' => 'get-friends-list',
+			'friends' => array
+			(
+				array(
+					'steam-id' => '123456',
+					'name' => 'solorzke',
+				),
+
+				array(
+					'steam-id' => '123456',
+					'name' => 'solorzke',
+				),
+
+				array(
+					'steam-id' => '123456',
+					'name' => 'solorzke',
+				),
+
+				array(
+					'steam-id' => '123456',
+					'name' => 'solorzke',
+				),
+
+				array(
+					'steam-id' => '123456',
+					'name' => 'solorzke',
+				),
+
+				array(
+					'steam-id' => '123456',
+					'name' => 'solorzke',
+				)
+			)
+		);
+		etc...
+
 
