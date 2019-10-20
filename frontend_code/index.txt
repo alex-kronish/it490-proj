@@ -162,5 +162,3 @@ This query guide is strictly for front-end use. DMZ/API end uses each producer/c
 			)
 		);
 		etc...
-
-
