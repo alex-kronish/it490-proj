@@ -3,21 +3,25 @@
 <main role="main">
 	<div class="row mx-4">
 		<!-- Col 6: Steam Profile Info & Owned Games List (Left half of page) --> 
+		<div class="col-md-12 text-center">
+			<h3 style="color: red;">Welcome, 
+			<?php 
+				if(isset($_SESSION['user']))
+					echo $_SESSION['user']->getUsername();
+				else
+					echo "Gary";
+			?>
+			</h3><hr>
+			<img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/5a/5a1e3659496fb7f93d455bf842ab9db503167433.jpg" width="100" height="100" class="rounded mx-auto d-block">
+			<h5>Persona Name:</h5>
+			<h5>Based: NJ, USA</h5>
+			<h5>Steam URL:</h5>
+		</div>
+	</div>
+
+	<div class="row mx-4 my-5">
 		<div class="col-md-6" >
-			<div class="row">
-				<div class="col-md-12">
-					<h3 style="color: red;">Welcome, 
-					<?php 
-						if(isset($_SESSION['user']))
-							echo $_SESSION['user']->getSteamID();
-						else
-							echo "Gary";
-					?>
-					</h3><hr>
-					<img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/5a/5a1e3659496fb7f93d455bf842ab9db503167433.jpg" width="100" height="100" class="rounded mx-auto d-block">
-					<h5>Persona Name:</h5>
-					<h5>Based: NJ, USA</h5>
-				</div>
+			<div class="row my-5">
 				<div class="col-md-12">
 					<h3 style="color: red;">Least Played Games</h3><hr>
 					<div class="games-list shadow rounded bg-white">
@@ -34,7 +38,7 @@
 
 		<!-- Col-6: Friends List Section (Right Half of page) -->
 		<div class="col-md-6">
-			<div class="row">
+			<div class="row my-5">
 				<div class="col-md-12">
 					<h3 style="color: red;">Friends</h3><hr>
 					<div class="friend-list shadow rounded bg-white">

@@ -12,10 +12,12 @@ class Steam_API
 		$this->STEAM_ID = $STEAM_ID;
 	}
 
+
+/**************************** API Request: Getting Games List *******************************/
+
 	/* RabbitMQ: Get games list with titles from Steam API */
 	public function get_games_list($CALLBACK)
 	{
-		/*
 		$data = array
 		(
 			'operation' => 'get-games-list',
@@ -23,64 +25,19 @@ class Steam_API
 			'api-key' => $this->API_KEY,
 			'format' => 'json',
 			'include_appinfo' => '1'
-		);*/
-
-		$data = array (
-			'operation' => 'get-games-list',
-			array
-			(
-				'appid' => '10',
-				'name' => 'Counter-Strike',
-				'playtime-forever' => '0'
-			),
-			array
-			(
-				'appid' => '101',
-				'name' => 'Left 4 Dead 2',
-				'playtime-forever' => '0'
-			),
-			array
-			(
-				'appid' => '102',
-				'name' => 'Half-Life 2',
-				'playtime-forever' => '0'
-			),
-
-			array
-			(
-				'appid' => '102',
-				'name' => 'Bioshock',
-				'playtime-forever' => '0'
-			),
-
-			array
-			(
-				'appid' => '102',
-				'name' => 'Mass Effect 3',
-				'playtime-forever' => '0'
-			),
-
-			array
-			(
-				'appid' => '102',
-				'name' => 'Hollow Knight',
-				'playtime-forever' => '0'
-			)
 		);
-
 		
 		$data = json_encode($data);
-		produceMessage($data, 'steam-api', 'hello');
-		
-		consume('get-games-list', 'steam-api', 'hello', function($response, $channel, $connection) use($CALLBACK){
-			$this->set_least_played_games($response);
+		produceMessage($data, 'api', 'hello');
+		consume('get-games-list', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+			#Remove next line, only for testing!
+			$response = json_decode(file_get_contents('../data/games.json'), true);
+			$response = $this->json_recurse_games_list($response);
 			$channel->close();
 			$connection->close();
 			if(is_callable($CALLBACK))
 				call_user_func($CALLBACK, $response);
 		});
-		
-		
 	}
 
 	/* Return all owned games with 0 playtime minutes in an array */
@@ -97,86 +54,6 @@ class Steam_API
 			if($KEY['playtime-forever'] == '0')
 				array_push($this->LEAST_PLAYED_GAMES, $KEY);
 		return $this->LEAST_PLAYED_GAMES;
-	}
-
-	/* Store all friends in list */
-	public function set_friends_array($PAYLOAD)
-	{
-		unset($PAYLOAD['operation']);
-		foreach($PAYLOAD['friends'] as $KEY)
-			array_push($this->FRIEND_LIST, $KEY);
-	}
-
-	/* Return friend list array */
-	public function get_friends_array()
-	{
-		return $this->FRIEND_LIST;
-	}
-
-	/* RabbitMQ: Get list of friends associated with current user on Steam */
-	public function get_friends_list($CALLBACK)
-	{
-		/*
-		$data = array 
-		(
-			'operation' => 'get-friends-list',
-			'steam-id' => $this->STEAM_ID,
-			'api-key' => $this->API_KEY,
-			'format' => 'json',
-			'relationship' => 'friend'
-		);
-		*/
-
-		$data = array (
-			'operation' => 'get-friends-list',
-			'friends' => array
-			(
-				array(
-					'steam-id' => '123456',
-					'name' => 'solorzke',
-				),
-
-				array(
-					'steam-id' => '123456',
-					'name' => 'solorzke',
-				),
-
-				array(
-					'steam-id' => '123456',
-					'name' => 'solorzke',
-				),
-
-				array(
-					'steam-id' => '123456',
-					'name' => 'solorzke',
-				),
-
-				array(
-					'steam-id' => '123456',
-					'name' => 'solorzke',
-				),
-
-				array(
-					'steam-id' => '123456',
-					'name' => 'solorzke',
-				)
-			)
-		);
-		$data = json_encode($data);
-		produceMessage($data, 'steam-api', 'hello');
-		consume('get-friends-list', 'steam-api', 'hello', function($response, $channel, $connection) use($CALLBACK){
-			$this->set_friends_array($response);
-			$channel->close();
-			$connection->close();
-			if(is_callable($CALLBACK))
-				call_user_func($CALLBACK, $response);
-		});
-	}
-
-	/* Retrieve user info of their Steam profile  */
-	public function get_info($CALLBACK)
-	{
-
 	}
 
 	/* Echo HTML string of owned games */
@@ -203,6 +80,58 @@ class Steam_API
 			echo "No games available";
 	}
 
+	public function compare_title($TITLE, $LIST)
+	{
+		foreach((array)$LIST as $KEY)
+			if($TITLE == $KEY['name'])
+				return true;
+		return false;
+	}
+
+	/* Recursively loop the json payload and store the information into another array for use */
+	public function json_recurse_games_list($PAYLOAD)
+	{
+		$array = array();
+		$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($PAYLOAD),RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($jsonIterator as $key => $val)
+		    if(is_array($val) && array_key_exists('appid', $val)) 
+		        array_push($array, array('appid' => $val['appid'], 'name' => $val['name']));
+		$this->LEAST_PLAYED_GAMES = $array;
+	}
+
+
+/********************************* API Request: Friend/Friend List Functions ************************************/
+
+	/* RabbitMQ: Get list of friends associated with current user on Steam */
+	public function get_friends_list($CALLBACK)
+	{
+		$data = array 
+		(
+			'operation' => 'get-friends-list',
+			'steam-id' => $this->STEAM_ID,
+			'api-key' => $this->API_KEY,
+		);
+
+		$data = json_encode($data);
+		produceMessage($data, 'api', 'hello');
+		consume('get-friends-list', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+			#Remove next line, only for testing!
+			$response = json_decode(file_get_contents('../data/friend-list.json'), true);
+			$this->json_recurse_friend_list($response);
+			$channel->close();
+			$connection->close();
+			if(is_callable($CALLBACK))
+				call_user_func($CALLBACK, $response);
+		});
+	}
+
+	/* Return friend list array */
+	public function get_friends_array()
+	{
+		return $this->FRIEND_LIST;
+	}
+
+	/* Echo html of every game owned by friend and highlight mutually shared games with current user */
 	public function echo_html_friend_owned_games($LIST)
 	{
 		$i=0;
@@ -211,14 +140,25 @@ class Steam_API
 			{
 				if($this->compare_title($KEY['name'], $LIST)){
 					#<!-- Anchor trigger modal -->
+					#FINISH COLLAPSE BOOTSTRAP FEATURE LATER
 					echo
-					"<a id=\"game".$i."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\"><div class=\"row\"><h6 style=\"background-color: cyan;\" class=\"col-md-12\">".$KEY['name']."</h6></div></a>";
+					"<a data-toggle=\"collapse\" href=\"#collapseExample\" aria-expanded=\"false\" aria-controls=\"collapseExample\">
+						<div class=\"row\">
+							<a id=\"game".$i."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\">
+								<h6 style=\"background-color: cyan;\" class=\"col-md-12\">".$KEY['name']."</h6>
+							</a>
+						</div>
+					</a>";
 					$i++;
 				}
 				else
 				{
 					echo
-					"<a id=\"game".$i."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\"><div class=\"row\"><h6 class=\"col-md-12\">".$KEY['name']."</h6></div></a>";
+					"<a id=\"game".$i."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\">
+						<div class=\"row\">
+							<h6 class=\"col-md-12\">".$KEY['name']."</h6>
+						</div>
+					</a>";
 					$i++;
 				}
 			}
@@ -236,13 +176,13 @@ class Steam_API
 				if($i % 2 == 0){
 					#<!-- Anchor trigger modal -->
 					echo
-					"<a id=\"game".$i."\" href=\"../controller/index.php?action=view-friend-page&steamid=".$KEY['steam-id']."\"><div class=\"row\"><h6 style=\"background-color: #ededed;\" class=\"col-md-12\">".$KEY['name']."</h6></div></a>";
+					"<a id=\"game".$i."\" href=\"../controller/index.php?action=view-friend-page&steamid=".$KEY['steamid']."\"><div class=\"row\"><h6 style=\"background-color: #ededed;\" class=\"col-md-12\">".$KEY['personaname']."</h6></div></a>";
 					$i++;
 				}
 				else
 				{
 					echo
-					"<a id=\"game".$i."\" href=\"../controller/index.php?action=view-friend-page&steamid=".$KEY['steam-id']."\"><div class=\"row\"><h6 class=\"col-md-12\">".$KEY['name']."</h6></div></a>";
+					"<a id=\"game".$i."\" href=\"../controller/index.php?action=view-friend-page&steamid=".$KEY['steamid']."\"><div class=\"row\"><h6 class=\"col-md-12\">".$KEY['personaname']."</h6></div></a>";
 					$i++;
 				}
 			}
@@ -250,12 +190,35 @@ class Steam_API
 			echo "No friends available";
 	}
 
-	public function compare_title($TITLE, $LIST)
+	/* Recursively loop the json payload and store the information into another array for use */
+	public function json_recurse_friend_list($PAYLOAD)
 	{
-		foreach($LIST as $KEY)
-			if($TITLE == $KEY['name'])
-				return true;
-		return false;
+		$array = array();
+		$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($PAYLOAD),RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($jsonIterator as $key => $val)
+		    if(is_array($val) && array_key_exists('steamid', $val)) 
+		        array_push($array, array('steamid' => $val['steamid'], 'personaname' => $val['personaname']));
+		$this->FRIEND_LIST = $array;
+	}
+
+	/* Retrieve user info of their Steam profile  */
+	public function get_info($CALLBACK)
+	{
+		$data = array
+		(
+			'operation' => 'get-steam-info',
+			'api-key' => $this->API_KEY,
+			'steam-id' => $this->STEAM_ID
+		);
+		$data = json_encode($data);
+		produceMessage($data, 'api', 'hello');
+		consume('get-steam-info', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
+			//
+			$channel->close();
+			$connection->close();
+			if(is_callable($CALLBACK))
+				call_user_func($CALLBACK, $response);
+		});
 	}
 }
 
