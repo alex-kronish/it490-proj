@@ -1,6 +1,8 @@
 <?php
 
 require_once '../vendor/autoload.php';
+require_once 'send.php';
+
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 function consumeMessage($OPERATION, $CALLBACK)
@@ -29,7 +31,7 @@ function consumeMessage($OPERATION, $CALLBACK)
 	$connection->close();
 }
 
-/* Do not git commit code below until you've tested it properly. 
+/* Do not git commit code below until you've tested it properly.
 function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -88,17 +90,4 @@ function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 	$channel->close();
 	$connection->close();
 }
-/*
-$api = new YouTube_API();
-$a = $api->consume_api_request(function($results){
-	print_r($results);
-});
-
-consume('search-results', 'youtube', 'hello', function($response, $channel, $connection){
-
-	print_r($response);
-	$channel->close();
-	$connection->close();
-}); */
-
 ?>	

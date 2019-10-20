@@ -18,7 +18,7 @@ function publishMessage($JSON)
 	$connection->close();
 }
 
-/* Do not git commit code below until you've tested it properly.
+/*
 function produceMessage($JSON, $VHOST, $QUEUE)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -33,7 +33,6 @@ function produceMessage($JSON, $VHOST, $QUEUE)
 }
 
 */
-
 function produceMessage($JSON, $VHOST, $QUEUE)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -46,9 +45,4 @@ function produceMessage($JSON, $VHOST, $QUEUE)
 	$channel->close();
 	$connection->close();
 }
-/*
-
-$api = new YouTube_API();
-$api->produce_api_request(array('marvel', 'avengers')); 
-*/
 ?>
