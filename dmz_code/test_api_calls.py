@@ -3,12 +3,14 @@ import requests
 import pika
 
 
+
+
 def callyoutubesearch(search_string):
     apikey = "AIzaSyAhGC7AmQFhunKRWisNPHOn3A0AqG7R8EU"
     u = "https://www.googleapis.com/youtube/v3/search?key=" + apikey + "&part=snippet&q=" + search_string + " Gameplay"
     resp = requests.get(u)
-    print(resp.json())
-    return resp
+    search_result = resp.json()
+    return search_result
 
 
 def calltwitchsearch(search_string):
