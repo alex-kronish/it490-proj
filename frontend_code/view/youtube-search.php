@@ -12,6 +12,7 @@
 				<form id="search-form" action="../controller/index.php?action=search" method="GET">
 				</form>
 				<input class="form-control my-0 py-1" form="search-form" type="text" placeholder="Search" aria-label="Search" onkeydown="search(this)" name="search-terms">
+				<input type="hidden" name="action" value="search" form="search-form">
 			</div>
 			<script type="text/javascript">
 				$('#youtube-search').addClass('active');
@@ -32,7 +33,7 @@
 				<!-- Echo html row from search results here -->
 				<?php
 					if(isset($yt_api)){					
-						$yt_api->echo_html_results($data);
+						$yt_api->echo_html_results();
 					}
 				?>
 			</div>

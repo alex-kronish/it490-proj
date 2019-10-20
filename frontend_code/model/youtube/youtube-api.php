@@ -5,32 +5,62 @@ class YouTube_API
 	private $API_KEY = 'AIzaSyDo6w5bzKeCI8N2U3F72ErJLwWcQySk1Z4';
 	private $URL = 'https://www.youtube.com/';
 	private $WATCH = 'watch?v=';
+	private $SEARCH_RESULTS=[];
 
 	public function __construct()
 	{}
 
 	/* Return each stored video payload info in an array*/
-	public function getSearchResults($PAYLOAD)
+	public function json_recurse_search_results($PAYLOAD)
 	{
-		unset($PAYLOAD['operation']);
-		$results=array();
-		foreach($PAYLOAD as $ITEM)
-		{
-			$video = array 
-			(
-				'video-id' => $ITEM['video-id'],
-				'title' => $ITEM['title'],
-				'thumbnail' => $ITEM['thumbnail']
-			);
-			array_push($results, $video);
-		}
-		return $results;
+		$array = array();
+		$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($PAYLOAD),RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($jsonIterator as $key => $val)
+		    if(is_array($val) && array_key_exists('snippet', $val) && array_key_exists('videoId', $val['id'])){
+		    	array_push(
+		    		$array, array(
+		    			'title' => $val['snippet']['title'],
+		    			'thumbnail' => $val['snippet']['thumbnails']['default']['url'],
+		    			'video-id' => $val['id']['videoId']
+		    		)
+		    	);
+		    }
+		$this->SEARCH_RESULTS = $array;
+	}
+
+	/* Return the array of search results */
+	public function get_search_results_array()
+	{
+		return $this->SEARCH_RESULTS;
+	}
+
+	/* Produce/Consume data for a API request to search videos based on search terms */
+	public function get_search_results($TERMS, $CALLBACK)
+	{
+		$key_terms = implode(',', $TERMS);
+		$data = array (
+			'operation' => 'search',
+			'part' => 'snippet',
+			'q' => $key_terms,
+			'api-key' => $this->API_KEY
+		);
+		$data = json_encode($data);
+		produceMessage($data, 'api', 'hello');
+		consume('search', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+			#Remove next line, only for testing!
+			$response = json_decode(file_get_contents('../data/youtube-search-results.json'), true);	
+			$result = $this->json_recurse_search_results($response);
+			$channel->close();
+			$connection->close();
+			if(is_callable($CALLBACK))
+				call_user_func($CALLBACK, $result);
+		});
 	}
 
 	/* Echo HTML row of YouTube search results */
-	public function echo_html_results($PAYLOAD)
+	public function echo_html_results()
 	{
-		foreach($PAYLOAD as $ITEM)
+		foreach($this->get_search_results_array() as $ITEM)
 		{
 			$video_id = $ITEM['video-id'];
 			$thumbnail = $ITEM['thumbnail'];
@@ -54,33 +84,6 @@ class YouTube_API
 			</div>";
 			echo $html_string;
 		}
-	}
-
-	/* Produce a message to the Youtube Messaging Queue */
-	public function produce_api_request($TERMS)
-	{
-		$key_terms = implode(',', $TERMS);
-		$data = array (
-			'operation' => 'search',
-			'part' => 'snippet',
-			'q' => $key_terms,
-			'api-key' => $this->API_KEY
-		);
-
-		$data = json_encode($data);
-		produceMessage($data, 'youtube', 'hello');
-	}
-
-	/* Consume a message from the Youtube Messaging Queue */
-	public function consume_api_request($CALLBACK)
-	{
-		consume('search-results', 'youtube', 'hello', function($response, $channel, $connection) use($CALLBACK){
-				$result = $this->getSearchResults($response);
-				$channel->close();
-				$connection->close();
-				if(is_callable($CALLBACK))
-					call_user_func($CALLBACK, $result);
-		});
 	}
 }
 ?>
