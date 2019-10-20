@@ -8,6 +8,7 @@ require_once '../model/steam/steam-api.php';
 require_once '../model/user.php';
 session_start();
 
+
 $action = filter_input(INPUT_POST, 'action');
 if(!isset($action))
 {
@@ -31,7 +32,7 @@ if($action == 'view-home')
 if($action == 'view-steam-id')
 {
 	//$api = new Steam_API($_SESSION['user']->getSteamID());
-	$api = new Steam_API('123456');
+	$api = new Steam_API('76561198100918883');
 	$api->get_games_list(function($response){});
 	$api->get_friends_list(function($response){});
 	$_SESSION['steam-user'] = $api;
@@ -93,43 +94,7 @@ if($action == 'search')
 	$search_terms = filter_input(INPUT_GET, 'search-terms');
 	$terms = explode(' ', $search_terms);
 	$yt_api = new YouTube_API();
-	#$yt_api->produce_api_request($terms);
-	/*
-	$yt_api->consume_api_request(function($results){
-		
-	});
-	*/
-	#consume API request
-	$data = array
-	(
-		'video-1' => array
-		(
-			'video-id' => 'LUaj6MrfBsU',
-			'title' => 'The END OF FORTNITE!',
-			'thumbnail' => 'https://i.ytimg.com/vi/LUaj6MrfBsU/default.jpg'
-		),
-
-		'video-2' => array
-		(
-			'video-id' => 'LUaj6MrfBsU',
-			'title' => 'The END OF FORTNITE!',
-			'thumbnail' => 'https://i.ytimg.com/vi/LUaj6MrfBsU/default.jpg'
-		),
-
-		'video-3' => array
-		(
-			'video-id' => 'LUaj6MrfBsU',
-			'title' => 'The END OF FORTNITE!',
-			'thumbnail' => 'https://i.ytimg.com/vi/LUaj6MrfBsU/default.jpg'
-		),
-
-		'video-4' => array
-		(
-			'video-id' => 'LUaj6MrfBsU',
-			'title' => 'The END OF FORTNITE!',
-			'thumbnail' => 'https://i.ytimg.com/vi/LUaj6MrfBsU/default.jpg'
-		)
-	);
+	$yt_api->get_search_results($terms, function($response){});
 	include '../view/youtube-search.php';
 }
 
