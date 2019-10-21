@@ -122,12 +122,13 @@ if($action == 'request-game-info')
 	$api->get_game_info($appid, function($response){});
 	$info = $api->get_game_info_array()['info'][0]['description'];
 	$discount = $api->get_game_info_array()['info'][0]['discount'];
+	$tags = $api->get_tags();
 	if($discount == 'false')
 		echo "
 			<script type=\"text/javascript\">
 				$('#desc img').attr('class', 'img-fluid rounded mx-auto d-block');
 			</script>
-			<div id=\"desc\">".$info."</div>";
+			<div id=\"desc\">".$info.$tags."</div>";
 	else
 		echo "
 			<script type=\"text/javascript\">

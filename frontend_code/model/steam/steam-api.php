@@ -270,6 +270,18 @@ class Steam_API
 	{
 		return $this->GAME_INFO;
 	}
+
+	/* Concatenate Tags together in HTML */
+	public function get_tags()
+	{
+		$tags_html = "<b><p style=\"color: #6441A5;\">Tags:</p></b><span class=\"pb-3\">";
+		foreach($this->get_game_info_array()['tags'] as $key => $value)
+		{
+			$tags_html = $tags_html."<a href=\"../controller/index.php?action=search&search-terms=".$value."\">".$value."&nbsp;</a>";
+		}
+		$tags_html = $tags_html."</span>";
+		return $tags_html;
+	}
 }
 
 ?>
