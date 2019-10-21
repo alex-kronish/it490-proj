@@ -67,13 +67,13 @@ class Steam_API
 				if($i % 2 == 0){
 					#<!-- Anchor trigger modal -->
 					echo
-					"<a class=\"game\" id=\"game".$i."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\"><div class=\"row\"><h6 style=\"background-color: #ededed;\" class=\"col-md-12\">".$KEY['name']."</h6></div></a>";
+					"<a class=\"game\" id=\"game".$KEY['appid']."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\"><div class=\"row\"><h6 style=\"background-color: #ededed;\" class=\"col-md-12\">".$KEY['name']."</h6></div></a>";
 					$i++;
 				}
 				else
 				{
 					echo
-					"<a class=\"game\" id=\"game".$i."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\"><div class=\"row\"><h6 class=\"col-md-12\">".$KEY['name']."</h6></div></a>";
+					"<a class=\"game\" id=\"game".$KEY['appid']."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\"><div class=\"row\"><h6 class=\"col-md-12\">".$KEY['name']."</h6></div></a>";
 					$i++;
 				}
 			}
@@ -136,7 +136,6 @@ class Steam_API
 	/* Echo html of every game owned by friend and highlight mutually shared games with current user */
 	public function echo_html_friend_owned_games($LIST)
 	{
-		$i=0;
 		if(count($this->LEAST_PLAYED_GAMES) > 0)
 			foreach($this->LEAST_PLAYED_GAMES as $KEY)
 			{
@@ -146,22 +145,22 @@ class Steam_API
 					echo
 					"<a data-toggle=\"collapse\" href=\"#collapseExample\" aria-expanded=\"false\" aria-controls=\"collapseExample\">
 						<div class=\"row\">
-							<a id=\"game".$i."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\">
+							<a id=\"game".$KEY['appid']."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\">
 								<h6 style=\"background-color: cyan;\" class=\"col-md-12\">".$KEY['name']."</h6>
 							</a>
 						</div>
 					</a>";
-					$i++;
+					$KEY['appid']++;
 				}
 				else
 				{
 					echo
-					"<a id=\"game".$i."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\">
+					"<a id=\"game".$KEY['appid']."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\">
 						<div class=\"row\">
 							<h6 class=\"col-md-12\">".$KEY['name']."</h6>
 						</div>
 					</a>";
-					$i++;
+					$KEY['appid']++;
 				}
 			}
 		else
@@ -249,11 +248,11 @@ class Steam_API
 	/* Recursively loop the json payload and store the game info into another array for use */
 	public function json_recurse_game_info($PAYLOAD)
 	{
-		$array = array('tags' => array(), 'developers' => array());
+		$array = array('tags' => array(), 'developers' => array(), 'info' => array());
 		$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($PAYLOAD),RecursiveIteratorIterator::SELF_FIRST);
 		foreach ($jsonIterator as $key => $val)
 		    if(is_array($val) && array_key_exists('price_overview', $val)){
-		    	array_push($array, array(
+		    	array_push($array['info'], array(
 		    		'discount' => (strval($val['price_overview']['discount_percent']) == 0 ? 'true' : 'false'),
 		    		'description' => $val['detailed_description'],
 		    		'achievement-count' => strval($val['achievements']['total'])

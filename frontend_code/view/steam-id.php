@@ -63,15 +63,27 @@
 				var id = "#".concat($(this).attr("id"));
 				var title = $(id).text();
 				var ques = "What type of videos do you wish to view for ".concat(title).concat("?");
-				$('.modal-body').text(ques);
+				var data = "action=request-game-info&app-id=" + id.substring(5);
+				$.ajax({
+					url: 'http://localhost/it490-proj/frontend_code/controller/index.php',
+					type: 'get',
+					data: data,
+					success: function(response){
+						$('#game-info').text('').append(response);
+					},
+					error: function($response){
+						document.write('Request couldn\'t go through');
+					}
+				});
+				$('#prompt-body').text(ques);
 			});
 			$('#youtube').click(function(event){
-				var title = $('.modal-body').text().substring(44).split('?');
+				var title = $('#prompt-body').text().substring(44).split('?');
 				$(this).attr('href', "../controller/index.php?action=search&search-terms=".concat(title[0]));
 			});
 
 			$('#twitch').click(function(event){
-				var title = $('.modal-body').text().substring(44).split('?');
+				var title = $('#prompt-body').text().substring(44).split('?');
 				$(this).attr('href', "../controller/index.php?action=stream-search&search-terms=".concat(title[0]));
 			});
 		});
@@ -80,7 +92,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="gamemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog mw-100 w-75" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Options</h5>
@@ -89,7 +101,8 @@
         </button>
       </div>
       <div class="modal-body">
-        What type of videos do you wish to view for this game?
+      	<div id="game-info"></div>
+      	<p id="prompt-body" style="color: red"><b>What type of videos do you wish to view for this game?</b></p>
       </div>
       <div class="modal-footer">
         <a href="../controller/index.php?action=view-youtube-search" id="youtube"><button type="button" class="btn btn-primary" style="background-color: red; color: white;">YouTube</button></a>

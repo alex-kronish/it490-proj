@@ -113,4 +113,19 @@ if($action == 'stream-search')
 	include '../view/twitch-search.php';
 }
 
+#Method use for AJAX Calls
+if($action == 'request-game-info')
+{
+	$appid = filter_input(INPUT_GET, 'app-id');
+	#$steamid = $SESSION['user']->getSteamID();
+	$api = new Steam_API('76561198100918883');
+	$api->get_game_info($appid, function($response){});
+	$info = $api->get_game_info_array()['info'][0]['description'];
+	echo "
+		<script type=\"text/javascript\">
+			$('#desc img').attr('class', 'img-fluid rounded mx-auto d-block');
+		</script>
+		<div id=\"desc\">".$info."</div>";
+}
+
 ?>
