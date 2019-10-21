@@ -95,7 +95,8 @@
   <div class="modal-dialog mw-100 w-75" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Options</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Game Info </h5>
+        <div id="discount-img"></div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

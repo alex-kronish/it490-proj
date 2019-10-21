@@ -253,7 +253,7 @@ class Steam_API
 		foreach ($jsonIterator as $key => $val)
 		    if(is_array($val) && array_key_exists('price_overview', $val)){
 		    	array_push($array['info'], array(
-		    		'discount' => (strval($val['price_overview']['discount_percent']) == 0 ? 'true' : 'false'),
+		    		'discount' => (strval($val['price_overview']['discount_percent']) == 0 ? 'false' : 'true'),
 		    		'description' => $val['detailed_description'],
 		    		'achievement-count' => strval($val['achievements']['total'])
 		    	));

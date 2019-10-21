@@ -117,15 +117,24 @@ if($action == 'stream-search')
 if($action == 'request-game-info')
 {
 	$appid = filter_input(INPUT_GET, 'app-id');
-	#$steamid = $SESSION['user']->getSteamID();
+	#$steamid = $_SESSION['user']->getSteamID();
 	$api = new Steam_API('76561198100918883');
 	$api->get_game_info($appid, function($response){});
 	$info = $api->get_game_info_array()['info'][0]['description'];
-	echo "
-		<script type=\"text/javascript\">
-			$('#desc img').attr('class', 'img-fluid rounded mx-auto d-block');
-		</script>
-		<div id=\"desc\">".$info."</div>";
+	$discount = $api->get_game_info_array()['info'][0]['discount'];
+	if($discount == 'false')
+		echo "
+			<script type=\"text/javascript\">
+				$('#desc img').attr('class', 'img-fluid rounded mx-auto d-block');
+			</script>
+			<div id=\"desc\">".$info."</div>";
+	else
+		echo "
+			<script type=\"text/javascript\">
+				$('#desc img').attr('class', 'img-fluid rounded mx-auto d-block');
+				$('#discount-img').text('').append('<img src=\"../view/images/discount.png\" class=\"rounded float-right\" width=\"30\" height=\"30\" alt=\"Game is on sale!\">');
+			</script>
+			<div id=\"desc\">".$info."</div>";
 }
 
 ?>
