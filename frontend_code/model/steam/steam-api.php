@@ -6,6 +6,7 @@ class Steam_API
 	private $API_KEY = '9DFE29EE9327E1BB13DC6F0C4CD3FEE3';
 	private $LEAST_PLAYED_GAMES=[];
 	private $FRIEND_LIST=[];
+	private $GAME_INFO=[];
 
 	public function __construct($STEAM_ID)
 	{
@@ -80,6 +81,7 @@ class Steam_API
 			echo "No games available";
 	}
 
+	/* Compare title of game to array and check if that title exists */
 	public function compare_title($TITLE, $LIST)
 	{
 		foreach((array)$LIST as $KEY)
@@ -219,6 +221,55 @@ class Steam_API
 			if(is_callable($CALLBACK))
 				call_user_func($CALLBACK, $response);
 		});
+	}
+
+/********************************* API Request: Game Discounts/Tags Functions ************************************/
+	
+	/* Retrieve game information from Steam Store API */
+	public function get_game_info($APPID, $CALLBACK)
+	{
+		$data = array 
+		(
+			'operation' => 'get-game-info',
+			'app-id' => $APPID, 			
+		);
+		$data = json_encode($data);
+		produceMessage($data, 'api', 'hello');
+		consume('get-game-info', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+			#Remove next line, only for testing!
+			$response = json_decode(file_get_contents('../data/game-discounts.json'), true);
+			$this->json_recurse_game_info($response);
+			$channel->close();
+			$connection->close();
+			if(is_callable($CALLBACK))
+				call_user_func($CALLBACK, $response);
+		});
+	}
+
+	/* Recursively loop the json payload and store the game info into another array for use */
+	public function json_recurse_game_info($PAYLOAD)
+	{
+		$array = array('tags' => array(), 'developers' => array());
+		$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($PAYLOAD),RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($jsonIterator as $key => $val)
+		    if(is_array($val) && array_key_exists('price_overview', $val)){
+		    	array_push($array, array(
+		    		'discount' => (strval($val['price_overview']['discount_percent']) == 0 ? 'true' : 'false'),
+		    		'description' => $val['detailed_description'],
+		    		'achievement-count' => strval($val['achievements']['total'])
+		    	));
+		    	foreach($val['categories'] as $key2 => $val2)
+		    		array_push($array['tags'], $val2['description']);
+		    	foreach($val['developers'] as $key3)
+		    		array_push($array['developers'], $key3);
+		    }
+		$this->GAME_INFO = $array;
+	}
+
+	/* Return array of game info */
+	public function get_game_info_array()
+	{
+		return $this->GAME_INFO;
 	}
 }
 
