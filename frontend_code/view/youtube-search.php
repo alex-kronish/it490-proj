@@ -16,6 +16,7 @@
 			</div>
 			<script type="text/javascript">
 				$('#youtube-search').addClass('active');
+				$('#youtube-search a').css('color', '#FFD700');
 				$('#home').removeClass('active');
 
 				function search() {

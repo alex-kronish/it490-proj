@@ -57,6 +57,7 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$('#steam').addClass('active');
+			$('#steam a').css('color', '#FFD700');
 			$('#home').removeClass('active');
 			$('a.game').click(function(event){
 				var id = "#".concat($(this).attr("id"));

@@ -14,6 +14,9 @@
 	</div>
 
 </main><!-- /.container -->
+<script type="text/javascript">
+	$('#home a').css('color', '#FFD700');
+</script>
 
 <!-- Footer -->
 <?php include 'footer.php'; ?>
