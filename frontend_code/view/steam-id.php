@@ -72,7 +72,7 @@
 						$('#game-info').text('').append(response);
 					},
 					error: function($response){
-						document.write('Request couldn\'t go through');
+						$('#game-info').text('').append('Request couldn\'t go through');
 					}
 				});
 				$('#prompt-body').text(ques);
