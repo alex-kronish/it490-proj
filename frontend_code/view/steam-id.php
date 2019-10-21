@@ -68,6 +68,11 @@
 				var title = $('.modal-body').text().substring(44).split('?');
 				$(this).attr('href', "../controller/index.php?action=search&search-terms=".concat(title[0]));
 			});
+
+			$('#twitch').click(function(event){
+				var title = $('.modal-body').text().substring(44).split('?');
+				$(this).attr('href', "../controller/index.php?action=stream-search&search-terms=".concat(title[0]));
+			});
 		});
 	</script>
 </main><!-- /.container -->
@@ -87,7 +92,7 @@
       </div>
       <div class="modal-footer">
         <a href="../controller/index.php?action=view-youtube-search" id="youtube"><button type="button" class="btn btn-primary" style="background-color: red; color: white;">YouTube</button></a>
-        <a href="../controller/index.php?action=view-twitch" id="twitch"><button type="button" class="btn btn-primary" style="background-color: #6441A5; color: white;">Twitch</button></a>
+        <a href="../controller/index.php?action=view-twitch-search" id="twitch"><button type="button" class="btn btn-primary" style="background-color: #6441A5; color: white;">Twitch</button></a>
       </div>
     </div>
   </div>

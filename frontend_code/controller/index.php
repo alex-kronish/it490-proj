@@ -5,6 +5,7 @@ require_once '../rabbitmq/send.php';
 require_once '../rabbitmq/receive.php';
 require_once '../model/youtube/youtube-api.php';
 require_once '../model/steam/steam-api.php';
+require_once '../model/twitch/twitch-api.php';
 require_once '../model/user.php';
 session_start();
 
@@ -96,6 +97,20 @@ if($action == 'search')
 	$yt_api = new YouTube_API();
 	$yt_api->get_search_results($terms, function($response){});
 	include '../view/youtube-search.php';
+}
+
+if($action == 'view-twitch-search')
+{
+	include '../view/twitch-search.php';
+}
+
+if($action == 'stream-search')
+{
+	$terms = filter_input(INPUT_GET, 'search-terms');
+	$terms = explode(' ', $terms);
+	$api = new Twitch_API();
+	$api->get_stream_results($terms, function($response){});
+	include '../view/twitch-search.php';
 }
 
 ?>

@@ -30,11 +30,11 @@
 				<li class="nav-item active" id="home">
 					<a class="nav-link" href="../controller/index.php?action=view-home">Home <span class="sr-only">(current)</span></a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Link</a>
-				</li>
 				<li class="nav-item" id="youtube-search">
 					<a class="nav-link" href="../controller/index.php?action=view-youtube-search">Youtube Search</a>
+				</li>
+				<li class="nav-item" id="twitch-search">
+					<a class="nav-link" href="../controller/index.php?action=view-twitch-search">Twitch Search</a>
 				</li>
 				<li class="nav-item dropdown" id="steam">
 					<a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Steam</a>
