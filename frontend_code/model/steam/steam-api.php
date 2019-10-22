@@ -144,24 +144,16 @@ class Steam_API
 					#<!-- Anchor trigger modal -->
 					#FINISH COLLAPSE BOOTSTRAP FEATURE LATER
 					echo
-					"<a data-toggle=\"collapse\" href=\"#collapseExample\" aria-expanded=\"false\" aria-controls=\"collapseExample\">
-						<div class=\"row\">
-							<a id=\"game".$KEY['appid']."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\">
-								<h6 style=\"background-color: cyan;\" class=\"col-md-12\">".$KEY['name']."</h6>
-							</a>
-						</div>
-					</a>";
-					$KEY['appid']++;
+					"<a class=\"game\" id=\"game".$KEY['appid']."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\">
+						<h6 style=\"background-color: #ffd27f; border-bottom: 1px solid black;\">".$KEY['name']."</h6>
+					</a>";	
 				}
 				else
 				{
 					echo
-					"<a id=\"game".$KEY['appid']."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\">
-						<div class=\"row\">
-							<h6 class=\"col-md-12\">".$KEY['name']."</h6>
-						</div>
+					"<a class=\"game\" id=\"game".$KEY['appid']."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\">
+						<h6 style=\"border-bottom: 1px solid black;\">".$KEY['name']."</h6>
 					</a>";
-					$KEY['appid']++;
 				}
 			}
 		else
@@ -203,7 +195,7 @@ class Steam_API
 		$this->FRIEND_LIST = $array;
 	}
 
-	/* Retrieve user info of their Steam profile  */
+	/* RabbitMQ: Retrieve user info of their Steam profile  */
 	public function get_info($CALLBACK)
 	{
 		$data = array
@@ -250,7 +242,7 @@ class Steam_API
 
 /********************************* API Request: Game Discounts/Tags Functions ************************************/
 	
-	/* Retrieve game information from Steam Store API */
+	/* RabbitMQ: Retrieve game information from Steam Store API */
 	public function get_game_info($APPID, $CALLBACK)
 	{
 		$data = array 

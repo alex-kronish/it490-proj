@@ -43,51 +43,15 @@ if($action == 'view-steam-id')
 
 if($action == 'view-friend-page')
 {
-	//$user = filter_var($_SESSION['steam-user']);
+	$user = $_SESSION['steam-user'];
 	$friend_steam_id = filter_input(INPUT_GET, 'steamid');
 	$api = new Steam_API($friend_steam_id);
-	$api->get_games_list(function($response){});
-	$data = array (
-	array
-	(
-		'appid' => '10',
-		'name' => 'Counter-Strike',
-		'playtime-forever' => '0'
-	),
-	array
-	(
-		'appid' => '101',
-		'name' => 'Left 4 Dead 2',
-		'playtime-forever' => '0'
-	),
-	array
-	(
-		'appid' => '102',
-		'name' => 'Half-Life 2',
-		'playtime-forever' => '0'
-	),
-
-	array
-	(
-		'appid' => '102',
-		'name' => 'Bioshock',
-		'playtime-forever' => '0'
-	),
-
-	array
-	(
-		'appid' => '102',
-		'name' => 'Mass Effect 3',
-		'playtime-forever' => '0'
-	),
-
-	array
-	(
-		'appid' => '102',
-		'name' => 'Hollow Knight',
-		'playtime-forever' => '0'
-	)
-);
+	$api->get_info(function($response){});
+	$api->get_games_list(function($response) use($api){
+		#delete this after testing with real api
+		$response = json_decode(file_get_contents('../data/friend-games.json'), true);
+		$api->json_recurse_games_list($response);
+	});
 	include '../view/friend-page.php';
 }
 
