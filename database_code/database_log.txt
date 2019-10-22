@@ -79,3 +79,5 @@
 2019-10-19 14:46:17.474405 | Info | Login attempt for user kas58 ; result is True  
 2019-10-19 14:48:55.868186 | Info | Registration attempt for user kas58 ; result is True  
 2019-10-19 14:50:58.949061 | Info | Login attempt for user kas58 ; result is True  
+2019-10-22 18:43:36.021436 | Info | Database script started: EventLog.py  
+2019-10-22 18:44:07.310428 | Info | Database script started: RegisterAcct.py  

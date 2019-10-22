@@ -97,7 +97,7 @@ def callyoutubesearch(search_string):
     resp = requests.get(u)
     search_result = resp.json()
     tmp = []
-    for i in search_result["items"]:
+    '''for i in search_result["items"]:
         print(i)
         videoid = i["id"]["videoId"]
         thumb = i["snippet"]["thumbnails"]["high"]["url"]
@@ -110,9 +110,9 @@ def callyoutubesearch(search_string):
                     "videoid": videoid,
                     "channel": channeltitle,
                     "url": ("https://youtu.be/" + videoid)}
-        tmp.append(tmp_dict)
-    r = {"operation": "youtube-search",
-         "videos": tmp}
+        tmp.append(tmp_dict)'''
+    r = {"operation": "youtube-search"}
+    r.append(search_result)
     return r
 
 
@@ -137,7 +137,7 @@ def calltwitchsearch(search_string):
             print("no streams currently, result set is empty")
             r = {"operation": "twitch-search", "error": "No streams active for this game"}
         else:
-            a = []
+            '''a = []
             for st in streams_json["data"]:
                 username = st["user_name"]
                 thumbnail = st["thumbnail_url"].replace("{width}", "480", 1).replace("{height}", "360", 1)
@@ -150,8 +150,9 @@ def calltwitchsearch(search_string):
                     "thumbnail": thumbnail,
                     "url": ("https://twitch.tv/" + username)
                 }
-                a.append(tmp_dict)
-            r = {"operation": "twitch-search", "streams": a}
+                a.append(tmp_dict)'''
+            r = {"operation": "twitch-search"}
+            r.append(streams_json)
     return r
 
 
