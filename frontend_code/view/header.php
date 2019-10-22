@@ -11,7 +11,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	<link rel="icon" href="images/favicon.ico">
+	<link rel="icon" href="/images/favicon.ico">
 	<link type="text/css" href="../view/css/index.css" rel="stylesheet">
 	<title>Mystery Steam Theater</title>
 </head>
@@ -30,19 +30,17 @@
 				<li class="nav-item active" id="home">
 					<a class="nav-link" href="../controller/index.php?action=view-home">Home <span class="sr-only">(current)</span></a>
 				</li>
+				<li class="nav-item" id="steam">
+					<a class="nav-link" href="../controller/index.php?action=view-steam-id">Steam</a>
+				</li>
 				<li class="nav-item" id="youtube-search">
 					<a class="nav-link" href="../controller/index.php?action=view-youtube-search">Youtube Search</a>
 				</li>
 				<li class="nav-item" id="twitch-search">
 					<a class="nav-link" href="../controller/index.php?action=view-twitch-search">Twitch Search</a>
 				</li>
-				<li class="nav-item dropdown" id="steam">
-					<a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Steam</a>
-					<div class="dropdown-menu" aria-labelledby="dropdown01">
-						<a class="dropdown-item" href="../controller/index.php?action=view-steam-id">View Steam Profile</a>
-						<a class="dropdown-item" href="#">Friends List</a>
-						<a class="dropdown-item" href="#">Something else here</a>
-					</div>
+				<li class="nav-item" id="sign-out">
+					<a class="nav-link pull-right" href="../controller/index.php?action=sign-out">Sign Out</a>
 				</li>
 			</ul>
 		</div>
