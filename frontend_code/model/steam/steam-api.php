@@ -7,6 +7,7 @@ class Steam_API
 	private $LEAST_PLAYED_GAMES=[];
 	private $FRIEND_LIST=[];
 	private $GAME_INFO=[];
+	private $USER_INFO=[];
 
 	public function __construct($STEAM_ID)
 	{
@@ -213,13 +214,38 @@ class Steam_API
 		);
 		$data = json_encode($data);
 		produceMessage($data, 'api', 'hello');
-		consume('get-steam-info', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
-			//
+		consume('get-steam-info', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+			#Remove next line, only for testing!
+			$response = json_decode(file_get_contents('../data/user-info.json'), true);
+			$this->json_recurse_user_info($response);
 			$channel->close();
 			$connection->close();
 			if(is_callable($CALLBACK))
 				call_user_func($CALLBACK, $response);
 		});
+	}
+
+	/* Recursively loop the json payload and store the user info into another array for use */
+	public function json_recurse_user_info($PAYLOAD)
+	{
+		$array = array();
+		$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($PAYLOAD),RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($jsonIterator as $key => $val)
+		    if(is_array($val) && array_key_exists('timecreated', $val)) 
+		        array_push($array, array(
+		        	'steamid' => $val['steamid'], 
+		        	'personaname' => $val['personaname'], 
+		        	'profileurl' => $val['profileurl'], 
+		        	'avatar' => $val['avatar']
+		        )
+			);
+		$this->USER_INFO = $array;
+	}
+
+	/* Return the user's Steam Account Info */
+	public function get_user_info_array()
+	{
+		return $this->USER_INFO;
 	}
 
 /********************************* API Request: Game Discounts/Tags Functions ************************************/

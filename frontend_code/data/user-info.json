@@ -1,0 +1,25 @@
+{
+    "response": {
+        "players": [
+            {
+                "steamid": "76561198100918883",
+                "communityvisibilitystate": 3,
+                "profilestate": 1,
+                "personaname": "OneHitYouQuit",
+                "lastlogoff": 1571647477,
+                "commentpermission": 1,
+                "profileurl": "https://steamcommunity.com/id/faddyhadad/",
+                "avatar": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/5a/5a1e3659496fb7f93d455bf842ab9db503167433.jpg",
+                "avatarmedium": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/5a/5a1e3659496fb7f93d455bf842ab9db503167433_medium.jpg",
+                "avatarfull": "https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/5a/5a1e3659496fb7f93d455bf842ab9db503167433_full.jpg",
+                "personastate": 0,
+                "realname": "Faddy",
+                "primaryclanid": "103582791429521408",
+                "timecreated": 1375326404,
+                "personastateflags": 0,
+                "loccountrycode": "US",
+                "locstatecode": "NJ"
+            }
+        ]
+    }
+}

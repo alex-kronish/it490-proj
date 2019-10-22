@@ -34,6 +34,7 @@ if($action == 'view-steam-id')
 {
 	//$api = new Steam_API($_SESSION['user']->getSteamID());
 	$api = new Steam_API('76561198100918883');
+	$api->get_info(function($response){});
 	$api->get_games_list(function($response){});
 	$api->get_friends_list(function($response){});
 	$_SESSION['steam-user'] = $api;

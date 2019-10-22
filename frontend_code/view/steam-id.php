@@ -6,16 +6,16 @@
 		<div class="col-md-12 text-center">
 			<h3 style="color: red;">Welcome, 
 			<?php 
-				if(isset($_SESSION['user']))
-					echo $_SESSION['user']->getUsername();
+				if(isset($api))
+					echo $api->get_user_info_array()[0]['personaname'];
 				else
 					echo "Gary";
 			?>
 			</h3><hr>
-			<img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/5a/5a1e3659496fb7f93d455bf842ab9db503167433.jpg" width="100" height="100" class="rounded mx-auto d-block">
-			<h5>Persona Name:</h5>
+			<img src="<?php if(isset($api)) echo $api->get_user_info_array()[0]['avatar']; ?>" width="150" height="150" class="img-fluid rounded mx-auto d-block">
+			<h5>Persona Name: <?php if(isset($api)) echo $api->get_user_info_array()[0]['personaname']; ?></h5>
 			<h5>Based: NJ, USA</h5>
-			<h5>Steam URL:</h5>
+			<h5>Steam URL: <a target="_blank" href="<?php if(isset($api)) echo $api->get_user_info_array()[0]['profileurl']; ?>">Steam-Community Link</a></h5>
 		</div>
 	</div>
 
