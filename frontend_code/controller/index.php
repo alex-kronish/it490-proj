@@ -103,4 +103,10 @@ if($action == 'request-game-info')
 			<div id=\"desc\">".$info."</div>";
 }
 
+if($action == 'sign-out')
+{
+	session_unset();
+	header('Location: ../view/sign-in.php');
+}
+
 ?>
