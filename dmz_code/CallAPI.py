@@ -27,6 +27,15 @@ def logtodb(severity, msg, ipaddr):
     connection3.close()
 
 
+def getgameinfo(appid):
+    gameurl = "https://store.steampowered.com/api/appdetails?appids=" + appid + "&cc=us&l=en"
+    game = requests.get(gameurl)
+    gameresp = game.json()
+    r = {"operation": "get-game-info"}
+    r.append(gameresp)
+    return r
+
+
 def getgameslist(steamid, apikey, minutes_filter):
     requrl = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + apikey + \
              "&steamid=" + steamid + "&format=json&include_appinfo=1"
@@ -171,7 +180,8 @@ def callback(ch, method, properties, body):
         steamid = input_msg["steam-id"]
         minutes = 600
         output_msg = json.dumps(getgameslist(steamid, apikey, minutes))
-        logmsg = "Steam API call to get games list was made. Filter condition less than "+str(minutes)+" minutes played"
+        logmsg = "Steam API call to get games list was made. Filter condition less than " + str(
+            minutes) + " minutes played"
     elif op == "youtube-search":
         # searchstr = "Yakuza Kiwami"
         searchstr = input_msg["game"]
@@ -181,12 +191,16 @@ def callback(ch, method, properties, body):
         # searchstr = "Super Mario 64"
         searchstr = input_msg["game"]
         output_msg = json.dumps(calltwitchsearch(searchstr))
-        logmsg="Twitch API call for game: "+searchstr+" was made"
+        logmsg = "Twitch API call for game: " + searchstr + " was made"
     elif op == "get-steam-info":
         apikey = input_msg["api-key"]
         steamid = input_msg["steam-id"]
         output_msg = json.dumps(getsteaminfo(steamid, apikey))
         logmsg = "Steam API Call for single user info was made."
+    elif op == "get-game-info":
+        appid = input_msg["app-id"]
+        output_msg = getgameinfo(appid)
+        logmsg = "Got price info for game, appid = " + appid
     else:
         print("Message was not understood.  " + str(body))
         output_msg_a = {
