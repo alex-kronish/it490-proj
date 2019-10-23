@@ -31,9 +31,9 @@ class Steam_API
 		
 		$data = json_encode($data);
 		produceMessage($data, 'api', 'hello');
-		consume('get-games-list', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
+		consume('get-games-list', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			//$response = json_decode(file_get_contents('../data/games.json'), true);
+			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/games.json'), true);
 			if(!array_key_exists('error', $response))
 				$this->json_recurse_games_list($response);
 			else echo "<script type=text/javascript> alert('Games list is set private.'); </script>";
@@ -119,9 +119,9 @@ class Steam_API
 
 		$data = json_encode($data);
 		produceMessage($data, 'api', 'hello');
-		consume('get-friends-list', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
+		consume('get-friends-list', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			//$response = json_decode(file_get_contents('../data/friend-list.json'), true);
+			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/friend-list.json'), true);
 			$this->json_recurse_friend_list($response);
 			$channel->close();
 			$connection->close();
@@ -208,9 +208,9 @@ class Steam_API
 		);
 		$data = json_encode($data);
 		produceMessage($data, 'api', 'hello');
-		consume('get-steam-info', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
+		consume('get-steam-info', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			//$response = json_decode(file_get_contents('../data/user-info.json'), true);
+			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/user-info.json'), true);
 			$this->json_recurse_user_info($response);
 			$channel->close();
 			$connection->close();
@@ -254,9 +254,9 @@ class Steam_API
 		);
 		$data = json_encode($data);
 		produceMessage($data, 'api', 'hello');
-		consume('get-game-info', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
+		consume('get-game-info', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			//$response = json_decode(file_get_contents('../data/game-discounts.json'), true);
+			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/game-discounts.json'), true);
 			$this->json_recurse_game_info($response);
 			$channel->close();
 			$connection->close();
