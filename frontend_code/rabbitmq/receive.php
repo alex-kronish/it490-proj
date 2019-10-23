@@ -2,6 +2,7 @@
 
 require_once '../vendor/autoload.php';
 require_once 'send.php';
+require_once '../model/youtube/youtube-api.php';
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
@@ -31,7 +32,7 @@ function consumeMessage($OPERATION, $CALLBACK)
 	$connection->close();
 }
 
-/* Do not git commit code below until you've tested it properly.
+/* Do not git commit code below until you've tested it properly. */
 function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -40,8 +41,6 @@ function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 	$channel->queue_declare($QUEUE, false, false, false, false);
 
 	$parameters = [$OPERATION, $CALLBACK, $channel, $connection];
-
-	echo " [*] Waiting for messages. To exit press CTRL+C\n";
 
 	$callback = function ($msg) use ($parameters) {
 		$payload = json_decode($msg->body, true);
@@ -61,9 +60,12 @@ function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 	$connection->close();
 }
 
-*/
+$api = new YouTube_API();
+$api->get_search_results(array('marvel', 'avengers'), function($response) use($api){
+	print_r($api->get_search_results_array());
+});
 
-/* For local testing only */
+/* For local testing only 
 function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -90,4 +92,6 @@ function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 	$channel->close();
 	$connection->close();
 }
+
+*/
 ?>	

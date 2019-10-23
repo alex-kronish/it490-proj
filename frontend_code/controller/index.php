@@ -49,8 +49,8 @@ if($action == 'view-friend-page')
 	$api->get_info(function($response){});
 	$api->get_games_list(function($response) use($api){
 		#delete this after testing with real api
-		$response = json_decode(file_get_contents('../data/friend-games.json'), true);
-		$api->json_recurse_games_list($response);
+		//$response = json_decode(file_get_contents('../data/friend-games.json'), true);
+		//$api->json_recurse_games_list($response);
 	});
 	include '../view/friend-page.php';
 }

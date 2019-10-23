@@ -9,20 +9,18 @@ class Twitch_API
 	public function __construct(){}
 
 	/* Produce/Consume stream results of search-terms from API */
-	public function get_stream_results($TERMS, $CALLBACK)
+	public function get_stream_results($NAME, $CALLBACK)
 	{
-		$key_terms = implode(',', $TERMS);
 		$data = array
 		(
-			'operation' => 'get-stream-results',
-			'client-id' => $this->CLIENT_ID,
-			'query' => $key_terms
+			'operation' => 'twitch-search',
+			'game' => $NAME
 		);
 		$data = json_encode($data);
 		produceMessage($data, 'api', 'hello');
-		consume('get-stream-results', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+		consume('twitch-search', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			$response = json_decode(file_get_contents('../data/twitch-streams.json'), true);	
+			//$response = json_decode(file_get_contents('../data/twitch-streams.json'), true);	
 			$result = $this->json_recurse_stream_results($response);
 			$channel->close();
 			$connection->close();
@@ -37,13 +35,12 @@ class Twitch_API
 		$array = array();
 		$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($PAYLOAD),RecursiveIteratorIterator::SELF_FIRST);
 		foreach ($jsonIterator as $key => $val)
-		    if(is_array($val) && array_key_exists('channel', $val)){
+		    if(is_array($val) && array_key_exists('user_name', $val)){
 		    	array_push($array, 
 		    		array(
-		    			'url' => $val['channel']['url'], 
-		    			'streamer' => $val['channel']['name'], 
-		    			'title' => $val['channel']['status'],
-		    			'logo' => $val['channel']['logo']
+		    			'streamer' => "www.twitch.tv/".$val['user_name'], 
+		    			'title' => $val['title'],
+		    			'logo' => $val['thumbnail_url']
 		    		)
 		    	);
 		    }

@@ -39,16 +39,14 @@ class YouTube_API
 	{
 		$key_terms = implode(',', $TERMS);
 		$data = array (
-			'operation' => 'search',
-			'part' => 'snippet',
-			'q' => $key_terms,
-			'api-key' => $this->API_KEY
+			'operation' => 'youtube-search',
+			'game' => $key_terms,
 		);
 		$data = json_encode($data);
 		produceMessage($data, 'api', 'hello');
-		consume('search', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+		consume('youtube-search', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			$response = json_decode(file_get_contents('../data/youtube-search-results.json'), true);	
+			//$response = json_decode(file_get_contents('../data/youtube-search-results.json'), true);	
 			$result = $this->json_recurse_search_results($response);
 			$channel->close();
 			$connection->close();
