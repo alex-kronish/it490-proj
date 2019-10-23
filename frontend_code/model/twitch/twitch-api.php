@@ -38,9 +38,10 @@ class Twitch_API
 		    if(is_array($val) && array_key_exists('user_name', $val)){
 		    	array_push($array, 
 		    		array(
-		    			'streamer' => "www.twitch.tv/".$val['user_name'], 
+		    			'url' => "https://www.twitch.tv/".$val['user_name'],
+		    			'streamer' => $val['user_name'], 
 		    			'title' => $val['title'],
-		    			'logo' => $val['thumbnail_url']
+		    			'logo' => str_replace('-{width}x{height}', "", $val['thumbnail_url'])
 		    		)
 		    	);
 		    }
