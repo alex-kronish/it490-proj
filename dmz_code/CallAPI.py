@@ -32,7 +32,7 @@ def getgameinfo(appid):
     game = requests.get(gameurl)
     gameresp = game.json()
     r = {"operation": "get-game-info"}
-    r.append(gameresp)
+    r.update(gameresp)
     return r
 
 
@@ -121,7 +121,7 @@ def callyoutubesearch(search_string):
                     "url": ("https://youtu.be/" + videoid)}
         tmp.append(tmp_dict)'''
     r = {"operation": "youtube-search"}
-    r.append(search_result)
+    r.update(search_result)
     return r
 
 
@@ -161,7 +161,7 @@ def calltwitchsearch(search_string):
                 }
                 a.append(tmp_dict)'''
             r = {"operation": "twitch-search"}
-            r.append(streams_json)
+            r.update(streams_json)
     return r
 
 
