@@ -1,8 +1,10 @@
 <?php include 'header.php'; ?>
 
 <main role="main">
+
+	<!-- 1st Row: Steam Profile Info -->
 	<div class="row mx-4">
-		<!-- Col 6: Steam Profile Info & Owned Games List (Left half of page) --> 
+		<!-- Col 12: Steam Profile Info & Owned Games List --> 
 		<div class="col-md-12 text-center">
 			<h3 style="color: red;">Welcome, 
 			<?php 
@@ -19,11 +21,13 @@
 		</div>
 	</div>
 
+	<!-- 2nd Row: Games List/Friends List -->
 	<div class="row mx-4 my-5">
+		<!-- Col-6: Games List Section (Left Half of page) -->
 		<div class="col-md-6" >
 			<div class="row my-5">
 				<div class="col-md-12">
-					<h3 style="color: red;">Least Played Games</h3><hr>
+					<h3 class="text-center" style="color: red;">Least Played Games</h3><hr>
 					<div class="games-list shadow rounded bg-white">
 						<?php 
 							if(isset($api))
@@ -40,7 +44,7 @@
 		<div class="col-md-6">
 			<div class="row my-5">
 				<div class="col-md-12">
-					<h3 style="color: red;">Friends</h3><hr>
+					<h3 class="text-center" style="color: red;">Friends</h3><hr>
 					<div class="friend-list shadow rounded bg-white">
 						<?php 
 							if(isset($api))
@@ -51,6 +55,55 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+	
+	<!-- 3rd Row: Match History -->
+	<div class="row mx-4 py-4">
+		<!-- Col 12: Heading -->
+		<div class="col-md-12">
+			<h3 style="color: red;" class="text-center">Match History</h3>
+			<hr>
+		</div>
+
+		<!-- Col 6: Select match result with friend -->
+		<div class="col-md-8">
+			
+				<select id="friend">
+					<?php
+					if(isset($api))
+						foreach($api->get_friends_array() as $friend)
+							echo "<option>".$friend['personaname']."</option>";
+					?>
+				</select>
+				has
+				<select id="outcome">
+					<option>won</option>
+					<option>lost</option>
+				</select>
+				against you
+				<select id="num-matches">
+					<?php 
+					for($i=1; $i <= 10; $i++)
+						echo "<option>".$i."</option>";
+					?>
+				</select>
+				time(s) in matches.
+				<button class="my-2 btn btn-md btn-primary" id="update">Update</button>
+		</div>
+
+		<!-- Col 6: View Match History Ratio -->
+		<div class="col-md-4">
+			<table style="width:100%" class="d-none">
+				<tr>
+					<th style="color: red;">Friend</th>
+					<th style="color: red;">Win/Loss Ratio</th>
+				</tr>
+				<tr>
+					<td id="opponent">Jake</td>
+					<td id="ratio">1:2</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	
@@ -71,7 +124,7 @@
 					success: function(response){
 						$('#game-info').text('').append(response);
 					},
-					error: function($response){
+					error: function(response){
 						$('#game-info').text('').append('Request couldn\'t go through');
 					}
 				});
@@ -85,6 +138,29 @@
 			$('#twitch').click(function(event){
 				var title = $('#prompt-body').text().substring(44).split('?');
 				$(this).attr('href', "../controller/index.php?action=stream-search&search-terms=".concat(title[0]));
+			});
+
+			$('#update').click(function(event){
+				var friend = $('#friend :selected').val();
+				var outcome = $('#outcome :selected').val();
+				var num = $('#num-matches :selected').val();
+				var user = "<?php echo $api->get_user_info_array()[0]['personaname']; ?>"
+				console.log("Log: " + friend +" " + outcome +" " + num + " " + user);
+				var data = "action=match-history&user=" + user + "&outcome=" + outcome + "&friend="+ friend + "&num-matches=" + num;
+				$.ajax({
+					url: 'http://localhost/it490-proj/frontend_code/controller/index.php',
+					type: 'get',
+					data: data,
+					success: function(response){
+						$('#ratio').text(response);
+					},
+					error: function(response){
+						$('#ratio').text('Request couldn\'t go through');
+					}
+				});
+				$('.d-none').attr('class', '');
+				$('#opponent').text(friend);
+
 			});
 		});
 	</script>

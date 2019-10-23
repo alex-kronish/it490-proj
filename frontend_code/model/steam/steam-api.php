@@ -4,12 +4,13 @@ class Steam_API
 {
 	private $STEAM_ID;
 	private $API_KEY = '9DFE29EE9327E1BB13DC6F0C4CD3FEE3';
+	private $RATIO;
 	private $LEAST_PLAYED_GAMES=[];
 	private $FRIEND_LIST=[];
 	private $GAME_INFO=[];
 	private $USER_INFO=[];
 
-	public function __construct($STEAM_ID)
+	public function __construct($STEAM_ID=0)
 	{
 		$this->STEAM_ID = $STEAM_ID;
 	}
@@ -301,6 +302,27 @@ class Steam_API
 		}
 		$tags_html = $tags_html."</span>";
 		return $tags_html;
+	}
+
+/********************************* RabbitMQ Message: Match History ************************************/
+	public function update_match_history($PAYLOAD, $CALLBACK)
+	{
+		$data = json_encode($PAYLOAD);
+		produceMessage($data, 'api', 'hello');
+		consume('match-history', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+			#Remove next line, only for testing!
+			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/match-history.json'), true);
+			$this->RATIO = $response['ratio'];
+			$channel->close();
+			$connection->close();
+			if(is_callable($CALLBACK))
+				call_user_func($CALLBACK, $response);
+		});
+	}
+
+	public function get_ratio()
+	{
+		return $this->RATIO;
 	}
 }
 

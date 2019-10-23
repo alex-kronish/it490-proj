@@ -46,11 +46,11 @@ if($action == 'view-friend-page')
 	$user = $_SESSION['steam-user'];
 	$friend_steam_id = filter_input(INPUT_GET, 'steamid');
 	$api = new Steam_API($friend_steam_id);
-	$api->get_info(function($response){});
+	$api->get_info(function($response)use($api){});
 	$api->get_games_list(function($response) use($api){
 		#delete this after testing with real api
-		//$response = json_decode(file_get_contents('../data/friend-games.json'), true);
-		//$api->json_recurse_games_list($response);
+		$response = json_decode(file_get_contents('../data/friend-games.json'), true);
+		$api->json_recurse_games_list($response);
 	});
 	include '../view/friend-page.php';
 }
@@ -78,7 +78,14 @@ if($action == 'stream-search')
 	include '../view/twitch-search.php';
 }
 
-#Method use for AJAX Calls
+if($action == 'sign-out')
+{
+	session_unset();
+	header('Location: ../view/sign-in.php');
+}
+
+
+#Methods use for AJAX Calls
 if($action == 'request-game-info')
 {
 	$appid = filter_input(INPUT_GET, 'app-id');
@@ -103,10 +110,16 @@ if($action == 'request-game-info')
 			<div id=\"desc\">".$info."</div>";
 }
 
-if($action == 'sign-out')
+if($action == 'match-history')
 {
-	session_unset();
-	header('Location: ../view/sign-in.php');
+	$user = filter_input(INPUT_GET, 'user');
+	$friend = filter_input(INPUT_GET, 'friend');
+	$outcome = filter_input(INPUT_GET, 'outcome');
+	$num_matches = filter_input(INPUT_GET, 'num-matches');
+	$data = array('operation' => 'match-history', 'user' => $user,'friend' => $friend, 'outcome' => $outcome, 'num-matches' => $num_matches);
+	$api = new Steam_API();
+	$api->update_match_history($data, function($response) use($api){
+		echo $api->get_ratio();
+	});
 }
-
 ?>
