@@ -42,15 +42,20 @@ def getgameslist(steamid, apikey, minutes_filter):
     gresp = requests.get(requrl)
     operation = "get-games-list"
     gresp2 = gresp.json()["response"]
-    glist = gresp2["games"]
-    glist_f = []
-    for i in glist:
-        if i["playtime_forever"] <= minutes_filter:  # filter by time played
-            glist_f.append(i)  # this is a way safer way to do this
-    # print(glist_f)
-    resp_dict = {"operation": operation,
-                 "games": glist_f}
-    # print(msg)
+    if "games" not in gresp2:
+        resp_dict = {"operation": operation,
+                     "error": "User's game list is not public",
+                     "games": [None]}
+    else:
+        glist = gresp2["games"]
+        glist_f = []
+        for i in glist:
+            if i["playtime_forever"] <= minutes_filter:  # filter by time played
+                glist_f.append(i)  # this is a way safer way to do this
+        # print(glist_f)
+        resp_dict = {"operation": operation,
+                     "games": glist_f}
+        # print(msg)
     return resp_dict
 
 
@@ -187,7 +192,7 @@ def callback(ch, method, properties, body):
         searchstr = input_msg["game"]
         output_msg = json.dumps(callyoutubesearch(searchstr))
         logmsg = "Youtube API call for game: " + searchstr + " was made"
-    elif op == "twitch-search:":
+    elif op == "twitch-search":
         # searchstr = "Super Mario 64"
         searchstr = input_msg["game"]
         output_msg = json.dumps(calltwitchsearch(searchstr))
@@ -199,7 +204,7 @@ def callback(ch, method, properties, body):
         logmsg = "Steam API Call for single user info was made."
     elif op == "get-game-info":
         appid = input_msg["app-id"]
-        output_msg = getgameinfo(appid)
+        output_msg = json.dumps(getgameinfo(appid))
         logmsg = "Got price info for game, appid = " + appid
     else:
         print("Message was not understood.  " + str(body))
@@ -209,7 +214,7 @@ def callback(ch, method, properties, body):
         }
         output_msg = json.dumps(output_msg_a)
         severity = "Error"
-        logmsg = "Message on the API Queue was not understood. Here is the output: " + json.dumps(body)
+        logmsg = "Message on the API Queue was not understood. Here is the output: " + str(body)
     logtofile(severity, logmsg)
     logtodb(severity, logmsg, '192.168.0.106')
     connection2 = pika.BlockingConnection(
