@@ -9,6 +9,8 @@ class Steam_API
 	private $FRIEND_LIST=[];
 	private $GAME_INFO=[];
 	private $USER_INFO=[];
+	private $MUTUAL_GAMES=[];
+	private $ACHIEVEMENTS=[];
 
 	public function __construct($STEAM_ID=0)
 	{
@@ -145,7 +147,7 @@ class Steam_API
 			{
 				if($this->compare_title($KEY['name'], $LIST)){
 					#<!-- Anchor trigger modal -->
-					#FINISH COLLAPSE BOOTSTRAP FEATURE LATER
+					array_push($this->MUTUAL_GAMES, array('name' => $KEY['name'], 'app-id' => $KEY['appid']));
 					echo
 					"<a class=\"game\" id=\"game".$KEY['appid']."\" data-toggle=\"modal\" data-target=\"#gamemodal\" href=\"#\">
 						<h6 style=\"background-color: #ffd27f; border-bottom: 1px solid black;\">".$KEY['name']."</h6>
@@ -196,6 +198,15 @@ class Steam_API
 		    if(is_array($val) && array_key_exists('steamid', $val)) 
 		        array_push($array, array('steamid' => $val['steamid'], 'personaname' => $val['personaname']));
 		$this->FRIEND_LIST = $array;
+	}
+
+	/* Return array of mutally shared games */
+	public function get_mutal_games_array()
+	{
+		if(count($this->MUTUAL_GAMES) > 0)
+			return $this->MUTUAL_GAMES;
+		else
+			return 'No mutual games found';
 	}
 
 	/* RabbitMQ: Retrieve user info of their Steam profile  */
@@ -302,6 +313,52 @@ class Steam_API
 		}
 		$tags_html = $tags_html."</span>";
 		return $tags_html;
+	}
+
+/********************************* API Request: Leaderboard Game Achievements ************************************/
+	
+	/* RabbitMQ: Get user's achievements based on app-id */
+	public function get_achievements($APPID, $CALLBACK)
+	{
+		$data = array 
+		(
+			'current-user-id' => $this->STEAM_ID,
+			'operation' => 'leaderboard',
+			'app-id' => $APPID
+		);
+		$data = json_encode($data);
+		produceMessage($data, 'api', 'hello');
+		consume('leaderboard', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+			#Remove next line, only for testing!
+			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/achievements.json'), true);
+			$response = $this->json_recurse_achievements($response);
+			$channel->close();
+			$connection->close();
+			if(is_callable($CALLBACK))
+				call_user_func($CALLBACK, $response);
+		});
+	}
+
+	/* Parse JSON for the apiname, and achieved status */
+	public function json_recurse_achievements($PAYLOAD)
+	{
+		$array=[];
+		$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($PAYLOAD),RecursiveIteratorIterator::SELF_FIRST);
+		foreach ($jsonIterator as $key => $val){
+		    if(is_array($val) && array_key_exists('apiname', $val))
+		    	array_push($array, array('name' => $val['apiname'], 'achieved' => strval($val['achieved'])));
+		    else{
+		    	return false;
+		    }
+		}
+		$this->ACHIEVEMENTS = $array;
+		return true;
+	}
+
+	/* Return results (if true) */
+	public function get_achievements_array()
+	{
+		return $this->ACHIEVEMENTS;
 	}
 
 /********************************* RabbitMQ Message: Match History ************************************/

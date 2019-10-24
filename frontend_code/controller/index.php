@@ -122,4 +122,15 @@ if($action == 'match-history')
 		echo $api->get_ratio();
 	});
 }
+
+if($action == 'leaderboard')
+{
+	$steam_id_user = $_SESSION['user']->getSteamID();
+	$steam_id_friend = filter_input(INPUT_GET, 'friend-steam-id');
+	$game_title = filter_input(INPUT_GET, 'game-title');
+	$api = new Steam_API();
+	$api->get_achievements($data, function($response) use($api){
+
+	});
+}
 ?>

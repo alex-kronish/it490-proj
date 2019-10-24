@@ -1,8 +1,8 @@
 <?php include 'header.php'; ?>
 
 <main role="main">
+	<!-- Row 1: Steam Profile Info --> 
 	<div class="row mx-4">
-		<!-- Col 6: Steam Profile Info & Owned Games List (Left half of page) --> 
 		<div class="col-md-12 text-center">
 			<h3 style="color: red;">Welcome, 
 			<?php 
@@ -19,10 +19,11 @@
 		</div>
 	</div>
 
+	<!-- Row 2: Friend's Least Played Games List -->
 	<div class="row mx-4">
-		<div class="col-md-12 mb-5" >
+		<div class="col-md-12 my-5" >
 			<span>
-				<h3 class="text-left" style="color: red;">Least Played Games</h3>
+				<h3 class="text-center" style="color: red;">Least Played Games</h3>
 				<p class="text-right"><b style="color: #ffd27f;">Highlight:</b> Games mutually shared</p>
 				<hr>
 			</span>
@@ -34,6 +35,34 @@
 						echo "No games available.";
 				?>
 			</div>
+		</div>
+	</div>
+
+	<!-- Row 3: Leaderboard Achievement List -->
+	<div class="row mx-4">
+		<!-- Col 12: Heading -->
+		<div class="col-md-12">
+			<h3 style="color: red;" class="text-center">Achievement Leaderboard</h3>
+			<hr>
+		</div>
+
+		<div class="col-md-4 mb-5">
+			<select id="games" onchange="leaderboard()">
+				<?php 
+					foreach($api->get_mutal_games_array() as $key)
+						echo "<option id=\"".$key['app-id']."\">".$key['name']."</option>";
+				?>
+			</select>
+		</div>
+		<div class="col-md-8">
+			<table>
+				<tr>
+					<th>Achievement Name</th>
+					<th>You</th>
+					<th><?php echo $api->get_user_info_array()[0]['personaname']; ?></th>
+				</tr>
+
+			</table>
 		</div>
 	</div>
 	
@@ -70,6 +99,23 @@
 				$(this).attr('href', "../controller/index.php?action=stream-search&search-terms=".concat(title[0]));
 			});
 		});
+
+		function leaderboard(){
+			var game = $('#games :selected').val();
+			var friend = "<?php if(isset($api)) echo $api->get_user_info_array()[0]['steamid']; ?>";
+			var data = "action=leaderboard&game-title=" + game + "&friend-steam-id=" + friend;
+			$.ajax({
+				url: 'http://localhost/it490-proj/frontend_code/controller/index.php',
+				type: 'get',
+				data: data,
+				success: function(response){
+					
+				},
+				error: function(response){
+
+				}
+			});
+		}
 	</script>
 </main><!-- /.container -->
 
