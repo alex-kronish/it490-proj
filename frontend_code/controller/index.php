@@ -125,12 +125,19 @@ if($action == 'match-history')
 
 if($action == 'leaderboard')
 {
-	$steam_id_user = $_SESSION['user']->getSteamID();
+	$current_user = $_SESSION['steam-user'];
+	$steam_id_user = $current_user->get_steam_id();
 	$steam_id_friend = filter_input(INPUT_GET, 'friend-steam-id');
 	$game_title = filter_input(INPUT_GET, 'game-title');
-	$api = new Steam_API();
-	$api->get_achievements($data, function($response) use($api){
-
+	$api = new Steam_API($steam_id_friend);
+	$api->get_achievements($game_title, function($response) use($current_user, $game_title){
+		if($response)
+			$current_user->get_achievements($game_title, function($response) use($current_user){
+				$payload = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/achievements.json'), true);
+				$current_user->json_recurse_achievements($payload);
+			});
 	});
+	$achievement_list = $current_user->compare_achievements_array($current_user->get_achievements_array() ,$api->get_achievements_array());
+	echo json_encode($achievement_list);
 }
 ?>

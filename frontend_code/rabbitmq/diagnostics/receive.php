@@ -92,8 +92,8 @@ $steam->get_info(function($response) use($steam){
 });
 */
 $steam = new Steam_API('123124124123');
-$steam->get_game_info('12345', function($response) use($steam){
-	print_r($steam->get_game_info_array());
+$steam->get_achievements('12345', function($response) use($steam){
+	print_r($steam->get_achievements_array());
 });
 
 ?>	

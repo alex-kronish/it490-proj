@@ -4,7 +4,7 @@
 	<!-- Row 1: Steam Profile Info --> 
 	<div class="row mx-4">
 		<div class="col-md-12 text-center">
-			<h3 style="color: red;">Welcome, 
+			<h3 style="color: red;">Friend: 
 			<?php 
 				if(isset($api))
 					echo $api->get_user_info_array()[0]['personaname'];
@@ -55,13 +55,16 @@
 			</select>
 		</div>
 		<div class="col-md-8">
-			<table>
-				<tr>
-					<th>Achievement Name</th>
-					<th>You</th>
-					<th><?php echo $api->get_user_info_array()[0]['personaname']; ?></th>
-				</tr>
-
+			<table style="width:100%">
+				<thead>
+					<tr>
+						<th>Achievement Name</th>
+						<th>You</th>
+						<th><?php echo $api->get_user_info_array()[0]['personaname']; ?></th>
+					</tr>
+				</thead>
+				<tbody id="tbodyid">	
+				</tbody>
 			</table>
 		</div>
 	</div>
@@ -101,7 +104,7 @@
 		});
 
 		function leaderboard(){
-			var game = $('#games :selected').val();
+			var game = $('#games').children(":selected").attr("id");
 			var friend = "<?php if(isset($api)) echo $api->get_user_info_array()[0]['steamid']; ?>";
 			var data = "action=leaderboard&game-title=" + game + "&friend-steam-id=" + friend;
 			$.ajax({
@@ -109,10 +112,17 @@
 				type: 'get',
 				data: data,
 				success: function(response){
-					
+					console.log('AJAX Response: ' + response);
+					var q = jQuery.parseJSON(response);
+					$('#tbodyid').empty();
+					for(var i = 0; i < q.length; i++){
+						console.log(q[i]);
+						$('#tbodyid').append(q[i]);
+					}
+				
 				},
 				error: function(response){
-
+					console.log("Controller couldn't process request.");
 				}
 			});
 		}

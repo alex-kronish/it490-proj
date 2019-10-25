@@ -17,6 +17,10 @@ class Steam_API
 		$this->STEAM_ID = $STEAM_ID;
 	}
 
+	public function get_steam_id()
+	{
+		return $this->STEAM_ID;
+	}
 
 /**************************** API Request: Getting Games List *******************************/
 
@@ -330,7 +334,7 @@ class Steam_API
 		produceMessage($data, 'api', 'hello');
 		consume('leaderboard', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/achievements.json'), true);
+			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/friend-achievements.json'), true);
 			$response = $this->json_recurse_achievements($response);
 			$channel->close();
 			$connection->close();
@@ -347,7 +351,7 @@ class Steam_API
 		foreach ($jsonIterator as $key => $val){
 		    if(is_array($val) && array_key_exists('apiname', $val))
 		    	array_push($array, array('name' => $val['apiname'], 'achieved' => strval($val['achieved'])));
-		    else{
+		    elseif(is_array($val) && array_key_exists('error', $val)){
 		    	return false;
 		    }
 		}
@@ -359,6 +363,24 @@ class Steam_API
 	public function get_achievements_array()
 	{
 		return $this->ACHIEVEMENTS;
+	}
+
+	/* Return HTML for each achievement and compare between two players */
+	public function compare_achievements_array($P1, $P2)
+	{
+		$array = [];
+		if(count($P1) == count($P2)){
+			for($i = 0; $i < count($P1); $i++){
+				$p1 = $P1[$i]['achieved'] == '1' ? '<td class="text-center" style="color: green;"><b>&#10003;</b></td>' : '<td class="text-center" style="color: red;"><b>&times;</b></td>';
+				$p2 = $P2[$i]['achieved'] == '1' ? '<td class="text-center" style="color: green;"><b>&#10003;</b></td>' : '<td class="text-center" style="color: red;"><b>&times;</b></td>';
+				$html = "<tr style=\"border-bottom: 1px solid black;\"><td>".$P1[$i]['name']."</td>".$p1.$p2."</tr>";
+				array_push($array, $html);
+			}
+			return $array;
+		}
+
+		else
+			echo "<script type=\"text/javascript\">alert('Achievement comparison error!');</script>";	
 	}
 
 /********************************* RabbitMQ Message: Match History ************************************/
