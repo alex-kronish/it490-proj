@@ -38,7 +38,7 @@ def getgameinfo(appid):
 
 def getachievements(apikey, steamid, gameid):
     achurl = 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid='+gameid+\
-        '&key='+apikey+'&steamid='+steamid+'&l=en'
+        '&key='+apikey+'&steamid='+str(steamid)+'&l=en'
     # print(achurl)
     req = requests.get(achurl)
     reqjson = req.json()
@@ -50,16 +50,18 @@ def getachievements(apikey, steamid, gameid):
 
 def getgameslist(steamid, apikey, minutes_filter):
     requrl = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + apikey + \
-             "&steamid=" + steamid + "&format=json&include_appinfo=1"
+             "&steamid=" + str(steamid) + "&format=json&include_appinfo=1"
     gresp = requests.get(requrl)
+    print(requrl)
     operation = "get-games-list"
-    gresp2 = gresp.json()["response"]
-    if "games" not in gresp2:
+    gresp2 = gresp.json()
+    print(gresp2)
+    if not "games" in gresp2["response"]:
         resp_dict = {"operation": operation,
                      "error": "User's game list is not public",
                      "games": [None]}
     else:
-        glist = gresp2["games"]
+        glist = gresp2["response"]["games"]
         glist_f = []
         for i in glist:
             if i["playtime_forever"] <= minutes_filter:  # filter by time played
@@ -73,7 +75,7 @@ def getgameslist(steamid, apikey, minutes_filter):
 
 def getsteamfriends(steamid, apikey, fmt, relationship):
     requrl = "http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=" \
-             + apikey + "&format=" + fmt + "&relationship=" + relationship + "&steamid=" + steamid
+             + apikey + "&format=" + fmt + "&relationship=" + relationship + "&steamid=" + str(steamid)
     resp = requests.get(requrl)
     api_output = resp.json()
     api_friendslist = api_output["friendslist"]

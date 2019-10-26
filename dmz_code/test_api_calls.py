@@ -3,8 +3,6 @@ import requests
 import pika
 
 
-
-
 def callyoutubesearch(search_string):
     apikey = "AIzaSyAhGC7AmQFhunKRWisNPHOn3A0AqG7R8EU"
     u = "https://www.googleapis.com/youtube/v3/search?key=" + apikey + "&part=snippet&q=" + search_string + " Gameplay"
@@ -42,5 +40,30 @@ def calltwitchsearch(search_string):
                 # TO DO: parse the response and pass back a list of usernames, stream url's and titles
 
 
-calltwitchsearch("Yakuza Kiwami")
-callyoutubesearch("Yakuza Kiwami")
+def getgameslist(steamid, apikey, minutes_filter):
+    requrl = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + apikey + \
+             "&steamid=" + str(steamid) + "&format=json&include_appinfo=1"
+    gresp = requests.get(requrl)
+    print(requrl)
+    operation = "get-games-list"
+    gresp2 = gresp.json()
+    print(gresp2)
+    if not "games" in gresp2["response"]:
+        resp_dict = {"operation": operation,
+                     "error": "User's game list is not public",
+                     "games": [None]}
+    else:
+        glist = gresp2["response"]["games"]
+        glist_f = []
+        for i in glist:
+            if i["playtime_forever"] <= minutes_filter:  # filter by time played
+                glist_f.append(i)  # this is a way safer way to do this
+        # print(glist_f)
+        resp_dict = {"operation": operation,
+                     "games": glist_f}
+        # print(msg)
+    return resp_dict
+
+
+t = getgameslist("76561197991305494", "2308E9671CE3A9E02191ED237EA731E0", 600)
+print(json.dumps(t))
