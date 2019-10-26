@@ -14,13 +14,9 @@ if(isset($_POST['user-name']) && isset($_POST['password']))
 	$PASSWORD = filter_input(INPUT_POST, 'password');
 
 	$auth = new Authentication();
-	$result = ($auth->validate($USER_NAME, $PASSWORD)) ? 'true' : 'false';
-
-	if($result == 'true')
-	{
-		$passH = md5($PASSWORD);
-		$auth->verify($USER_NAME, $passH);
-	}
+	//$result = ($auth->validate($USER_NAME, $PASSWORD)) ? 'true' : 'false';
+	$passH = md5($PASSWORD);
+	$auth->verify($USER_NAME, $passH);
 }
 
 else

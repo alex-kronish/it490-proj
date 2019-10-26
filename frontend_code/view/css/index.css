@@ -1,6 +1,8 @@
 body {
   padding-top: 5rem;
   margin-bottom: 60px; /* Margin bottom by footer height */
+  font-family: 'Open Sans', sans-serif;
+
 }
 .starter-template {
   padding: 3rem 1.5rem;
@@ -29,4 +31,29 @@ html {
 
 .nav-item:hover {
 	color: #f7ec72;
+}
+
+.jumbotron .container {
+  max-width: 40rem;
+}
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+.games-list{
+  height: 255px;
+  overflow-y: scroll;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.friend-list{
+  height: 255px;
+  overflow-y: scroll;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+h6 {
+  margin: 0;
+  padding: 2%;
 }
