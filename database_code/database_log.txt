@@ -81,3 +81,27 @@
 2019-10-19 14:50:58.949061 | Info | Login attempt for user kas58 ; result is True  
 2019-10-22 18:43:36.021436 | Info | Database script started: EventLog.py  
 2019-10-22 18:44:07.310428 | Info | Database script started: RegisterAcct.py  
+2019-10-25 18:41:06.765709 | Info | Database script started: RegisterAcct.py  
+2019-10-25 18:41:14.880696 | Info | Database script started: EventLog.py  
+2019-10-25 19:07:55.313777 | Info | Database script started: RegisterAcct.py  
+2019-10-25 19:42:14.015800 | Error | Login attempt for user kevin1995 ; result is False  
+2019-10-25 19:47:36.195380 | Info | Database script started: UserAuth.py  
+2019-10-25 19:49:01.899621 | Error | Login attempt for user kevin1995 ; result is False  
+2019-10-25 19:56:38.972229 | Info | Login attempt for user kas58 ; result is True  
+2019-10-25 20:08:45.780184 | Info | Registration attempt for user faddy ; result is True  
+2019-10-25 20:46:50.740949 | Info | Database script started: MatchHistory.py  
+2019-10-25 20:51:31.924020 | Info | Database script started: MatchHistory.py  
+2019-10-25 20:52:54.764322 | Info | Database script started: MatchHistory.py  
+2019-10-25 20:53:34.599276 | Info | Got match history for : OneHitYouQuit and Paul Walker  
+2019-10-25 20:54:57.749889 | Info | Database script started: MatchHistory.py  
+2019-10-25 20:55:33.086858 | Info | Got match history for : OneHitYouQuit and Rivkeh  
+2019-10-25 20:58:36.304578 | Info | Got match history for : OneHitYouQuit and Dancing Maybeater  
+2019-10-25 21:06:40.602992 | Info | Got match history for : OneHitYouQuit and Slendy  
+2019-10-25 21:08:34.896042 | Info | Got match history for : OneHitYouQuit and DARK NINJA  
+2019-10-25 21:09:10.892673 | Info | Attempted to record match for two users, OneHitYouQuit , Pam's Mom ; result is True  
+2019-10-25 21:12:24.469407 | Info | Attempted to record match for two users, OneHitYouQuit , FlawlessBooty ; result is True  
+2019-10-25 21:12:31.096315 | Info | Got match history for : OneHitYouQuit and FlawlessBooty  
+2019-10-25 21:12:57.894361 | Info | Attempted to record match for two users, OneHitYouQuit , FlawlessBooty ; result is True  
+2019-10-25 21:12:59.759892 | Info | Got match history for : OneHitYouQuit and FlawlessBooty  
+2019-10-25 21:14:10.348350 | Info | Attempted to record match for two users, OneHitYouQuit , FlawlessBooty ; result is True  
+2019-10-25 21:14:11.095785 | Info | Got match history for : OneHitYouQuit and FlawlessBooty  

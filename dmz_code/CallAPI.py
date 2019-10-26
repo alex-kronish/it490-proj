@@ -36,6 +36,18 @@ def getgameinfo(appid):
     return r
 
 
+def getachievements(apikey, steamid, gameid):
+    achurl = 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid='+gameid+\
+        '&key='+apikey+'&steamid='+steamid+'&l=en'
+    # print(achurl)
+    req = requests.get(achurl)
+    reqjson = req.json()
+    # print(reqjson)
+    op = {"operation": "leaderboard"}
+    reqjson.update(op)
+    return reqjson
+
+
 def getgameslist(steamid, apikey, minutes_filter):
     requrl = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + apikey + \
              "&steamid=" + steamid + "&format=json&include_appinfo=1"
@@ -91,7 +103,7 @@ def getsteamfriends(steamid, apikey, fmt, relationship):
 
 def getsteaminfo(steamid, apikey):
     requrl2 = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" \
-              + apikey + "&format=json&steamids=" + steamid
+              + apikey + "&format=json&steamids=" + str(steamid)
     resp2 = requests.get(requrl2)
     user_resp = resp2.json()
     user_resp2 = user_resp["response"]
@@ -140,7 +152,7 @@ def calltwitchsearch(search_string):
     gameidresp = requests.get(gamesearch_url, headers=h)
     gameidresp_json = gameidresp.json()
     if not gameidresp_json["data"]:
-        print("result set is empty")
+        print("result set is empty - could not find game")
         r = {"operation": "twitch-search", "error": "Game was not found"}
     else:
         gameid = gameidresp_json["data"][0]["id"]
@@ -151,20 +163,6 @@ def calltwitchsearch(search_string):
             print("no streams currently, result set is empty")
             r = {"operation": "twitch-search", "error": "No streams active for this game"}
         else:
-            '''a = []
-            for st in streams_json["data"]:
-                username = st["user_name"]
-                thumbnail = st["thumbnail_url"].replace("{width}", "480", 1).replace("{height}", "360", 1)
-                title = st["title"]
-                startedat = st["started_at"]
-                tmp_dict = {
-                    "username": username,
-                    "title": title,
-                    "started-at": startedat,
-                    "thumbnail": thumbnail,
-                    "url": ("https://twitch.tv/" + username)
-                }
-                a.append(tmp_dict)'''
             r = {"operation": "twitch-search"}
             r.update(streams_json)
     return r
@@ -206,6 +204,12 @@ def callback(ch, method, properties, body):
         appid = input_msg["app-id"]
         output_msg = json.dumps(getgameinfo(appid))
         logmsg = "Got price info for game, appid = " + appid
+    elif op == "leaderboard":
+        appid = input_msg["app-id"]
+        apikey = '2308E9671CE3A9E02191ED237EA731E0'
+        steamid = input_msg["current-user-id"]
+        output_msg = json.dumps(getachievements(apikey,steamid,appid))
+        logmsg = "Got achievements for user" + steamid + " for game #" + appid
     else:
         print("Message was not understood.  " + str(body))
         output_msg_a = {
@@ -233,6 +237,8 @@ connection = pika.BlockingConnection(
     pika.ConnectionParameters(host=rmqip, credentials=cred, virtual_host='api'))
 channel = connection.channel()
 channel.queue_declare(queue='hello')
+logtofile("Info", "API script started: CallAPI.py")
+logtodb("Info", "API script started: CallAPI.py", '192.168.0.106')
 channel.basic_consume(
     queue='hello', on_message_callback=callback, auto_ack=True)
 print(' [*] Listening for API Messages. To exit press CTRL+C')

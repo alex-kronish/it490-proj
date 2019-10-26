@@ -27,15 +27,20 @@ def logtodb(severity, msg, ipaddr):
     connection3.close()
 
 
-def recordmatch(game, user1, user2, winner, matchdttm):
-    sql = "INSERT INTO IT490_MATCH_HISTORY (GAME_NAME, USER_ONE, USER_TWO, WINNER, MATCH_DTTM, INSERT_DTTM) VALUES ( " \
-          "%s, %s, %s, %s, %s, CURRENT_TIMESTAMP() ) ; "
+def recordmatch(self, friend, outcome, qty):
+    sql = "INSERT INTO IT490_MATCH_HISTORY (SELF, FRIEND, WINS, LOSSES, INSERT_DTTM) VALUES ( " \
+          "%s, %s, %s, %s, CURRENT_TIMESTAMP() ) ; "
     dbconn = pymysql.connect("localhost", "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
-
+    wins = 0
+    losses = 0
+    if outcome == "won":
+        wins = qty
+    elif outcome == "lost":
+        losses = qty
     c = dbconn.cursor()
     r = False
     try:
-        c.execute(sql, (game, user1, user2, winner, matchdttm))
+        c.execute(sql, (self, friend, wins, losses))
         if c.rowcount == 1:
             dbconn.commit()
             r = True
@@ -45,64 +50,67 @@ def recordmatch(game, user1, user2, winner, matchdttm):
         print(c.Error())
         dbconn.rollback()
         r = False
-    r2 = {"operation": "record-match",
-          "game": game,
-          "result": r}
+    r2 = {"operation": "match-history",
+          "result": str(r)}
     return r2
 
 
-def geteaderboard(steam64id):
-    sql = "SELECT GAME_NAME, USER_ONE, USER_TWO, WINNER, MATCH_DTTM FROM IT490_MATCH_HISTORY WHERE %s in (USER_ONE, " \
-          "USER_TWO) ; "
+def getleaderboard(user, friend):
+    sql = "SELECT SELF, FRIEND, SUM(WINS) AS WINS, SUM(LOSSES) AS LOSSES FROM IT490_MATCH_HISTORY WHERE SELF= %s  " \
+          "AND FRIEND = %s GROUP BY SELF, FRIEND; "
     dbconn = pymysql.connect("localhost", "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
     c = dbconn.cursor()
-    c.execute(sql, (steam64id,))
-    tmp = c.fetchall()
+    c.execute(sql, (user, friend))
+    tmp = c.fetchone()
     if (tmp is None) or (c.rowcount == 0):
-        r = {"operation": "get-leaderboard", "data": [None], "error": "result set is empty"}
+        r = {"operation": "view-history", "current-user": user, "friend": friend, "wins": "0", "losses": "0"}
     else:
-        r2 = []
-        for i in tmp:
-            rowdata = {"game": i[0],
-                       "user-one": i[1],
-                       "user-two": i[2],
-                       "winning-user": i[3],
-                       "match-date": i[4]}
-            r2.append(rowdata)
-        r = {"operation": "get-leaderboard", "data": r2}
+        r = {"operation": "view-history",
+             "current-user": tmp[0],
+             "friend": tmp[1],
+             "wins": str(tmp[2]),
+             "losses": str(tmp[3])}
     c.close()
     dbconn.close()
     return r
 
 
 def callback(ch, method, properties, body):
-    print(" [x] Received %r" % body)
+    # print(" [x] Received %r" % body)
     result = json.loads(body.decode('utf8'))
-    cred2 = pika.PlainCredentials('alex', 'alex')
-    connection2 = pika.BlockingConnection(
-        pika.ConnectionParameters(host=rmqip, credentials=cred2, virtual_host='leaderboard_results'))
-    channel2 = connection2.channel()
-    channel2.queue_declare(queue='hello')
-    if result["operation"] == "record-match":
-        resp = recordmatch(result["game"], result["user-one"], result["user-two"], result["winning-user"],
-                           result["match-dttm"])
+    if result["operation"] == "match-history":
+        resp = recordmatch(result["current-user"], result["friend"], result["outcome"], result["num-matches"])
         if resp["result"]:
             severity = "Info"
         else:
             severity = "Error"
-        logmsg = "Attempted to record match for two users, " + result["user-one"] + " , " + str(
-            result["user-two"]) + " ; result is " + str(resp["result"])
-    elif result["operation"] == "get-leaderboard":
-        resp = geteaderboard(result["steam-id"])
+        logmsg = "Attempted to record match for two users, " + result["current-user"] + " , " + str(
+            result["friend"]) + " ; result is " + str(resp["result"])
+    elif result["operation"] == "view-history":
+        resp = getleaderboard(result["current-user"], result["friend"])
         if "error" in resp:
             severity = "Error"
-            logmsg = "Tried to get match history but there was none. Steam64 id : " + result["steam-id"]
+            logmsg = "Tried to get match history but there was none. Users: " + result["current-user"] + " ; " + \
+                     result["friend"]
         else:
             severity = "Info"
-            logmsg = "Got match history for steam64 id: " + result["steam-id"]
+            logmsg = "Got match history for : " + result["current-user"] + " and " + result["friend"]
     else:
         print("message was not understood")
+        logmsg = "Message on the Queue for Match History was not understood, here is the output: " \
+                 + str(body.decode('utf8'))
+        severity = "Error"
+        resp = {
+            "operation": result["operation"],
+            "error": "Message was not understood"
+        }
+    cred2 = pika.PlainCredentials('alex', 'alex')
+    connection2 = pika.BlockingConnection(
+        pika.ConnectionParameters(host=rmqip, credentials=cred2, virtual_host='match_results'))
+    channel2 = connection2.channel()
+    channel2.queue_declare(queue='hello')
     channel2.basic_publish(exchange='', routing_key='hello', body=json.dumps(resp))
+    print("Published MatchResults message " + result["operation"])
     logtofile(severity, logmsg)
     logtodb(severity, logmsg, '192.168.0.103')
     connection2.close()
@@ -112,7 +120,7 @@ rmqip = '192.168.0.105'
 # rmqip = "192.168.2.124"
 cred = pika.PlainCredentials('alex', 'alex')
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host=rmqip, credentials=cred, virtual_host='leaderboard'))
+    pika.ConnectionParameters(host=rmqip, credentials=cred, virtual_host='match_history'))
 
 channel = connection.channel()
 channel.queue_declare(queue='hello')

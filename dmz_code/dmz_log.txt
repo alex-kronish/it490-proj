@@ -73,3 +73,117 @@
 2019-10-22 21:13:33.738005 | Info | Twitch API call for game: Super Mario 64 was made  
 2019-10-22 21:17:39.432492 | Info | Youtube API call for game: marvel,avengers was made  
 2019-10-22 21:17:58.423211 | Info | Youtube API call for game: marvel,avengers was made  
+2019-10-25 19:12:23.251650 | Info | API script started: CallAPI.py  
+2019-10-25 19:12:23.764144 | Info | Twitch API call for game: Super Mario 64 was made  
+2019-10-25 19:12:38.928302 | Info | Twitch API call for game: Super Mario 64 was made  
+2019-10-25 19:14:48.811264 | Info | Youtube API call for game: bojack,horseman was made  
+2019-10-25 19:15:05.008287 | Info | Youtube API call for game: bojack,horseman was made  
+2019-10-25 19:15:18.227251 | Info | Youtube API call for game: bojack,horseman was made  
+2019-10-25 19:18:40.694973 | Info | API script started: CallAPI.py  
+2019-10-25 19:21:23.634725 | Info | API script started: CallAPI.py  
+2019-10-25 19:21:30.028628 | Info | Got achievements for user76561198100918883 for game #620  
+2019-10-25 19:28:21.733048 | Info | API script started: CallAPI.py  
+2019-10-25 19:28:31.673514 | Info | Got achievements for user76561198100918883 for game #620  
+2019-10-25 19:29:17.645288 | Info | Got achievements for user76561198100918883 for game #620  
+2019-10-25 19:29:49.491426 | Info | Got achievements for user76561198100918883 for game #620  
+2019-10-25 19:30:40.256629 | Info | Got achievements for user76561198100918883 for game #620  
+2019-10-25 19:31:17.282599 | Info | API script started: CallAPI.py  
+2019-10-25 19:32:03.405597 | Info | Got achievements for user76561198100918883 for game #620  
+2019-10-25 19:41:06.287969 | Info | Got achievements for user76561198100918883 for game #10  
+2019-10-25 19:57:17.628371 | Info | Youtube API call for game: blizzard,china was made  
+2019-10-25 19:59:27.267607 | Info | API script started: CallAPI.py  
+2019-10-25 20:01:27.254056 | Info | API script started: CallAPI.py  
+2019-10-25 20:02:53.721428 | Info | Twitch API call for game: dota 2 was made  
+2019-10-25 20:03:53.390113 | Info | Twitch API call for game: dota 2 was made  
+2019-10-25 20:06:00.801343 | Info | API script started: CallAPI.py  
+2019-10-25 20:06:32.498986 | Info | Twitch API call for game: dota 2 was made  
+2019-10-25 20:06:39.713318 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:07:38.689235 | Info | Twitch API call for game: dota 2 was made  
+2019-10-25 20:08:53.495808 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:10:40.808082 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:10:41.093122 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:12:11.462717 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:12:11.747788 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:12:12.930853 | Info | Steam API call to get friends list was made.  
+2019-10-25 20:13:15.913386 | Error | Message on the API Queue was not understood. Here is the output: b'{"operation":"match-history","user":"OneHitYouQuit","friend":"LazyBones","outcome":"lost","num-matches":"10"}'  
+2019-10-25 20:19:35.134984 | Info | Got price info for game, appid = 363440  
+2019-10-25 20:20:03.347838 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:20:03.662747 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:20:04.383711 | Info | Steam API call to get friends list was made.  
+2019-10-25 20:20:09.637916 | Info | Got price info for game, appid = 8930  
+2019-10-25 20:20:17.051779 | Info | Got price info for game, appid = 65700  
+2019-10-25 20:20:23.865135 | Info | Youtube API call for game: Single-player was made  
+2019-10-25 20:21:53.356958 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:21:53.745998 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:21:54.275605 | Info | Steam API call to get friends list was made.  
+2019-10-25 20:22:03.394565 | Info | Got price info for game, appid = 220440  
+2019-10-25 20:22:09.299621 | Info | Youtube API call for game: Steam,Trading,Cards was made  
+2019-10-25 20:22:22.108652 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:22:22.410710 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:22:22.868694 | Info | Steam API call to get friends list was made.  
+2019-10-25 20:22:28.657120 | Info | Got price info for game, appid = 287700  
+2019-10-25 20:22:33.261201 | Info | Youtube API call for game: METAL,GEAR,SOLID,V:,THE,PHANTOM,PAIN was made  
+2019-10-25 20:22:45.660462 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:22:46.004935 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:22:46.370057 | Info | Steam API call to get friends list was made.  
+2019-10-25 20:22:54.460948 | Info | Got price info for game, appid = 213610  
+2019-10-25 20:22:57.710032 | Info | Twitch API call for game: Sonic Adventure™ 2 was made  
+2019-10-25 20:25:12.827349 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:25:13.253501 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:28:59.985737 | Info | API script started: CallAPI.py  
+2019-10-25 20:37:21.060405 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:37:21.425758 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:37:22.078650 | Info | Steam API call to get friends list was made.  
+2019-10-25 20:37:25.573984 | Info | Got price info for game, appid = 100  
+2019-10-25 20:37:39.062805 | Info | Youtube API call for game: Valve,Anti-Cheat,enabled was made  
+2019-10-25 20:37:46.215602 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:37:46.517082 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:37:47.134704 | Info | Steam API call to get friends list was made.  
+2019-10-25 20:37:51.748454 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:37:52.060855 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:38:09.206180 | Info | Got price info for game, appid = 65720  
+2019-10-25 20:38:29.469280 | Info | Got price info for game, appid = 44350  
+2019-10-25 20:38:37.898871 | Info | Got price info for game, appid = 65700  
+2019-10-25 20:38:41.635363 | Info | Got price info for game, appid = 225260  
+2019-10-25 20:38:44.631560 | Info | Got price info for game, appid = 33900  
+2019-10-25 20:38:48.835117 | Info | Got price info for game, appid = 240  
+2019-10-25 20:38:51.744853 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:38:51.965408 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:38:59.282570 | Info | Got price info for game, appid = 19900  
+2019-10-25 20:39:03.855747 | Info | Got price info for game, appid = 22370  
+2019-10-25 20:39:07.913464 | Info | Got price info for game, appid = 19900  
+2019-10-25 20:51:40.875628 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:51:41.095065 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:52:14.506141 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:52:14.796310 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:52:15.498033 | Info | Steam API call to get friends list was made.  
+2019-10-25 20:53:12.508159 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:53:12.777462 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:53:13.272526 | Info | Steam API call to get friends list was made.  
+2019-10-25 20:53:13.865971 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:53:14.100257 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:53:14.490836 | Info | Steam API call to get friends list was made.  
+2019-10-25 20:55:00.315579 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:55:00.548352 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:55:00.998019 | Info | Steam API call to get friends list was made.  
+2019-10-25 20:56:57.660536 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:56:57.888186 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:56:58.317442 | Info | Steam API call to get friends list was made.  
+2019-10-25 20:58:30.771206 | Info | Steam API Call for single user info was made.  
+2019-10-25 20:58:31.099920 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 20:58:31.554992 | Info | Steam API call to get friends list was made.  
+2019-10-25 21:00:27.698699 | Info | Steam API Call for single user info was made.  
+2019-10-25 21:00:27.909160 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 21:00:28.328095 | Info | Steam API call to get friends list was made.  
+2019-10-25 21:00:31.610012 | Info | Steam API Call for single user info was made.  
+2019-10-25 21:00:31.811201 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 21:00:32.297117 | Info | Steam API call to get friends list was made.  
+2019-10-25 21:06:30.257039 | Info | Steam API Call for single user info was made.  
+2019-10-25 21:06:30.532339 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 21:06:30.979726 | Info | Steam API call to get friends list was made.  
+2019-10-25 21:08:28.659818 | Info | Steam API Call for single user info was made.  
+2019-10-25 21:08:28.868575 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 21:08:29.499442 | Info | Steam API call to get friends list was made.  
+2019-10-25 21:11:31.776409 | Info | Steam API Call for single user info was made.  
+2019-10-25 21:11:32.078628 | Info | Steam API call to get games list was made. Filter condition less than 600 minutes played  
+2019-10-25 21:11:32.504507 | Info | Steam API call to get friends list was made.  

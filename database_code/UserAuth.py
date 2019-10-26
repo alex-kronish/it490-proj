@@ -68,6 +68,7 @@ def registeracct(u, p, e, s):
 
 
 def attemptlogin(u, p):
+    print("LOGIN")
     loginsql = "SELECT USER_NAME, USER_PASS, STEAM64_ID FROM IT490_USERS U JOIN IT490_STEAM_USER S on S.USER_ID = " \
                "U.USER_ID WHERE USER_NAME = %s ; "
     dbconn = pymysql.connect("localhost", "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
@@ -76,19 +77,20 @@ def attemptlogin(u, p):
     tmp = c.fetchone()
     if tmp is None:
         return -1
-
     tmp_pass = tmp[1]
     v = (p == tmp_pass)
+    if not v:
+        return -1
     steamid = tmp[2]
     c.close()
     dbconn.close()
-    print(v)
-    print(steamid)
+    #print(v)
+    #print(steamid)
     return steamid
 
 
 def callback(ch, method, properties, body):
-    print(" [x] Received %r" % body)
+    #print(" [x] Received %r" % body)
     result = json.loads(body.decode('utf8'))
     cred2 = pika.PlainCredentials('alex', 'alex')
     connection2 = pika.BlockingConnection(
@@ -146,8 +148,8 @@ channel = connection.channel()
 channel.queue_declare(queue='hello')
 channel.basic_consume(
     queue='hello', on_message_callback=callback, auto_ack=True)
-logtofile("Info", "Database script started: RegisterAcct.py")
-logtodb("Info", "Database script started: RegisterAcct.py", '192.168.0.103')
+logtofile("Info", "Database script started: UserAuth.py")
+logtodb("Info", "Database script started: UserAuth.py", '192.168.0.103')
 
 print(' [*] Listening for Authentication Messages. To exit press CTRL+C')
 channel.start_consuming()
