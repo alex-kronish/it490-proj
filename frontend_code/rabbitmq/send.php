@@ -18,7 +18,7 @@ function publishMessage($JSON)
 	$connection->close();
 }
 
-/*
+
 function produceMessage($JSON, $VHOST, $QUEUE)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -31,8 +31,8 @@ function produceMessage($JSON, $VHOST, $QUEUE)
 	$channel->close();
 	$connection->close();
 }
-*/
 
+/*
 function produceMessage($JSON, $VHOST, $QUEUE)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -45,6 +45,6 @@ function produceMessage($JSON, $VHOST, $QUEUE)
 	$channel->close();
 	$connection->close();
 }
-
+*/
 
 ?>

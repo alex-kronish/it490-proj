@@ -38,9 +38,9 @@ class Steam_API
 		
 		$data = json_encode($data);
 		produceMessage($data, 'api', 'hello');
-		consume('get-games-list', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+		consume('get-games-list', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/games.json'), true);
+			//$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/games.json'), true);
 			if(!array_key_exists('error', $response))
 				$this->json_recurse_games_list($response);
 			else echo "<script type=text/javascript> alert('Games list is set private.'); </script>";
@@ -126,9 +126,9 @@ class Steam_API
 
 		$data = json_encode($data);
 		produceMessage($data, 'api', 'hello');
-		consume('get-friends-list', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+		consume('get-friends-list', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/friend-list.json'), true);
+			//$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/friend-list.json'), true);
 			$this->json_recurse_friend_list($response);
 			$channel->close();
 			$connection->close();
@@ -224,9 +224,9 @@ class Steam_API
 		);
 		$data = json_encode($data);
 		produceMessage($data, 'api', 'hello');
-		consume('get-steam-info', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+		consume('get-steam-info', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/user-info.json'), true);
+			//$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/user-info.json'), true);
 			$this->json_recurse_user_info($response);
 			$channel->close();
 			$connection->close();
@@ -270,9 +270,9 @@ class Steam_API
 		);
 		$data = json_encode($data);
 		produceMessage($data, 'api', 'hello');
-		consume('get-game-info', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+		consume('get-game-info', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/game-discounts.json'), true);
+			//$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/game-discounts.json'), true);
 			$this->json_recurse_game_info($response);
 			$channel->close();
 			$connection->close();
@@ -332,9 +332,9 @@ class Steam_API
 		);
 		$data = json_encode($data);
 		produceMessage($data, 'api', 'hello');
-		consume('leaderboard', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+		consume('leaderboard', 'api_response', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/friend-achievements.json'), true);
+			//$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/friend-achievements.json'), true);
 			$response = $this->json_recurse_achievements($response);
 			$channel->close();
 			$connection->close();
@@ -350,7 +350,7 @@ class Steam_API
 		$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($PAYLOAD),RecursiveIteratorIterator::SELF_FIRST);
 		foreach ($jsonIterator as $key => $val){
 		    if(is_array($val) && array_key_exists('apiname', $val))
-		    	array_push($array, array('name' => $val['apiname'], 'achieved' => strval($val['achieved'])));
+		    	array_push($array, array('name' => $val['apiname'], 'achieved' => strval($val['achieved']), 'description' => $val['description']));
 		    elseif(is_array($val) && array_key_exists('error', $val)){
 		    	return false;
 		    }
@@ -387,10 +387,11 @@ class Steam_API
 	public function update_match_history($PAYLOAD, $CALLBACK)
 	{
 		$data = json_encode($PAYLOAD);
-		produceMessage($data, 'api', 'hello');
-		consume('match-history', 'api', 'hello', function($response, $channel, $connection) use($CALLBACK){
+		produceMessage($data, 'match_history', 'hello');
+		consume('match-history', 'match_results', 'hello', function($response, $channel, $connection) use($CALLBACK){
 			#Remove next line, only for testing!
-			$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/match-history.json'), true);
+			//$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/match-history.json'), true);
+			//$response['result'] == true/false
 			$this->RATIO = $response['ratio'];
 			$channel->close();
 			$connection->close();
@@ -402,6 +403,20 @@ class Steam_API
 	public function get_ratio()
 	{
 		return $this->RATIO;
+	}
+
+	public function view_match_history($PAYLOAD, $CALLBACK)
+	{
+		$data = json_encode($PAYLOAD);
+		produceMessage($data, 'match_history', 'hello');
+		consume('view-history', 'match_results', 'hello', function($response, $channel, $connection) use($CALLBACK){
+			#Remove next line, only for testing!
+			//$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/match-history.json'), true);
+			$channel->close();
+			$connection->close();
+			if(is_callable($CALLBACK))
+				call_user_func($CALLBACK, $response);
+		});
 	}
 }
 

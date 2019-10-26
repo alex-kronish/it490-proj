@@ -31,7 +31,7 @@ function consumeMessage($OPERATION, $CALLBACK)
 	$connection->close();
 }
 
-/* Do not git commit code below until you've tested it properly. 
+/* Do not git commit code below until you've tested it properly. */
 function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -58,8 +58,8 @@ function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 	$channel->close();
 	$connection->close();
 }
-*/
-/* For local testing only */
+
+/* For local testing only
 function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -87,4 +87,5 @@ function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 	$connection->close();
 }
 
+*/
 ?>	

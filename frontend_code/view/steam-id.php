@@ -90,6 +90,7 @@
 				</select>
 				time(s) in matches.
 				<button class="my-2 btn btn-md btn-primary" id="update">Update</button>
+				<button class="my-2 btn btn-md btn-warning" id="view">View History</button>
 		</div>
 
 		<!-- Col 6: View Match History Ratio -->
@@ -147,6 +148,27 @@
 				var user = "<?php echo $api->get_user_info_array()[0]['personaname']; ?>"
 				console.log("Log: " + friend +" " + outcome +" " + num + " " + user);
 				var data = "action=match-history&user=" + user + "&outcome=" + outcome + "&friend="+ friend + "&num-matches=" + num;
+				$.ajax({
+					url: 'http://localhost/it490-proj/frontend_code/controller/index.php',
+					type: 'get',
+					data: data,
+					success: function(response){
+						//$('#ratio').text(response);
+					},
+					error: function(response){
+						//$('#ratio').text('Request couldn\'t go through');
+					}
+				});
+				//$('.d-none').attr('class', '');
+				$('#opponent').text(friend);
+
+			});
+
+			$('#view').click(function(event){
+				var friend = $('#friend :selected').val();
+				var user = "<?php echo $api->get_user_info_array()[0]['personaname']; ?>"
+				console.log("Log: " + friend +" " + user);
+				var data = "action=view-history&user=" + user + "&friend="+ friend;
 				$.ajax({
 					url: 'http://localhost/it490-proj/frontend_code/controller/index.php',
 					type: 'get',

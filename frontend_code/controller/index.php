@@ -32,8 +32,8 @@ if($action == 'view-home')
 
 if($action == 'view-steam-id')
 {
-	//$api = new Steam_API($_SESSION['user']->getSteamID());
-	$api = new Steam_API('76561198100918883');
+	$api = new Steam_API($_SESSION['user']->getSteamID());
+	//$api = new Steam_API('76561198100918883');
 	$api->get_info(function($response){});
 	$api->get_games_list(function($response){});
 	$api->get_friends_list(function($response){});
@@ -49,7 +49,7 @@ if($action == 'view-friend-page')
 	$api->get_info(function($response)use($api){});
 	$api->get_games_list(function($response) use($api){
 		#delete this after testing with real api
-		$response = json_decode(file_get_contents('../data/friend-games.json'), true);
+		//$response = json_decode(file_get_contents('../data/friend-games.json'), true);
 		$api->json_recurse_games_list($response);
 	});
 	include '../view/friend-page.php';
@@ -72,7 +72,6 @@ if($action == 'view-twitch-search')
 if($action == 'stream-search')
 {
 	$terms = filter_input(INPUT_GET, 'search-terms');
-	$terms = explode(' ', $terms);
 	$api = new Twitch_API();
 	$api->get_stream_results($terms, function($response){});
 	include '../view/twitch-search.php';
@@ -89,8 +88,8 @@ if($action == 'sign-out')
 if($action == 'request-game-info')
 {
 	$appid = filter_input(INPUT_GET, 'app-id');
-	#$steamid = $_SESSION['user']->getSteamID();
-	$api = new Steam_API('76561198100918883');
+	$steamid = $_SESSION['user']->getSteamID();
+	$api = new Steam_API($steamid);
 	$api->get_game_info($appid, function($response){});
 	$info = $api->get_game_info_array()['info'][0]['description'];
 	$discount = $api->get_game_info_array()['info'][0]['discount'];
@@ -116,10 +115,22 @@ if($action == 'match-history')
 	$friend = filter_input(INPUT_GET, 'friend');
 	$outcome = filter_input(INPUT_GET, 'outcome');
 	$num_matches = filter_input(INPUT_GET, 'num-matches');
-	$data = array('operation' => 'match-history', 'user' => $user,'friend' => $friend, 'outcome' => $outcome, 'num-matches' => $num_matches);
+	$data = array('operation' => 'match-history', 'current-user' => $user,'friend' => $friend, 'outcome' => $outcome, 'num-matches' => $num_matches);
 	$api = new Steam_API();
 	$api->update_match_history($data, function($response) use($api){
 		echo $api->get_ratio();
+	});
+}
+
+if($action == 'view-history')
+{
+	$user = filter_input(INPUT_GET, 'user');
+	$friend = filter_input(INPUT_GET, 'friend');
+	$api = new Steam_API();
+	$data = array('operation' => 'view-history', 'current-user' => $user, 'friend' => $friend);
+	$api->view_match_history($data, function($response){
+		$ratio = 'Wins: '.$response['wins'].' Losses: '. $response['losses'];
+		echo $ratio;
 	});
 }
 
@@ -140,4 +151,6 @@ if($action == 'leaderboard')
 	$achievement_list = $current_user->compare_achievements_array($current_user->get_achievements_array() ,$api->get_achievements_array());
 	echo json_encode($achievement_list);
 }
+
+
 ?>

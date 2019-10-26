@@ -7,7 +7,7 @@ require_once '/var/www/html/it490-proj/frontend_code/model/steam/steam-api.php';
 require_once '/var/www/html/it490-proj/frontend_code/model/twitch/twitch-api.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
-/* Do not git commit code below until you've tested it properly. 
+/* Do not git commit code below until you've tested it properly. */
 function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -16,7 +16,7 @@ function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 	$channel->queue_declare($QUEUE, false, false, false, false);
 
 	$parameters = [$OPERATION, $CALLBACK, $channel, $connection];
-
+	echo "[*] Waiting for messages";
 	$callback = function ($msg) use ($parameters) {
 		$payload = json_decode($msg->body, true);
 		if($payload['operation'] == $parameters[0])
@@ -35,9 +35,8 @@ function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 	$connection->close();
 }
 
-*/
 
-/* For local testing only */
+/* For local testing only 
 function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 {
 	#cred: ip-address, port, username, password, vhost
@@ -63,14 +62,14 @@ function consume($OPERATION, $VHOST, $QUEUE, $CALLBACK)
 
 	$channel->close();
 	$connection->close();
-}
+} */
 
-/*
+
 $youtube = new YouTube_API();
 $youtube->get_search_results(array('information', 'technology'), function($response) use($youtube){
 	print_r($youtube->get_search_results_array());
 });
-
+/*
 $twitch = new Twitch_API();
 $twitch->get_stream_results('Super Mario 64', function($response) use($twitch){
 	print_r($twitch->get_stream_results_array());
@@ -90,10 +89,10 @@ $steam = new Steam_API('123124124123');
 $steam->get_info(function($response) use($steam){
 	print_r($steam->get_user_info_array());
 });
-*/
+
 $steam = new Steam_API('123124124123');
 $steam->get_achievements('12345', function($response) use($steam){
 	print_r($steam->get_achievements_array());
 });
-
+*/
 ?>	

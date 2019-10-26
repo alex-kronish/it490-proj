@@ -116,6 +116,11 @@ class Authentication
 				$_SESSION['user'] = $user;
 				header('Location: ../controller/index.php?action=view-home');
 			}
+			else{
+				$channel->close();
+				$connection->close();
+				header('Location: ../view/sign-in.php');
+			}
 		});
 	}
 
@@ -132,17 +137,22 @@ class Authentication
 		produceMessage($payload, 'authentication', 'hello');
 		consumeMessage('register', function($response, $channel, $connection) use ($data){	
 
-			if($response['result'] == 'True'){
+			if($response['result'] == 'True' || $response['result'] == 'true' || $response['result'] == '1'){
 				$channel->close();
 				$connection->close();
 				$user = new User($data['username'], $data['email'], $data['steam-id']);
 				$_SESSION['user'] = $user;
 				header('Location: ../controller/index.php?action=view-home');
 			}
+			else{
+				$channel->close();
+				$connection->close();
+				header('Location: ../view/register.php');
+			}
+
 		});
 		//$result = consumeMessage('register');
 		//return $result['email'].' is your email address';
-		
 	}
 
 	public function validateEmpty($DATA)
