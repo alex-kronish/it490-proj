@@ -67,14 +67,14 @@ class YouTube_API
 
 			$html_string = 
 			"<div class=\"col-md-3\">
-				<a href=\"".$youtube_link."\">
+				<a href=\"".$youtube_link."\" target=\"_blank\">
 					<div class=\"card mb-4 box-shadow\">
 						<img class=\"card-img-top\" alt=\"Card image cap\" src=\" ".$thumbnail."\" 
 						>
 						<div class=\"card-body\">
 							<p class=\"card-text\">".$title."</p>
 							<div class=\"d-flex justify-content-between align-items-center\">
-								<small class=\"text-muted\">9 mins</small>
+								<small class=\"text-muted\"></small>
 							</div>
 						</div>
 					</div>

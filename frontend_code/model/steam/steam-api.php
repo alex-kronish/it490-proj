@@ -350,7 +350,7 @@ class Steam_API
 		$jsonIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($PAYLOAD),RecursiveIteratorIterator::SELF_FIRST);
 		foreach ($jsonIterator as $key => $val){
 		    if(is_array($val) && array_key_exists('apiname', $val))
-		    	array_push($array, array('name' => $val['apiname'], 'achieved' => strval($val['achieved']), 'description' => $val['description']));
+		    	array_push($array, array('name' => $val['name'], 'achieved' => strval($val['achieved']), 'description' => $val['description']));
 		    elseif(is_array($val) && array_key_exists('error', $val)){
 		    	return false;
 		    }

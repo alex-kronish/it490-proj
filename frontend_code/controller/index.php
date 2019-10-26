@@ -50,7 +50,7 @@ if($action == 'view-friend-page')
 	$api->get_games_list(function($response) use($api){
 		#delete this after testing with real api
 		//$response = json_decode(file_get_contents('../data/friend-games.json'), true);
-		$api->json_recurse_games_list($response);
+		//$api->json_recurse_games_list($response);
 	});
 	include '../view/friend-page.php';
 }
@@ -144,8 +144,8 @@ if($action == 'leaderboard')
 	$api->get_achievements($game_title, function($response) use($current_user, $game_title){
 		if($response)
 			$current_user->get_achievements($game_title, function($response) use($current_user){
-				$payload = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/achievements.json'), true);
-				$current_user->json_recurse_achievements($payload);
+				//$payload = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/achievements.json'), true);
+				//$current_user->json_recurse_achievements($response);
 			});
 	});
 	$achievement_list = $current_user->compare_achievements_array($current_user->get_achievements_array() ,$api->get_achievements_array());
