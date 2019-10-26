@@ -11,14 +11,16 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	<link rel="icon" href="images/favicon.ico">
+	<link rel="icon" href="/images/favicon.ico">
 	<link type="text/css" href="../view/css/index.css" rel="stylesheet">
 	<title>Mystery Steam Theater</title>
 </head>
 <body>
 
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-		<a class="navbar-brand" href="#">Steam Theater</a>
+	<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #6441A5;">
+		<a class="navbar-brand" href="../controller/index.php?action=view-home">
+    		<img src="../view/images/game-controller.png" width="30" height="30" class="d-inline-block align-top"> Mystery Theater
+  		</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -26,27 +28,21 @@
 		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active" id="home">
-					<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+					<a class="nav-link" href="../controller/index.php?action=view-home">Home <span class="sr-only">(current)</span></a>
 				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="#">Link</a>
+				<li class="nav-item" id="steam">
+					<a class="nav-link" href="../controller/index.php?action=view-steam-id">Steam</a>
 				</li>
 				<li class="nav-item" id="youtube-search">
 					<a class="nav-link" href="../controller/index.php?action=view-youtube-search">Youtube Search</a>
 				</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-					<div class="dropdown-menu" aria-labelledby="dropdown01">
-						<a class="dropdown-item" href="#">Action</a>
-						<a class="dropdown-item" href="#">Another action</a>
-						<a class="dropdown-item" href="#">Something else here</a>
-					</div>
+				<li class="nav-item" id="twitch-search">
+					<a class="nav-link" href="../controller/index.php?action=view-twitch-search">Twitch Search</a>
+				</li>
+				<li class="nav-item" id="sign-out">
+					<a class="nav-link pull-right" href="../controller/index.php?action=sign-out">Sign Out</a>
 				</li>
 			</ul>
-			<form class="form-inline my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-			</form>
 		</div>
 	</nav>
 
