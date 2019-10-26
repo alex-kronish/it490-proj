@@ -79,3 +79,57 @@
 2019-10-19 14:46:17.474405 | Info | Login attempt for user kas58 ; result is True  
 2019-10-19 14:48:55.868186 | Info | Registration attempt for user kas58 ; result is True  
 2019-10-19 14:50:58.949061 | Info | Login attempt for user kas58 ; result is True  
+2019-10-22 18:43:36.021436 | Info | Database script started: EventLog.py  
+2019-10-22 18:44:07.310428 | Info | Database script started: RegisterAcct.py  
+2019-10-25 18:41:06.765709 | Info | Database script started: RegisterAcct.py  
+2019-10-25 18:41:14.880696 | Info | Database script started: EventLog.py  
+2019-10-25 19:07:55.313777 | Info | Database script started: RegisterAcct.py  
+2019-10-25 19:42:14.015800 | Error | Login attempt for user kevin1995 ; result is False  
+2019-10-25 19:47:36.195380 | Info | Database script started: UserAuth.py  
+2019-10-25 19:49:01.899621 | Error | Login attempt for user kevin1995 ; result is False  
+2019-10-25 19:56:38.972229 | Info | Login attempt for user kas58 ; result is True  
+2019-10-25 20:08:45.780184 | Info | Registration attempt for user faddy ; result is True  
+2019-10-25 20:46:50.740949 | Info | Database script started: MatchHistory.py  
+2019-10-25 20:51:31.924020 | Info | Database script started: MatchHistory.py  
+2019-10-25 20:52:54.764322 | Info | Database script started: MatchHistory.py  
+2019-10-25 20:53:34.599276 | Info | Got match history for : OneHitYouQuit and Paul Walker  
+2019-10-25 20:54:57.749889 | Info | Database script started: MatchHistory.py  
+2019-10-25 20:55:33.086858 | Info | Got match history for : OneHitYouQuit and Rivkeh  
+2019-10-25 20:58:36.304578 | Info | Got match history for : OneHitYouQuit and Dancing Maybeater  
+2019-10-25 21:06:40.602992 | Info | Got match history for : OneHitYouQuit and Slendy  
+2019-10-25 21:08:34.896042 | Info | Got match history for : OneHitYouQuit and DARK NINJA  
+2019-10-25 21:09:10.892673 | Info | Attempted to record match for two users, OneHitYouQuit , Pam's Mom ; result is True  
+2019-10-25 21:12:24.469407 | Info | Attempted to record match for two users, OneHitYouQuit , FlawlessBooty ; result is True  
+2019-10-25 21:12:31.096315 | Info | Got match history for : OneHitYouQuit and FlawlessBooty  
+2019-10-25 21:12:57.894361 | Info | Attempted to record match for two users, OneHitYouQuit , FlawlessBooty ; result is True  
+2019-10-25 21:12:59.759892 | Info | Got match history for : OneHitYouQuit and FlawlessBooty  
+2019-10-25 21:14:10.348350 | Info | Attempted to record match for two users, OneHitYouQuit , FlawlessBooty ; result is True  
+2019-10-25 21:14:11.095785 | Info | Got match history for : OneHitYouQuit and FlawlessBooty  
+2019-10-26 12:24:39.300520 | Info | Database script started: UserAuth.py  
+2019-10-26 12:24:51.507981 | Info | Database script started: EventLog.py  
+2019-10-26 12:25:32.226877 | Info | Database script started: MatchHistory.py  
+2019-10-26 12:25:38.806349 | Info | Login attempt for user faddy ; result is True  
+2019-10-26 12:42:22.996782 | Info | Login attempt for user faddy ; result is True  
+2019-10-26 12:51:01.343390 | Info | Login attempt for user faddy ; result is True  
+2019-10-26 12:53:00.729150 | Info | Login attempt for user faddy ; result is True  
+2019-10-26 12:54:27.528434 | Info | Attempted to record match for two users, OneHitYouQuit , Deathspawn9154 ; result is True  
+2019-10-26 12:54:30.616312 | Info | Got match history for : OneHitYouQuit and Deathspawn9154  
+2019-10-26 12:54:34.883764 | Info | Attempted to record match for two users, OneHitYouQuit , Deathspawn9154 ; result is True  
+2019-10-26 12:54:35.531842 | Info | Attempted to record match for two users, OneHitYouQuit , Deathspawn9154 ; result is True  
+2019-10-26 12:54:36.010259 | Info | Attempted to record match for two users, OneHitYouQuit , Deathspawn9154 ; result is True  
+2019-10-26 12:54:36.421211 | Info | Attempted to record match for two users, OneHitYouQuit , Deathspawn9154 ; result is True  
+2019-10-26 12:54:36.799702 | Info | Attempted to record match for two users, OneHitYouQuit , Deathspawn9154 ; result is True  
+2019-10-26 12:54:37.097294 | Info | Attempted to record match for two users, OneHitYouQuit , Deathspawn9154 ; result is True  
+2019-10-26 12:54:37.512451 | Info | Attempted to record match for two users, OneHitYouQuit , Deathspawn9154 ; result is True  
+2019-10-26 12:54:37.755239 | Info | Attempted to record match for two users, OneHitYouQuit , Deathspawn9154 ; result is True  
+2019-10-26 12:54:38.072190 | Info | Attempted to record match for two users, OneHitYouQuit , Deathspawn9154 ; result is True  
+2019-10-26 12:54:39.201623 | Info | Got match history for : OneHitYouQuit and Deathspawn9154  
+2019-10-26 12:54:40.770677 | Info | Attempted to record match for two users, OneHitYouQuit , Deathspawn9154 ; result is True  
+2019-10-26 12:54:40.873792 | Info | Attempted to record match for two users, OneHitYouQuit , Deathspawn9154 ; result is True  
+2019-10-26 12:54:41.685823 | Info | Got match history for : OneHitYouQuit and Deathspawn9154  
+2019-10-26 13:14:55.698618 | Info | Registration attempt for user alexk ; result is True  
+2019-10-26 13:27:37.036868 | Info | Login attempt for user alexk ; result is True  
+2019-10-26 13:40:27.276966 | Info | Login attempt for user faddy ; result is True  
+2019-10-26 14:00:22.821879 | Info | Login attempt for user faddy ; result is True  
+2019-10-26 14:00:57.332552 | Info | Got match history for : OneHitYouQuit and Deathspawn9154  
+2019-10-26 14:01:21.166544 | Info | Login attempt for user alexk ; result is True  

@@ -4,6 +4,8 @@ Parameters for sending and receiving messages to the queue(s):
 
 operation, ip_address, port_number, username, password, vhost_name, queue_name
 
+This query guide is strictly for front-end use. DMZ/API end uses each producer/consumer use case and switches.
+
 
 1. Authentication: 
 	
@@ -50,4 +52,113 @@ operation, ip_address, port_number, username, password, vhost_name, queue_name
 		
 		*Only send first 25 results! 
 
+		ex:
+		$data = array
+		(
+			'video-1' => array
+			(
+				'video-id' => 'LUaj6MrfBsU',
+				'title' => 'The END OF FORTNITE!',
+				'thumbnail' => 'https://i.ytimg.com/vi/LUaj6MrfBsU/default.jpg'
+			),
 
+			'video-2' => array
+			(
+				'video-id' => 'LUaj6MrfBsU',
+				'title' => 'The END OF FORTNITE!',
+				'thumbnail' => 'https://i.ytimg.com/vi/LUaj6MrfBsU/default.jpg'
+			),
+
+			'video-3' => array
+			(
+				'video-id' => 'LUaj6MrfBsU',
+				'title' => 'The END OF FORTNITE!',
+				'thumbnail' => 'https://i.ytimg.com/vi/LUaj6MrfBsU/default.jpg'
+			),
+
+			'video-4' => array
+			(
+				'video-id' => 'LUaj6MrfBsU',
+				'title' => 'The END OF FORTNITE!',
+				'thumbnail' => 'https://i.ytimg.com/vi/LUaj6MrfBsU/default.jpg'
+			)
+		);
+
+3. Steam API query:
+	
+	A) Get Owned Games List (Producer):
+		'operation' => 'get-games-list',
+		'steam-id' => $this->STEAM_ID,
+		'api-key' => $this->API_KEY,
+		'format' => 'json',
+		'include_appinfo' => '1'
+
+	B) Get Owned Games List (Consumer):
+		$data = array (
+			'operation' => 'get-games-list',
+			'game1' => array
+			(
+				'appid' => '10',
+				'name' => 'Counter-Strike',
+				'playtime-forever' => '0'
+			),
+			'game2' => array
+			(
+				'appid' => '101',
+				'name' => 'Counter-Strike 2',
+				'playtime-forever' => '10'
+			),
+			'game3' => array
+			(
+				'appid' => '102',
+				'name' => 'Counter-Strike 3',
+				'playtime-forever' => '100'
+			)
+		);
+
+		...etc
+
+	C) Get Friends List (Producer):
+		'operation' => 'get-friends-list',
+		'steam-id' => $this->STEAM_ID,
+		'api-key' => $this->API_KEY,
+		'format' => 'json',
+		'relationship' => 'friend'
+
+	D) Get Friends List (Consumer):
+		$data = array (
+			'operation' => 'get-friends-list',
+			'friends' => array
+			(
+				array(
+					'steam-id' => '123456',
+					'name' => 'solorzke',
+				),
+
+				array(
+					'steam-id' => '123456',
+					'name' => 'solorzke',
+				),
+
+				array(
+					'steam-id' => '123456',
+					'name' => 'solorzke',
+				),
+
+				array(
+					'steam-id' => '123456',
+					'name' => 'solorzke',
+				),
+
+				array(
+					'steam-id' => '123456',
+					'name' => 'solorzke',
+				),
+
+				array(
+					'steam-id' => '123456',
+					'name' => 'solorzke',
+				)
+			)
+		);
+		etc...

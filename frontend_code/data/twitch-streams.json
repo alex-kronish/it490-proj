@@ -1,0 +1,68 @@
+{
+    "data": [
+        {
+            "id": "36043252048",
+            "user_id": "27862926",
+            "user_name": "Potato",
+            "game_id": "490702",
+            "type": "live",
+            "title": "Man punches his way through Kamurocho",
+            "viewer_count": 66,
+            "started_at": "2019-10-22T22:56:19Z",
+            "language": "en",
+            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_potato-{width}x{height}.jpg",
+            "tag_ids": [
+                "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
+            ]
+        },
+        {
+            "id": "36044859696",
+            "user_id": "468661249",
+            "user_name": "vickytidepods",
+            "game_id": "490702",
+            "type": "live",
+            "title": "Yakuza Kiwami compilation \"Funny moment\"",
+            "viewer_count": 3,
+            "started_at": "2019-10-23T02:07:49Z",
+            "language": "en",
+            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_vickytidepods-{width}x{height}.jpg",
+            "tag_ids": [
+                "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
+            ]
+        },
+        {
+            "id": "36044899664",
+            "user_id": "45068191",
+            "user_name": "Ridcully7a",
+            "game_id": "490702",
+            "type": "live",
+            "title": "Beat up other people to Establish Dominance",
+            "viewer_count": 2,
+            "started_at": "2019-10-23T02:13:12Z",
+            "language": "en",
+            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_ridcully7a-{width}x{height}.jpg",
+            "tag_ids": [
+                "d24d8407-b69f-466b-a059-b43ddacd3e7c",
+                "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
+            ]
+        },
+        {
+            "id": "36043818368",
+            "user_id": "154880402",
+            "user_name": "Collectonian",
+            "game_id": "490702",
+            "type": "live",
+            "title": "Yakuza Kiwami",
+            "viewer_count": 2,
+            "started_at": "2019-10-23T00:04:09Z",
+            "language": "en",
+            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_collectonian-{width}x{height}.jpg",
+            "tag_ids": [
+                "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
+            ]
+        }
+    ],
+    "pagination": {
+        "cursor": "eyJiIjpudWxsLCJhIjp7Ik9mZnNldCI6NH19"
+    }
+}

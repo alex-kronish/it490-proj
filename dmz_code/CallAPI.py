@@ -1,30 +1,81 @@
 import json
 import requests
 import pika
+import datetime
 
 
-def getgameslist(steamid, apikey):
+def logtofile(severity, msg):
+    t = str(datetime.datetime.now())
+    event = t + " | " + severity + " | " + msg + "  \n"
+    f = open("dmz_log.txt", "a+")
+    f.write(event)
+    f.close()
+
+
+def logtodb(severity, msg, ipaddr):
+    cred3 = pika.PlainCredentials('alex', 'alex')
+    connection3 = pika.BlockingConnection(
+        pika.ConnectionParameters(host=rmqip, credentials=cred3, virtual_host='central_logs'))
+    channel3 = connection3.channel()
+    channel3.queue_declare(queue='hello')
+    logmsg = {"operation": "eventlog",
+              "server": ipaddr,
+              "severity": severity,
+              "event_text": msg}
+    logmsg_json = json.dumps(logmsg)
+    channel3.basic_publish(exchange='', routing_key='hello', body=logmsg_json)
+    connection3.close()
+
+
+def getgameinfo(appid):
+    gameurl = "https://store.steampowered.com/api/appdetails?appids=" + appid + "&cc=us&l=en"
+    game = requests.get(gameurl)
+    gameresp = game.json()
+    r = {"operation": "get-game-info"}
+    r.update(gameresp)
+    return r
+
+
+def getachievements(apikey, steamid, gameid):
+    achurl = 'http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid='+gameid+\
+        '&key='+apikey+'&steamid='+str(steamid)+'&l=en'
+    # print(achurl)
+    req = requests.get(achurl)
+    reqjson = req.json()
+    # print(reqjson)
+    op = {"operation": "leaderboard"}
+    reqjson.update(op)
+    return reqjson
+
+
+def getgameslist(steamid, apikey, minutes_filter):
     requrl = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + apikey + \
-             "&steamid=" + steamid + "&format=json&include_appinfo=1"
+             "&steamid=" + str(steamid) + "&format=json&include_appinfo=1"
     gresp = requests.get(requrl)
+    print(requrl)
     operation = "get-games-list"
-    gresp2 = gresp.json()["response"]
-    glist = gresp2["games"]
-    glist_f = "["
-    for i in glist:
-        if i["playtime_forever"] <= 600: #filter ten hours or less
-            glist_f = glist_f + json.dumps(i)
-    glist_f = glist_f + ']'
-    # print(glist_f)
-    resp_dict = {"operation": operation,
-                 "games": glist_f}
-    # print(msg)
+    gresp2 = gresp.json()
+    print(gresp2)
+    if not "games" in gresp2["response"]:
+        resp_dict = {"operation": operation,
+                     "error": "User's game list is not public",
+                     "games": [None]}
+    else:
+        glist = gresp2["response"]["games"]
+        glist_f = []
+        for i in glist:
+            if i["playtime_forever"] <= minutes_filter:  # filter by time played
+                glist_f.append(i)  # this is a way safer way to do this
+        # print(glist_f)
+        resp_dict = {"operation": operation,
+                     "games": glist_f}
+        # print(msg)
     return resp_dict
 
 
 def getsteamfriends(steamid, apikey, fmt, relationship):
     requrl = "http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=" \
-             + apikey + "&format=" + fmt + "&relationship=" + relationship + "&steamid=" + steamid
+             + apikey + "&format=" + fmt + "&relationship=" + relationship + "&steamid=" + str(steamid)
     resp = requests.get(requrl)
     api_output = resp.json()
     api_friendslist = api_output["friendslist"]
@@ -54,7 +105,7 @@ def getsteamfriends(steamid, apikey, fmt, relationship):
 
 def getsteaminfo(steamid, apikey):
     requrl2 = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" \
-              + apikey + "&format=json&steamids=" + steamid
+              + apikey + "&format=json&steamids=" + str(steamid)
     resp2 = requests.get(requrl2)
     user_resp = resp2.json()
     user_resp2 = user_resp["response"]
@@ -66,32 +117,112 @@ def getsteaminfo(steamid, apikey):
     return response_dict
 
 
+def callyoutubesearch(search_string):
+    apikey = "AIzaSyAhGC7AmQFhunKRWisNPHOn3A0AqG7R8EU"
+    u = "https://www.googleapis.com/youtube/v3/search?key=" + apikey + "&part=snippet&q=" \
+        + search_string + " Gameplay&type=video"
+    # print(u)
+    resp = requests.get(u)
+    search_result = resp.json()
+    tmp = []
+    '''for i in search_result["items"]:
+        print(i)
+        videoid = i["id"]["videoId"]
+        thumb = i["snippet"]["thumbnails"]["high"]["url"]
+        title = i["snippet"]["title"]
+        published = i["snippet"]["publishedAt"]
+        channeltitle = i["snippet"]["channelTitle"]
+        tmp_dict = {"title": title,
+                    "thumbnail": thumb,
+                    "published-date": published,
+                    "videoid": videoid,
+                    "channel": channeltitle,
+                    "url": ("https://youtu.be/" + videoid)}
+        tmp.append(tmp_dict)'''
+    r = {"operation": "youtube-search"}
+    r.update(search_result)
+    return r
+
+
+def calltwitchsearch(search_string):
+    h = {
+        "Client-ID": "c6kq3s5z91jfty8guhawa9sparb0ob"
+    }
+    streamlist_url = "https://api.twitch.tv/helix/streams?game_id="
+    gamesearch_url = "https://api.twitch.tv/helix/games?name=" + search_string
+    # search response is data/id
+    gameidresp = requests.get(gamesearch_url, headers=h)
+    gameidresp_json = gameidresp.json()
+    if not gameidresp_json["data"]:
+        print("result set is empty - could not find game")
+        r = {"operation": "twitch-search", "error": "Game was not found"}
+    else:
+        gameid = gameidresp_json["data"][0]["id"]
+        print("First call completed, Found a twitch game id!  Game ID = " + gameid)
+        streams = requests.get(streamlist_url + gameid, headers=h)
+        streams_json = streams.json()
+        if not streams_json["data"]:
+            print("no streams currently, result set is empty")
+            r = {"operation": "twitch-search", "error": "No streams active for this game"}
+        else:
+            r = {"operation": "twitch-search"}
+            r.update(streams_json)
+    return r
+
+
 def callback(ch, method, properties, body):
     input_msg = json.loads(body)
     op = input_msg["operation"]
+    severity = "Info"
     if op == "get-friends-list":
         apikey = input_msg["api-key"]
         steamid = input_msg["steam-id"]
         output_msg = json.dumps(getsteamfriends(steamid, apikey, 'json', 'friend'))
         # print("Published API response from Steam Friends")
+        logmsg = "Steam API call to get friends list was made."
     elif op == "get-games-list":
         apikey = input_msg["api-key"]
         steamid = input_msg["steam-id"]
-        output_msg = json.dumps(getgameslist(steamid, apikey))
+        minutes = 600
+        output_msg = json.dumps(getgameslist(steamid, apikey, minutes))
+        logmsg = "Steam API call to get games list was made. Filter condition less than " + str(
+            minutes) + " minutes played"
     elif op == "youtube-search":
-        print("Not implemented: Youtube Search")
-    elif op == "twitch-search:":
-        print("Not Implemented: Twitch Search")
+        # searchstr = "Yakuza Kiwami"
+        searchstr = input_msg["game"]
+        output_msg = json.dumps(callyoutubesearch(searchstr))
+        logmsg = "Youtube API call for game: " + searchstr + " was made"
+    elif op == "twitch-search":
+        # searchstr = "Super Mario 64"
+        searchstr = input_msg["game"]
+        output_msg = json.dumps(calltwitchsearch(searchstr))
+        logmsg = "Twitch API call for game: " + searchstr + " was made"
     elif op == "get-steam-info":
         apikey = input_msg["api-key"]
         steamid = input_msg["steam-id"]
         output_msg = json.dumps(getsteaminfo(steamid, apikey))
+        logmsg = "Steam API Call for single user info was made."
+    elif op == "get-game-info":
+        appid = input_msg["app-id"]
+        output_msg = json.dumps(getgameinfo(appid))
+        logmsg = "Got price info for game, appid = " + appid
+    elif op == "leaderboard":
+        appid = input_msg["app-id"]
+        apikey = '2308E9671CE3A9E02191ED237EA731E0'
+        steamid = input_msg["current-user-id"]
+        output_msg = json.dumps(getachievements(apikey,steamid,appid))
+        logmsg = "Got achievements for user" + steamid + " for game #" + appid
     else:
         print("Message was not understood.  " + str(body))
-        output_msg = {
+        output_msg_a = {
             "operation": op,
             "error": "Unknown Operation"
         }
+        output_msg = json.dumps(output_msg_a)
+        severity = "Error"
+        logmsg = "Message on the API Queue was not understood. Here is the output: " + str(body)
+    logtofile(severity, logmsg)
+    logtodb(severity, logmsg, '192.168.0.106')
     connection2 = pika.BlockingConnection(
         pika.ConnectionParameters(host=rmqip, credentials=cred, virtual_host='api_response'))
     chnl = connection2.channel()
@@ -101,7 +232,6 @@ def callback(ch, method, properties, body):
     print("Published API message for " + op)
 
 
-# getgameslist('76561197995725518', '2308E9671CE3A9E02191ED237EA731E0')
 rmqip = '192.168.0.105'
 # rmqip = "192.168.2.124"
 cred = pika.PlainCredentials('alex', 'alex')
@@ -109,6 +239,8 @@ connection = pika.BlockingConnection(
     pika.ConnectionParameters(host=rmqip, credentials=cred, virtual_host='api'))
 channel = connection.channel()
 channel.queue_declare(queue='hello')
+logtofile("Info", "API script started: CallAPI.py")
+logtodb("Info", "API script started: CallAPI.py", '192.168.0.106')
 channel.basic_consume(
     queue='hello', on_message_callback=callback, auto_ack=True)
 print(' [*] Listening for API Messages. To exit press CTRL+C')

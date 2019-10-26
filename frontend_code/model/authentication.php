@@ -5,12 +5,15 @@
 */
 require ('../rabbitmq/send.php');
 require ('../rabbitmq/receive.php');
+require ('user.php');
+session_start();
 
 class Authentication
 {
 	private $USER_NAME;
 	private $PASSWORD;
 	private $EMAIL;
+	private $STEAM_ID;
 
 	public function __construct()
 	{}
@@ -30,7 +33,7 @@ class Authentication
 		return $this->EMAIL;
 	}
 
-	public function validate($USER_NAME, $PASSWORD, $EMAIL=0)
+	public function validate($USER_NAME, $PASSWORD, $EMAIL=0, $STEAM_ID=0)
 	{
 		$username = array
 		(
@@ -48,7 +51,7 @@ class Authentication
 			'validateNumberStarts' => $this->validateNumberStarts($PASSWORD) 
 		);
 
-		if($EMAIL != 0)
+		if($EMAIL != 0 && $STEAM_ID != 0)
 		{
 			$email = array
 			(
@@ -58,7 +61,21 @@ class Authentication
 				'validateNumberStarts' => $this->validateNumberStarts($USER_NAME)
 			);
 
+			$steam_id = array 
+			(
+				'validateEmpty' => $this->validateEmpty($STEAM_ID),
+				'validateNumberOfChars' => $this->validateNumberOfChars($STEAM_ID),
+				'validateSpecialChars' => $this->validateSpecialChars($STEAM_ID),
+				'validateNumberStarts' => $this->validateNumberStarts($STEAM_ID)
+			);
+
 			foreach($email as $key => $value)
+			{
+				if($value == false)
+					return false;
+			}
+
+			foreach($steam_id as $key => $value)
 			{
 				if($value == false)
 					return false;
@@ -91,36 +108,51 @@ class Authentication
 		);
 		$payload = json_encode($data);
 		publishMessage($payload);
-		consumeMessage('login', function($response, $channel, $connection){
+		consume('login', 'authentication_results', 'hello', function($response, $channel, $connection) use ($data){
 			if($response['result'] == 'True'){
 				$channel->close();
 				$connection->close();
-				header('Location: ../view/home.php?success=registration%20is%20verified');
+				$user = new User($data['username'], '0', $response['steam-id']);
+				$_SESSION['user'] = $user;
+				header('Location: ../controller/index.php?action=view-home');
+			}
+			else{
+				$channel->close();
+				$connection->close();
+				header('Location: ../view/sign-in.php');
 			}
 		});
 	}
 
-	public function register($USER_NAME, $PASSWORD, $EMAIL)
+	public function register($USER_NAME, $PASSWORD, $EMAIL, $STEAM_ID)
 	{
 		$data = array(
 			'operation' => 'register',
 			'username' => $USER_NAME,
 			'password' => $PASSWORD,
-			'email' => $EMAIL
+			'email' => $EMAIL,
+			'steam-id' => $STEAM_ID
 		);
 		$payload = json_encode($data);
-		publishMessage($payload);
-		consumeMessage('register', function($response, $channel, $connection){	
+		produceMessage($payload, 'authentication', 'hello');
+		consumeMessage('register', function($response, $channel, $connection) use ($data){	
 
-			if($response['result'] == 'True'){
+			if($response['result'] == 'True' || $response['result'] == 'true' || $response['result'] == '1'){
 				$channel->close();
 				$connection->close();
-				header('Location: ../view/home.php?success=registration%20is%20verified');
+				$user = new User($data['username'], $data['email'], $data['steam-id']);
+				$_SESSION['user'] = $user;
+				header('Location: ../controller/index.php?action=view-home');
 			}
+			else{
+				$channel->close();
+				$connection->close();
+				header('Location: ../view/register.php');
+			}
+
 		});
 		//$result = consumeMessage('register');
 		//return $result['email'].' is your email address';
-		
 	}
 
 	public function validateEmpty($DATA)
