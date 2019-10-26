@@ -392,7 +392,6 @@ class Steam_API
 			#Remove next line, only for testing!
 			//$response = json_decode(file_get_contents('/var/www/html/it490-proj/frontend_code/data/match-history.json'), true);
 			//$response['result'] == true/false
-			$this->RATIO = $response['ratio'];
 			$channel->close();
 			$connection->close();
 			if(is_callable($CALLBACK))
