@@ -3,12 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>IT490 Project | Sign-In</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<title>Mystery Theater | Sign-In</title>
+	<link rel="stylesheet" href="../view/css/bootstrap/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/sign-in.css">
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet"> 
+	<!--<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">-->
 	<link rel="icon" type="image/ico" href="/images/favicon.ico">
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="../view/css/bootstrap/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
 </head>
 <body class="text-center">
 	<form method="POST" action="../model/login_script.php" class="form-signin">
