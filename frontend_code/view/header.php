@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="Project site for IT490 titled Mystery Steam Theater">
 	<meta name="author" content="Kevin Solorzano, Alex Kronish, Faddy Hadad, Anthony Duran">
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="../view/css/bootstrap/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 	<script src="https://kit.fontawesome.com/10c461c81c.js" crossorigin="anonymous"></script>
 	<script src="../view/css/jquery/jquery.min.js"></script>
