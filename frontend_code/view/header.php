@@ -6,14 +6,14 @@
 	<meta name="description" content="Project site for IT490 titled Mystery Steam Theater">
 	<meta name="author" content="Kevin Solorzano, Alex Kronish, Faddy Hadad, Anthony Duran">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet"> 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../view/css/bootstrap/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 	<script src="https://kit.fontawesome.com/10c461c81c.js" crossorigin="anonymous"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="../view/css/jquery/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="../view/css/bootstrap/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
 	<link rel="icon" href="/images/favicon.ico">
 	<link type="text/css" href="../view/css/index.css" rel="stylesheet">
-	<title>Mystery Steam Theater</title>
+	<title>Mystery Theater</title>
 </head>
 <body>
 
