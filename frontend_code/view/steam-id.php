@@ -16,7 +16,6 @@
 			</h3><hr>
 			<img src="<?php if(isset($api)) echo $api->get_user_info_array()[0]['avatar']; ?>" width="150" height="150" class="img-fluid rounded mx-auto d-block">
 			<h5>Persona Name: <?php if(isset($api)) echo $api->get_user_info_array()[0]['personaname']; ?></h5>
-			<h5>Based: NJ, USA</h5>
 			<h5>Steam URL: <a target="_blank" href="<?php if(isset($api)) echo $api->get_user_info_array()[0]['profileurl']; ?>">Steam-Community Link</a></h5>
 		</div>
 	</div>

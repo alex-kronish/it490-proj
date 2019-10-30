@@ -91,12 +91,13 @@ if($action == 'request-game-info')
 	$steamid = $_SESSION['user']->getSteamID();
 	$api = new Steam_API($steamid);
 	$api->get_game_info($appid, function($response){});
-	$info = $api->get_game_info_array()['info'][0]['description'];
-	$discount = $api->get_game_info_array()['info'][0]['discount'];
+	$info = isset($api->get_game_info_array()['info'][0]['description']) ? $api->get_game_info_array()['info'][0]['description'] : "<p>No game information is available from Steam Store at this time</p>";
+	$discount = isset($api->get_game_info_array()['info'][0]['discount']) ? $api->get_game_info_array()['info'][0]['discount'] : "false";
 	$tags = $api->get_tags();
 	if($discount == 'false')
 		echo "
 			<script type=\"text/javascript\">
+				$('#discount-img').text('');
 				$('#desc img').attr('class', 'img-fluid rounded mx-auto d-block');
 			</script>
 			<div id=\"desc\">".$info.$tags."</div>";
