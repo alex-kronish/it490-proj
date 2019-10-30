@@ -1,9 +1,9 @@
 <?php include 'header.php'; ?>
 
 <main role="main">
-	<section class="jumbotron text-center">
+	<section class="jumbotron text-center bg-dark mx-5">
 		<div class="container">
-			<h1 style="color: red;">Twitch Stream Search</h1>
+			<h1 class="text-warning">Twitch Stream Search</h1>
 			<div class="input-group md-form form-sm form-1 pl-0">
 				<div class="input-group-prepend">
 					<span class="input-group-text cyan lighten-3" id="basic-text1"><i class="fas fa-search text-white"

@@ -72,9 +72,6 @@ class Twitch_API
 						>
 						<div class=\"card-body\">
 							<p class=\"card-text\">".$streamer.': '.$title."</p>
-							<div class=\"d-flex justify-content-between align-items-center\">
-								<small class=\"text-muted\">9 mins</small>
-							</div>
 						</div>
 					</div>
 				</a>
