@@ -32,7 +32,14 @@ def logtodb(severity, msg, ipaddr):
 
 def registeracct(u, p, e, s):
     print('REGISTER')
-    dbconn = pymysql.connect("localhost", "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+    try:
+        dbconn = pymysql.connect(db_master_ip, "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+    except pymysql.Error as e:
+        dbconn = pymysql.connect(db_slave_ip, "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+        errormsg = "Master DB in cluster is not online! Raw error: " + str(e)
+        logtofile("Error", errormsg)
+        logtodb("Error", errormsg, db_script_ip)
+
     insertsql = "INSERT INTO IT490_USERS (USER_NAME, USER_PASS, USER_EMAIL_ADDR, USER_REGISTRATION_DTTM, " \
                 "USER_LAST_LOGIN_DTTM, ADMIN_FLAG) VALUES (%s, %s, %s, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), " \
                 "'N' ) ; "
@@ -71,7 +78,13 @@ def attemptlogin(u, p):
     print("LOGIN")
     loginsql = "SELECT USER_NAME, USER_PASS, STEAM64_ID FROM IT490_USERS U JOIN IT490_STEAM_USER S on S.USER_ID = " \
                "U.USER_ID WHERE USER_NAME = %s ; "
-    dbconn = pymysql.connect("localhost", "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+    try:
+        dbconn = pymysql.connect(db_master_ip, "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+    except pymysql.Error as e:
+        dbconn = pymysql.connect(db_slave_ip, "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+        errormsg = "Master DB in cluster is not online! Raw error: " + str(e)
+        logtofile("Error", errormsg)
+        logtodb("Error", errormsg, db_script_ip)
     c = dbconn.cursor()
     c.execute(loginsql, (u,))
     tmp = c.fetchone()
@@ -84,13 +97,13 @@ def attemptlogin(u, p):
     steamid = tmp[2]
     c.close()
     dbconn.close()
-    #print(v)
-    #print(steamid)
+    # print(v)
+    # print(steamid)
     return steamid
 
 
 def callback(ch, method, properties, body):
-    #print(" [x] Received %r" % body)
+    # print(" [x] Received %r" % body)
     result = json.loads(body.decode('utf8'))
     cred2 = pika.PlainCredentials('alex', 'alex')
     connection2 = pika.BlockingConnection(
@@ -117,7 +130,7 @@ def callback(ch, method, properties, body):
         else:
             event_cd = "Error"
         logtofile(event_cd, event_txt)
-        logtodb(event_cd, event_txt, '192.168.0.103')
+        logtodb(event_cd, event_txt, db_script_ip)
 
     elif result["operation"] == "register":
         reg_result = registeracct(result["username"], result["password"], result["email"], result["steam-id"])
@@ -134,10 +147,16 @@ def callback(ch, method, properties, body):
             event_cd = "Error"
         reg_message_txt = 'Registration attempt for user ' + result["username"] + " ; result is " + str(reg_result)
         logtofile(event_cd, reg_message_txt)
-        logtodb(event_cd, reg_message_txt, '192.168.0.103')
+        logtodb(event_cd, reg_message_txt, db_script_ip)
     connection2.close()
 
 
+mysql_conf_tmp = open("mysql_failover.json", "w")
+mysql_conf = json.load(mysql_conf_tmp)
+mysql_conf_tmp.close()
+db_script_ip = mysql_conf["mysql"]["scriptrunner"]
+db_master_ip = mysql_conf["mysql"]["master_ip"]
+db_slave_ip = mysql_conf["mysql"]["slave_ip"]
 rmqip = '192.168.0.105'
 # rmqip = "192.168.2.124"
 cred = pika.PlainCredentials('alex', 'alex')
@@ -149,7 +168,7 @@ channel.queue_declare(queue='hello')
 channel.basic_consume(
     queue='hello', on_message_callback=callback, auto_ack=True)
 logtofile("Info", "Database script started: UserAuth.py")
-logtodb("Info", "Database script started: UserAuth.py", '192.168.0.103')
+logtodb("Info", "Database script started: UserAuth.py", db_script_ip)
 
 print(' [*] Listening for Authentication Messages. To exit press CTRL+C')
 channel.start_consuming()

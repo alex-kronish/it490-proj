@@ -16,7 +16,15 @@ def logtodb(severity, event_text, server_ip):
     severity_cd = severity_dict[severity]
     insertsql = "INSERT INTO IT490_EVENT_LOG (EVENT_DTTM, EVENT_CODE, EVENT_MESSAGE_TEXT, EVENT_SERVER_IP) VALUES (" \
                 "CURRENT_TIMESTAMP(), %s, %s, %s) ; "
-    dbconn = pymysql.connect("localhost", "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+    try:
+        dbconn = pymysql.connect(db_master_ip, "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+    except pymysql.Error as e:
+        dbconn = pymysql.connect(db_slave_ip, "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+        # errormsg = "Master DB in cluster is not online! Raw error: " + str(e)
+        # logtofile("Error", errormsg)
+        # logtodb("Error", errormsg, db_script_ip)
+        # ok so odds are, another method hit this error first and we dont
+        # want to recursively flood the MQ with error messages as we futily attempt to log events.
     try:
         c = dbconn.cursor()
         c.execute(insertsql, (severity_cd, event_text, server_ip))
@@ -34,7 +42,7 @@ def callback(ch, method, properties, body):
     print("message recieved... trying to insert")
     logmsg_json = json.loads(body.decode("utf8"))
     severity = logmsg_json["severity"]
-    severity_cd = severity_dict[severity]
+    # severity_cd = severity_dict[severity]
     event_text = logmsg_json["event_text"]
     serverip = logmsg_json["server"]
     logtodb(severity, event_text, serverip)
@@ -47,6 +55,12 @@ severity_dict = {
     "Error": 2
 }
 # rmqip = "192.168.2.124"
+mysql_conf_tmp = open("mysql_failover.json", "w")
+mysql_conf = json.load(mysql_conf_tmp)
+mysql_conf_tmp.close()
+db_script_ip = mysql_conf["mysql"]["scriptrunner"]
+db_master_ip = mysql_conf["mysql"]["master_ip"]
+db_slave_ip = mysql_conf["mysql"]["slave_ip"]
 cred4 = pika.PlainCredentials('alex', 'alex')
 connection4 = pika.BlockingConnection(
     pika.ConnectionParameters(host=rmqip, credentials=cred4, virtual_host='central_logs'))

@@ -30,7 +30,13 @@ def logtodb(severity, msg, ipaddr):
 def recordmatch(self, friend, outcome, qty):
     sql = "INSERT INTO IT490_MATCH_HISTORY (SELF, FRIEND, WINS, LOSSES, INSERT_DTTM) VALUES ( " \
           "%s, %s, %s, %s, CURRENT_TIMESTAMP() ) ; "
-    dbconn = pymysql.connect("localhost", "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+    try:
+        dbconn = pymysql.connect(db_master_ip, "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+    except pymysql.Error as e:
+        dbconn = pymysql.connect(db_slave_ip, "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+        errormsg = "Master DB in cluster is not online! Raw error: " + str(e)
+        logtofile("Error", errormsg)
+        logtodb("Error", errormsg, db_script_ip)
     wins = 0
     losses = 0
     if outcome == "won":
@@ -58,7 +64,13 @@ def recordmatch(self, friend, outcome, qty):
 def getleaderboard(user, friend):
     sql = "SELECT SELF, FRIEND, SUM(WINS) AS WINS, SUM(LOSSES) AS LOSSES FROM IT490_MATCH_HISTORY WHERE SELF= %s  " \
           "AND FRIEND = %s GROUP BY SELF, FRIEND; "
-    dbconn = pymysql.connect("localhost", "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+    try:
+        dbconn = pymysql.connect(db_master_ip, "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+    except pymysql.Error as e:
+        dbconn = pymysql.connect(db_slave_ip, "IT490_DBUSER", "IT490", "IT490_MYSTERY_STEAM_THEATER")
+        errormsg = "Master DB in cluster is not online! Raw error: " + str(e)
+        logtofile("Error", errormsg)
+        logtodb("Error", errormsg, db_script_ip)
     c = dbconn.cursor()
     c.execute(sql, (user, friend))
     tmp = c.fetchone()
@@ -112,11 +124,17 @@ def callback(ch, method, properties, body):
     channel2.basic_publish(exchange='', routing_key='hello', body=json.dumps(resp))
     print("Published MatchResults message " + result["operation"])
     logtofile(severity, logmsg)
-    logtodb(severity, logmsg, '192.168.0.103')
+    logtodb(severity, logmsg, db_script_ip)
     connection2.close()
 
 
 rmqip = '192.168.0.105'
+mysql_conf_tmp = open("mysql_failover.json", "w")
+mysql_conf = json.load(mysql_conf_tmp)
+mysql_conf_tmp.close()
+db_script_ip = mysql_conf["mysql"]["scriptrunner"]
+db_master_ip = mysql_conf["mysql"]["master_ip"]
+db_slave_ip = mysql_conf["mysql"]["slave_ip"]
 # rmqip = "192.168.2.124"
 cred = pika.PlainCredentials('alex', 'alex')
 connection = pika.BlockingConnection(
@@ -127,7 +145,7 @@ channel.queue_declare(queue='hello')
 channel.basic_consume(
     queue='hello', on_message_callback=callback, auto_ack=True)
 logtofile("Info", "Database script started: MatchHistory.py")
-logtodb("Info", "Database script started: MatchHistory.py", '192.168.0.103')
+logtodb("Info", "Database script started: MatchHistory.py", db_script_ip)
 
 print(' [*] Listening for Match History Messages. To exit press CTRL+C')
 channel.start_consuming()
