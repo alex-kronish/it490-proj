@@ -133,3 +133,11 @@
 2019-10-26 14:00:22.821879 | Info | Login attempt for user faddy ; result is True  
 2019-10-26 14:00:57.332552 | Info | Got match history for : OneHitYouQuit and Deathspawn9154  
 2019-10-26 14:01:21.166544 | Info | Login attempt for user alexk ; result is True  
+2019-12-06 19:30:22.749631 | Info | Database script started: UserAuth.py  
+2019-12-06 19:32:07.377115 | Info | Database script started: MatchHistory.py  
+2019-12-06 19:37:53.591020 | Info | Registration attempt for user user ; result is True  
+2019-12-06 19:41:22.612505 | Info | Database script started: UserAuth.py  
+2019-12-06 19:41:33.877507 | Info | Database script started: MatchHistory.py  
+2019-12-06 19:53:48.022736 | Info | Database script started: UserAuth.py  
+2019-12-06 19:53:56.455460 | Info | Database script started: EventLog.py  
+2019-12-06 19:54:04.321135 | Info | Database script started: MatchHistory.py  

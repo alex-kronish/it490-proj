@@ -55,7 +55,7 @@ severity_dict = {
     "Error": 2
 }
 # rmqip = "192.168.2.124"
-mysql_conf_tmp = open("mysql_failover.json", "w")
+mysql_conf_tmp = open("mysql_failover.json", "r")
 mysql_conf = json.load(mysql_conf_tmp)
 mysql_conf_tmp.close()
 db_script_ip = mysql_conf["mysql"]["scriptrunner"]
